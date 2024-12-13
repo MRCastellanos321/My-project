@@ -12,10 +12,10 @@ namespace Tablero
     {
         public int width = 10;
         public int height = 10; 
-        public int tileWidth = 32; 
+        public int tileWidth = 64; 
         
 
-        public GameObject tilePrefab2; 
+        public GameObject Camino; 
 
         private int[,] board; 
 
@@ -43,7 +43,7 @@ namespace Tablero
         void SpawnTile(int x, int y, int tileType)
         {
             
-            GameObject tile = Instantiate(tilePrefab2);
+            GameObject tile = Instantiate(Camino);
            
             tile.transform.position = new Vector3(x, y, 0); 
             tile.name = "Tile " + x + "," + y; 

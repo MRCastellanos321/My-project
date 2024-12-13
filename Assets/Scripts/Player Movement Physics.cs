@@ -28,7 +28,7 @@ namespace Player
              float directionY = Input.GetAxis("Vertical");
              posCellX += directionX;
              posCellY += directionY;
-             transform.position = new Vector3(posCellX * 32, posCellY * 32, 0);*/
+             transform.position = new Vector3(posCellX * 64, posCellY * 64, 0);*/
 
 
         public int cellSize = 1; 
