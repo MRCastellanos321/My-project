@@ -1,16 +1,6 @@
-using UnityEngine;
 
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting.ReorderableList.Element_Adder_Menu;
-using Unity.VisualScripting;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UnityEditor.Rendering;
-using NUnit.Framework;
 
 namespace Laberinto
 {
@@ -18,14 +8,27 @@ namespace Laberinto
     public class Laberinto
     {
 
+        public static void Main(string[] args)
+        {
+            int[,] matriz = IniciarMatriz(51, 51);
+            List<int[]> Backtrack = CrearLista();
+            int f = 1;
+            int c = 1;
+            matriz[f, c] = 1;
+            GenerandoCaminos(matriz, f, c, Backtrack);
+            ImprimirDebug(matriz);
+        }
+
+
+
 
         //de esta funcion sale una matriz con casillas camino(0) rodeadas de casillas pared(2) sin conexion entre los caminos
         public static int[,] IniciarMatriz(int filas, int columnas)
         // estos deben ser impares para que pueda haber una casilla centro del tablero
         {
             int[,] matriz = new int[filas, columnas];
-            int f = 1;
-            int c = 1;
+            int f = 0;
+            int c = 0;
             while (f < filas)
             {
                 while (c < columnas)
@@ -77,55 +80,62 @@ namespace Laberinto
 
             //aqui se realiza una iteracion en cada entrada a la recursividad para volver una casilla vacia un camino cada vez que exista una direcciin valida
 
-            List<string> direccionesValidas = EsValido(direcciones, matriz, f, c);
+            List<string> direccionesValidas = EsValido(matriz, f, c);
 
             if (direccionesValidas.Count != 0)
             {
-                int posRandom = random.Next(1, direccionesValidas.Count);
+                Backtrack.Add(new int[] { f, c }); //salva esa posicion
+                Console.WriteLine("entre aqui");
+                int posRandom = random.Next(0, direccionesValidas.Count);
                 string direccion = direccionesValidas[posRandom];
 
                 if (direccion == "derecha")
                 {
+                    Console.WriteLine(direccion);
+
                     c++;
                     matriz[f, c] = 1;
                     c++;
                     matriz[f, c] = 1;
 
+                    ImprimirDebug(matriz);
+
                 }
 
 
-                else if (direccion == "izquierda")
+                if (direccion == "izquierda")
                 {
+                    Console.WriteLine(direccion);
                     c--;
                     matriz[f, c] = 1;
                     c--;
                     matriz[f, c] = 1;
-
+                    ImprimirDebug(matriz);
 
                 }
 
 
-                else if (direccion == "abajo")
+                if (direccion == "abajo")
                 {
-
+                    Console.WriteLine(direccion);
                     f++;
                     matriz[f, c] = 1;
                     f++;
                     matriz[f, c] = 1;
-
+                    ImprimirDebug(matriz);
                 }
-                else if (direccion == "arriba")
+                if (direccion == "arriba")
                 {
-
+                    Console.WriteLine(direccion);
                     f--;
                     matriz[f, c] = 1;
                     f--;
                     matriz[f, c] = 1;
 
-
+                    ImprimirDebug(matriz);
                 }
 
-                Backtrack.Add(new int[] { f, c }); //salva esa posicion
+
 
                 GenerandoCaminos(matriz, f, c, Backtrack);
 
@@ -134,7 +144,7 @@ namespace Laberinto
             //funcion para cuando todas las casillas vecinas esten ocupadas(backtrack hasta la ultima casilla con vecinas no visitadas)
             else
             {
-                int s = Backtrack.Count - 2; //el menos 2 es pq ya se comprobo a si misma y no se hizo ningun cambio
+                int s = Backtrack.Count - 1;
                 int[] temp = Backtrack[s];
 
                 while (s >= 0)
@@ -143,16 +153,23 @@ namespace Laberinto
                     f = temp[0];
                     c = temp[1];
 
-                    List<string> vecinosVacios = EsValido(direcciones, matriz, f, c);
+                    List<string> vecinosVacios = EsValido(matriz, f, c);
+                    if (f == 1 && c == 1)
+                    {
+                        Console.WriteLine("f y c son 1");
+                        break;
+                    }
                     if (vecinosVacios.Count == 0)
                     {
+                        Console.WriteLine("no sirvio, cambio de s");
                         s--;
+                        continue;
                     }
 
-                    else
-                    {
-                        GenerandoCaminos(matriz, f, c, Backtrack);
-                    }
+                    Console.WriteLine("entre a backtrack");
+                    GenerandoCaminos(matriz, f, c, Backtrack);
+                    break;
+
 
                 }
 
@@ -162,52 +179,58 @@ namespace Laberinto
 
         }
         //esta funcion revisa si se puede o si se sale de los limites del array
-        public static List<string> EsValido(List<string> direcciones, int[,] matriz, int f, int c)
+        public static List<string> EsValido(int[,] matriz, int f, int c)
         {
+            int filas = matriz.GetLength(0) - 1;
+            int columnas = matriz.GetLength(1) - 1;
 
-            int columnas = matriz.Length - 1;
-            int filas = matriz.Length - 1;
-            List<string> direccionesValidas = direcciones;
-            for (int i = 0; i < direccionesValidas.Count; i++)
+            List<string> direccionesValidas = new List<string>();
+
+
+            if (c != columnas - 1 && matriz[f, c + 2] == 0)
             {
 
-                string direccion = direccionesValidas[i];
-                if (direccion == "derecha")
-                {
-                    if (c == columnas - 1 || matriz[f, c + 2] == 1 || matriz[f, c + 2] == 2)
-                    {
+                Console.WriteLine("derecha valida");
 
-                        direccionesValidas.Remove("derecha");
-                        break;
-                    }
 
-                }
-                if (direccion == "izquierda")
-                {
-                    if (c == 1 || matriz[f, c - 2] == 1 || matriz[f, c - 2] == 2)
-                    {
-                        direccionesValidas.Remove("izquierda");
-                        break;
-                    }
-                }
-                if (direccion == "abajo")
-                {
-                    if (f == filas - 1 || matriz[f + 2, c] == 1 || matriz[f + 2, c] == 2)
-                    {
-                        direcciones.Remove("abajo");
-                        break;
-                    }
-                }
-                if (direccion == "arriba")
-                {
-                    if (f == 1 || matriz[f - 2, c] == 1 || matriz[f - 2, c] == 2)
-                    {
-                        direcciones.Remove("arriba");
-                        break;
-                    }
-                }
+                direccionesValidas.Add("derecha");
 
             }
+
+
+
+            if (c != 1 && matriz[f, c - 2] == 0)
+            {
+                Console.WriteLine("izquierda valida");
+
+                direccionesValidas.Add("izquierda");
+
+            }
+
+
+
+            if (f != filas - 1 && matriz[f + 2, c] == 0)
+            {
+                Console.WriteLine("abajo valida");
+
+
+                direccionesValidas.Add("abajo");
+
+            }
+
+
+            if (f != 1 && matriz[f - 2, c] == 0)
+            {
+                Console.WriteLine("arriba valida");
+
+
+                direccionesValidas.Add("arriba");
+
+            }
+
+
+
+
             return direccionesValidas;
 
         }
@@ -222,164 +245,18 @@ namespace Laberinto
             {
                 while (c < columnas)
                 {
-                    Console.Write(matriz[f, c] + " ");
+
+                    Console.Write(matriz[f, c] == 1 ? "  " : 22);
 
                     c++;
                 }
-                 Console.WriteLine();
+                c = 0;
                 f++;
+                Console.WriteLine();
+
             }
 
 
         }
-
-        /* List<int> Backtrack = new List<int> { 0, 0 }; // esta lista va a guardar la ultima casilla "no orillada" con vecinos vacios
-         private static void GenerandoCaminos(int[,] matriz, int f, int c, List<int> Backtrack)
-         {
-             int columnas = matriz.Length - 1;
-             int filas = matriz.Length - 1;
-             int cambio = 0;
-
-
-             List<string> direcciones = new List<string> { "izquierda", "derecha", "arriba", "abajo" };
-             System.Random random = new System.Random();
-
-             //Encargado de elegir la direccion(esta funcion revisa si se puede o si se sale de los limites del array)
-             while (direcciones.Count != 0)
-             {
-
-                 int posRandom = random.Next(1, direcciones.Count);
-                 string direccion = direcciones[posRandom];
-                 if (direccion == "derecha")
-                 {
-                     if (c != columnas - 1 && matriz[f, c + 2] != 1 && matriz[f, c + 2] != 2)
-                     {
-
-                         c++;
-                         matriz[f, c] = 1;
-                         c++;
-                         matriz[f, c] = 1;
-
-                         cambio++;
-                         break;
-                     }
-
-                     else
-                     {
-                         direcciones.Remove("derecha");
-                         break;
-                     }
-
-                 }
-                 if (direccion == "izquierda")
-                 {
-                     if (c != 1 && matriz[f, c - 2] != 1 && matriz[f, c - 2] != 2)
-                     {
-
-                         c--;
-                         matriz[f, c] = 1;
-                         c--;
-                         matriz[f, c] = 1;
-                         cambio++;
-                         break;
-                     }
-                     else
-                     {
-                         direcciones.Remove("izquierda");
-                         break;
-                     }
-                 }
-                 if (direccion == "abajo")
-                 {
-                     if (f != filas - 1 && matriz[f + 2, c] != 1 && matriz[f + 2, c] != 2)
-                     {
-
-                         f++;
-                         matriz[f, c] = 1;
-                         f++;
-                         matriz[f, c] = 1;
-
-                         cambio++;
-                         break;
-                     }
-                     else
-                     {
-                         direcciones.Remove("abajo");
-                         break;
-                     }
-                 }
-                 if (direccion == "arriba")
-                 {
-                     if (f != 1 && matriz[f - 2, c] != 1 && matriz[f - 2, c] != 2)
-                     {
-
-                         f--;
-                         matriz[f, c] = 1;
-                         f--;
-                         matriz[f, c] = 1;
-
-                         cambio++;
-                         break;
-                     }
-                     else
-                     {
-                         direcciones.Remove("arriba");
-                         break;
-                     }
-                 }
-
-             }
-
-             if (cambio == 1) //es decir, se movio la posicion y se abrio un camino
-             {
-                 if (f != 1 && f != filas - 1 && c != 1 && c != columnas - 1) //solo para casillas centro para abrir ramificaciones donde es mas conveniente
-                 {
-                     if (f + 2 == 0 || f - 2 == 0 || c - 2 == 0 || c + 2 == 0)
-                     {
-                         Backtrack[1] = f;
-                         Backtrack[2] = c;
-                     }
-
-                     //funciona aunque sea para solo centro. todas las casillas excepto las esquinas tienen un vecino centro. si el algoritmo no ha terminado, es pq 
-                     //aun quedan ceros. pero ese cero debe tener un vecino centro que en algun momento se guardo en el backtrack. por tanto cuando termine los unicos
-                     //ceros que pueden quedar son las esquinas
-                 }
-                 GenerandoCaminos(matriz, f, c, Backtrack);
-
-
-             }
-             //entra cuando no hubo ningun cambio, es decir, casillas vecinas a la posicion actual ocupadas
-             else
-             {
-                 if (Backtrack[1] != -1 && Backtrack[2] != -1)
-                 {
-                     //funcion para cuando todas las casillas vecinas esten ocupadas(backtrack hasta la ultima casilla centro con vecinas no visitadas)
-                     f = Backtrack[1];
-                     c = Backtrack[2]; //se le da la ultima posicion con vecinos en blanco
-                     Backtrack[1] = -1;
-                     Backtrack[2] = -1;
-                     //esto es para saber que no se encontro nadie con vecinos en blanco si vuelvo a entrar y los valores son los mismos
-                     GenerandoCaminos(matriz, f, c, Backtrack);
-                 }
-
-                 else
-                 {
-                     // se termina
-                 }
-
-             }
-
-
-         }
-         */
     }
 }
-
-
-
-
-
-
-
-
-
