@@ -76,7 +76,7 @@ namespace Laberinto
 
             List<string> direcciones = new List<string> { "izquierda", "derecha", "arriba", "abajo" };
             System.Random random = new System.Random();
-
+            System.Random random2 = new System.Random();
 
             //aqui se realiza una iteracion en cada entrada a la recursividad para volver una casilla vacia un camino cada vez que exista una direcciin valida
 
@@ -92,7 +92,6 @@ namespace Laberinto
                 if (direccion == "derecha")
                 {
                     Console.WriteLine(direccion);
-
                     c++;
                     matriz[f, c] = 1;
                     c++;
@@ -103,7 +102,7 @@ namespace Laberinto
                 }
 
 
-                if (direccion == "izquierda")
+                else if (direccion == "izquierda")
                 {
                     Console.WriteLine(direccion);
                     c--;
@@ -115,7 +114,7 @@ namespace Laberinto
                 }
 
 
-                if (direccion == "abajo")
+                else if (direccion == "abajo")
                 {
                     Console.WriteLine(direccion);
                     f++;
@@ -124,7 +123,7 @@ namespace Laberinto
                     matriz[f, c] = 1;
                     ImprimirDebug(matriz);
                 }
-                if (direccion == "arriba")
+                else if (direccion == "arriba")
                 {
                     Console.WriteLine(direccion);
                     f--;
@@ -135,6 +134,10 @@ namespace Laberinto
                     ImprimirDebug(matriz);
                 }
 
+                if (3 == random2.Next(0, 5))
+                {
+                    Ramificar(matriz, direcciones, f, c, direccion);
+                }
 
 
                 GenerandoCaminos(matriz, f, c, Backtrack);
@@ -233,6 +236,33 @@ namespace Laberinto
 
             return direccionesValidas;
 
+        }
+        //funcion ramificar es para q el laberinto no quede tan recto
+        private static void Ramificar(int[,] matriz, List<string> direcciones, int f, int c, string no)
+        {
+            List<string> ramificarValidas = new List<string>();
+            ramificarValidas.AddRange(direcciones);
+            ramificarValidas.Remove(no);
+
+            System.Random random2 = new Random();
+            int posRandom2 = random2.Next(0, ramificarValidas.Count);
+            string ramificar = ramificarValidas[posRandom2];
+            if (ramificar == "izquierda" && c - 1 != 0)
+            {
+                matriz[f, c - 1] = 1;
+            }
+            else if (ramificar == "derecha" && c + 1 != matriz.GetLength(1) - 1)
+            {
+                matriz[f, c + 1] = 1;
+            }
+            else if (ramificar == "arriba" && f + 1 != 0)
+            {
+                matriz[f + 1, c] = 1;
+            }
+            else if (ramificar == "abajo" && c + 1 != matriz.GetLength(0) - 1)
+            {
+                matriz[f - 1, c] = 1;
+            }
         }
 
         public static void ImprimirDebug(int[,] matriz)
