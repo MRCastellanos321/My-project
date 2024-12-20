@@ -10,8 +10,9 @@ namespace Tablero
 
     public class SpawnMaze : MonoBehaviour
     {
-        public int width = 10;
-        public int height = 10; 
+        Laberinto laberinto = new Laberinto(51, 51);
+        int width = laberinto.matriz.GetLenght(1);
+         int height = 
         public int tileWidth = 64; 
         
 

@@ -2,33 +2,61 @@
 using System;
 using System.Collections.Generic;
 
-namespace Laberinto
+namespace Tablero
 {
-
-    public class Laberinto
+    public class Program
     {
-
         public static void Main(string[] args)
         {
-            int[,] matriz = IniciarMatriz(51, 51);
-            List<int[]> Backtrack = CrearLista();
-            int f = 1;
-            int c = 1;
-            matriz[f, c] = 1;
-            GenerandoCaminos(matriz, f, c, Backtrack);
-            ImprimirDebug(matriz);
+            Laberinto laberinto = new Laberinto(51, 51);
+            laberinto.IniciarMatriz();
+            List<int[]> Backtrack = Laberinto.CrearLista();
+            laberinto.GenerandoCaminos(Backtrack);
+            ImprimirDebug(laberinto.matriz);
         }
-
-
-
-
-        //de esta funcion sale una matriz con casillas camino(0) rodeadas de casillas pared(2) sin conexion entre los caminos
-        public static int[,] IniciarMatriz(int filas, int columnas)
-        // estos deben ser impares para que pueda haber una casilla centro del tablero
+        public static void ImprimirDebug(int[,] matriz)
         {
-            int[,] matriz = new int[filas, columnas];
+            int filas = matriz.GetLength(0);
+            int columnas = matriz.GetLength(1);
             int f = 0;
             int c = 0;
+            while (f < filas)
+            {
+                while (c < columnas)
+                {
+
+                    Console.Write(matriz[f, c] == 1 ? "  " : 22);
+
+                    c++;
+                }
+                c = 0;
+                f++;
+                Console.WriteLine();
+            }
+        }
+    }
+    public class Laberinto
+    {
+        public int[,] matriz;
+        public List<string> direcciones;
+        public int f;
+        public int c;
+      //constructor
+        public Laberinto(int filas, int columnas)
+        {
+            direcciones = new List<string> { "izquierda", "derecha", "arriba", "abajo" };
+            matriz = new int[filas, columnas];
+
+        }
+
+        //de esta funcion sale una matriz con casillas camino(0) rodeadas de casillas pared(2) sin conexion entre los caminos
+        public void IniciarMatriz()
+        // estos deben ser impares para que pueda haber una casilla centro del tablero
+        {
+            int filas = matriz.GetLength(0);
+            int columnas = matriz.GetLength(1);
+
+
             while (f < filas)
             {
                 while (c < columnas)
@@ -56,11 +84,14 @@ namespace Laberinto
                 f++;
                 c = 0;
             }
-            return matriz;
+            f = 1;
+            c = 1;
+            matriz[f, c] = 1;
+
         }
         // esta lista va a guardar todas las casillas por las que se paso        
 
-        private static List<int[]> CrearLista()
+        public static List<int[]> CrearLista()
         {
             List<int[]> Backtrack = new List<int[]>
             {
@@ -70,11 +101,10 @@ namespace Laberinto
 
         }
 
-
-        private static void GenerandoCaminos(int[,] matriz, int f, int c, List<int[]> Backtrack)
+        public void GenerandoCaminos(List<int[]> Backtrack)
         {
 
-            List<string> direcciones = new List<string> { "izquierda", "derecha", "arriba", "abajo" };
+
             System.Random random = new System.Random();
             System.Random random2 = new System.Random();
 
@@ -91,56 +121,44 @@ namespace Laberinto
 
                 if (direccion == "derecha")
                 {
-                    Console.WriteLine(direccion);
                     c++;
                     matriz[f, c] = 1;
                     c++;
                     matriz[f, c] = 1;
-
-                    ImprimirDebug(matriz);
-
                 }
 
 
                 else if (direccion == "izquierda")
                 {
-                    Console.WriteLine(direccion);
                     c--;
                     matriz[f, c] = 1;
                     c--;
                     matriz[f, c] = 1;
-                    ImprimirDebug(matriz);
-
                 }
 
 
                 else if (direccion == "abajo")
                 {
-                    Console.WriteLine(direccion);
                     f++;
                     matriz[f, c] = 1;
                     f++;
                     matriz[f, c] = 1;
-                    ImprimirDebug(matriz);
                 }
                 else if (direccion == "arriba")
                 {
-                    Console.WriteLine(direccion);
                     f--;
                     matriz[f, c] = 1;
                     f--;
                     matriz[f, c] = 1;
-
-                    ImprimirDebug(matriz);
                 }
 
                 if (3 == random2.Next(0, 5))
                 {
-                    Ramificar(matriz, direcciones, f, c, direccion);
+                    Ramificar(direccion);
                 }
 
 
-                GenerandoCaminos(matriz, f, c, Backtrack);
+                GenerandoCaminos(Backtrack);
 
             }
             //entra cuando no hubo ningun cambio, es decir, casillas vecinas a la posicion actual ocupadas
@@ -159,27 +177,18 @@ namespace Laberinto
                     List<string> vecinosVacios = EsValido(matriz, f, c);
                     if (f == 1 && c == 1)
                     {
-                        Console.WriteLine("f y c son 1");
                         break;
                     }
                     if (vecinosVacios.Count == 0)
                     {
-                        Console.WriteLine("no sirvio, cambio de s");
                         s--;
                         continue;
                     }
-
-                    Console.WriteLine("entre a backtrack");
-                    GenerandoCaminos(matriz, f, c, Backtrack);
+                    GenerandoCaminos(Backtrack);
                     break;
 
-
                 }
-
-
             }
-
-
         }
         //esta funcion revisa si se puede o si se sale de los limites del array
         public static List<string> EsValido(int[,] matriz, int f, int c)
@@ -192,53 +201,32 @@ namespace Laberinto
 
             if (c != columnas - 1 && matriz[f, c + 2] == 0)
             {
-
-                Console.WriteLine("derecha valida");
-
-
                 direccionesValidas.Add("derecha");
-
             }
-
 
 
             if (c != 1 && matriz[f, c - 2] == 0)
             {
-                Console.WriteLine("izquierda valida");
-
                 direccionesValidas.Add("izquierda");
-
             }
-
 
 
             if (f != filas - 1 && matriz[f + 2, c] == 0)
             {
-                Console.WriteLine("abajo valida");
-
-
                 direccionesValidas.Add("abajo");
-
             }
 
 
             if (f != 1 && matriz[f - 2, c] == 0)
             {
-                Console.WriteLine("arriba valida");
-
-
                 direccionesValidas.Add("arriba");
-
             }
-
-
-
 
             return direccionesValidas;
 
         }
         //funcion ramificar es para q el laberinto no quede tan recto
-        private static void Ramificar(int[,] matriz, List<string> direcciones, int f, int c, string no)
+        private void Ramificar(string no)
         {
             List<string> ramificarValidas = new List<string>();
             ramificarValidas.AddRange(direcciones);
@@ -255,38 +243,14 @@ namespace Laberinto
             {
                 matriz[f, c + 1] = 1;
             }
-            else if (ramificar == "arriba" && f + 1 != 0)
-            {
-                matriz[f + 1, c] = 1;
-            }
-            else if (ramificar == "abajo" && c + 1 != matriz.GetLength(0) - 1)
+            else if (ramificar == "arriba" && f - 1 != 0)
             {
                 matriz[f - 1, c] = 1;
             }
-        }
-
-        public static void ImprimirDebug(int[,] matriz)
-        {
-            int filas = matriz.GetLength(0);
-            int columnas = matriz.GetLength(1);
-            int f = 0;
-            int c = 0;
-            while (f < filas)
+            else if (ramificar == "abajo" && f + 1 != matriz.GetLength(0) - 1)
             {
-                while (c < columnas)
-                {
-
-                    Console.Write(matriz[f, c] == 1 ? "  " : 22);
-
-                    c++;
-                }
-                c = 0;
-                f++;
-                Console.WriteLine();
-
+                matriz[f + 1, c] = 1;
             }
-
-
         }
     }
 }
