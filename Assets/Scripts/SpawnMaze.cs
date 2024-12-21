@@ -23,7 +23,7 @@ namespace Tablero
        
         void Start()
         {
-            var laberinto = new Laberinto(51);
+            var laberinto = new Laberinto(7);
             Laberinto.ElLaberinto = laberinto; 
 
             width = laberinto.Lado();
@@ -34,11 +34,11 @@ namespace Tablero
 
         void GenerateBoard(Laberinto laberinto)
         {
-            for (int x = 0; x < width; x++)
+            for (int y = width - 1; y >= 0; y--)
             {
-                for (int y = 0; y < height; y++)
+                for (int x = 0; x < height; x++)
                 {
-                    SpawnTile(x * tileWidth, y * tileWidth, laberinto.Leer(x, y));
+                    SpawnTile(x * tileWidth, y * tileWidth, laberinto.Leer(width - y - 1, x));
                 }
             }
         }

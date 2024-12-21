@@ -44,11 +44,13 @@ namespace Player
         {
 
             Vector3 temp = transform.position;
-            transform.position = new Vector3(temp.x + 1, temp.y + 1, temp.z);
+            transform.position = new Vector3(temp.x, temp.y, temp.z);
+
+            // transform.position = new Vector3(1, 1, 0);
 
 
             targetPosition = transform.position;
-            f = 1;
+            f = 5;
             c = 1;
 
         }
@@ -64,25 +66,36 @@ namespace Player
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 if (Manager.MovimientoValido(laberinto, f - 1, c))
-                { Move(Vector3.up); }
+                {
+                    Move(Vector3.up);
+                    f--;
+                }
             }
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 if (Manager.MovimientoValido(laberinto, f + 1, c))
-                { Move(Vector3.down); }
+                {
+                    Move(Vector3.down);
+                    f++;
+                }
 
             }
 
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 if (Manager.MovimientoValido(laberinto, f, c - 1))
-                { Move(Vector3.left); }
+                {
+                    Move(Vector3.left);
+                    c--;
+                }
             }
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 if (Manager.MovimientoValido(laberinto, f, c + 1))
                 {
                     Move(Vector3.right);
+
+                    c++;
                 }
             }
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);

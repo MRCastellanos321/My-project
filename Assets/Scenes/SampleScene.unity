@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 417834355}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 64, y: 64, z: 0}
   m_LocalScale: {x: 64, y: 64, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -345,7 +345,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 1500
   field of view: 34
   orthographic: 1
   orthographic size: 150
@@ -408,8 +408,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f94f0baac144607d4a6288c16a35c64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 51
-  height: 51
+  width: 5
+  height: 5
   tileWidth: 64
   Camino: {fileID: 205840227425169667, guid: 6295d182144b7d697ac836de0d711df3, type: 3}
   Bloque2: {fileID: 968177210769485645, guid: b1312f46bc21fa19fa28d3d473cffb8b, type: 3}

@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using Unity.Properties;
 using UnityEngine.Rendering.Universal.Internal;
 
@@ -8,13 +9,13 @@ namespace Tablero
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            var laberinto = new Laberinto(51);
-            laberinto.Iniciar();
-            laberinto.ImprimirDebug();
-        }
-
+        /* public static void Main(string[] args)
+         {
+             var laberinto = new Laberinto(51);
+             laberinto.Iniciar();
+             laberinto.ImprimirDebug();
+         }
+ */
     }
     public class Laberinto
     {
@@ -43,7 +44,15 @@ namespace Tablero
 
         public int Leer(int x, int y)
         {
-            return matriz[x, y];
+            if (x <= matriz.GetLength(0) && x >= -1 && y <= matriz.GetLength(1) && y >= -1)
+            {
+                return matriz[x, y];
+            }
+
+            else
+            {
+                return 2;
+            }
         }
 
         public void Iniciar()
