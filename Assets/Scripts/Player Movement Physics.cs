@@ -1,3 +1,4 @@
+using Tablero;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -31,63 +32,74 @@ namespace Player
              transform.position = new Vector3(posCellX * 64, posCellY * 64, 0);*/
 
 
-        public int cellSize = 1; 
+        public int cellSize = 1;
         private Vector3 targetPosition;
 
         public Vector3 lastPosition;
+
+        private int f;
+        private int c;
 
         void Start()
         {
 
             Vector3 temp = transform.position;
-            transform.position = new Vector3(temp.x , temp.y, temp.z);
+            transform.position = new Vector3(temp.x + 1, temp.y + 1, temp.z);
 
-            
+
             targetPosition = transform.position;
+            f = 1;
+            c = 1;
 
         }
 
         void Update()
         {
-
+            var laberinto = Laberinto.ElLaberinto;
             lastPosition = transform.position;
 
 
 
-            
+            //empieza en 1,1
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                Move(Vector3.up);
+                if (Manager.MovimientoValido(laberinto, f - 1, c))
+                { Move(Vector3.up); }
             }
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                Move(Vector3.down);
+                if (Manager.MovimientoValido(laberinto, f + 1, c))
+                { Move(Vector3.down); }
 
             }
 
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                Move(Vector3.left);
+                if (Manager.MovimientoValido(laberinto, f, c - 1))
+                { Move(Vector3.left); }
             }
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                Move(Vector3.right);
+                if (Manager.MovimientoValido(laberinto, f, c + 1))
+                {
+                    Move(Vector3.right);
+                }
             }
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);
-           
 
 
 
-           
+
+
 
 
 
             void Move(Vector3 direction)
             {
-                
+
                 targetPosition += direction * cellSize;
             }
-           
+
         }
     }
 }

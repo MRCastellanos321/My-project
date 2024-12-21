@@ -408,10 +408,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f94f0baac144607d4a6288c16a35c64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 10
-  height: 10
+  width: 51
+  height: 51
   tileWidth: 64
   Camino: {fileID: 205840227425169667, guid: 6295d182144b7d697ac836de0d711df3, type: 3}
+  Bloque2: {fileID: 968177210769485645, guid: b1312f46bc21fa19fa28d3d473cffb8b, type: 3}
 --- !u!4 &915573193
 Transform:
   m_ObjectHideFlags: 0

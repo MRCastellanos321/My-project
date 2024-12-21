@@ -8,49 +8,55 @@ namespace Tablero
 
     // Use this for initialization
 
+    
+
     public class SpawnMaze : MonoBehaviour
     {
-        Laberinto laberinto = new Laberinto(51, 51);
-        int width = laberinto.matriz.GetLenght(1);
-         int height = 
+        
+       public int width;
+        public int height;
         public int tileWidth = 64; 
         
 
         public GameObject Camino; 
-
-        private int[,] board; 
-
+        public GameObject Bloque2;
+       
         void Start()
         {
-            board = new int[width, height];
-            GenerateBoard();
+            var laberinto = new Laberinto(51);
+            Laberinto.ElLaberinto = laberinto; 
+
+            width = laberinto.Lado();
+            height = laberinto.Lado();
+            laberinto.Iniciar();
+            GenerateBoard(laberinto);
         }
 
-        void GenerateBoard()
+        void GenerateBoard(Laberinto laberinto)
         {
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                   
-                    board[x, y] = UnityEngine.Random.Range(0, 4); //falta progrma esto segun el tile q quiera poner
-
-                    
-                    SpawnTile(x * tileWidth, y * tileWidth, board[x, y]);
+                    SpawnTile(x * tileWidth, y * tileWidth, laberinto.Leer(x, y));
                 }
             }
         }
         //esto genera el tile y lo pone donde va
         void SpawnTile(int x, int y, int tileType)
         {
-            
-            GameObject tile = Instantiate(Camino);
-           
+            GameObject tile;
+            if (tileType == 1)
+            {
+            tile = Instantiate(Camino);
+            }
+            else
+            {
+            tile = Instantiate(Bloque2);
+            }
             tile.transform.position = new Vector3(x, y, 0); 
             tile.name = "Tile " + x + "," + y; 
         }
-
-
 
 
         // Update is called once per frame
