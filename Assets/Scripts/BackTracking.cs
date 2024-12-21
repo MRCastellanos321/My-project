@@ -42,11 +42,11 @@ namespace Tablero
 
         }
 
-        public int Leer(int x, int y)
+        public int Leer(int f, int c)
         {
-            if (x <= matriz.GetLength(0) && x >= -1 && y <= matriz.GetLength(1) && y >= -1)
+            if (f <= matriz.GetLength(0) && f >= -1 && c <= matriz.GetLength(1) && c >= -1)
             {
-                return matriz[x, y];
+                return matriz[f, c];
             }
 
             else

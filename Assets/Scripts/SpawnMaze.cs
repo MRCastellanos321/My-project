@@ -34,11 +34,12 @@ namespace Tablero
 
         void GenerateBoard(Laberinto laberinto)
         {
-            for (int y = width - 1; y >= 0; y--)
+            for (int x = 0; x < width; x++)
             {
-                for (int x = 0; x < height; x++)
+                for (int y = height - 1; y >= 0; y--)
                 {
-                    SpawnTile(x * tileWidth, y * tileWidth, laberinto.Leer(width - y - 1, x));
+                    SpawnTile(x * tileWidth, y * tileWidth, laberinto.Leer(height - y - 1, x));
+                //la funcion lee primero fila y luego columna
                 }
             }
         }
@@ -55,7 +56,7 @@ namespace Tablero
             tile = Instantiate(Bloque2);
             }
             tile.transform.position = new Vector3(x, y, 0); 
-            tile.name = "Tile " + x + "," + y; 
+            tile.name = "Tile " + x/tileWidth + "," + y/tileWidth; 
         }
 
 
