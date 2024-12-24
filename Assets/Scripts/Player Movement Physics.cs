@@ -8,37 +8,16 @@ namespace Player
 
     public class PlayerMovement : MonoBehaviour
     {
+        public int playerIndex;
 
-        /* void Start()
-         {
-             transform.position = new Vector3(1, 1, 0);
-         }
+        public int cellSize = 64;
 
-         float posCellX = 0;
-         float posCellY = 0;
-
-         void Update()
-         {
-             float directionX = Input.GetAxis("Horizontal");
-             if (directionX == 0)
-             {
-
-
-
-             }
-             float directionY = Input.GetAxis("Vertical");
-             posCellX += directionX;
-             posCellY += directionY;
-             transform.position = new Vector3(posCellX * 64, posCellY * 64, 0);*/
-
-
-        public int cellSize = 1;
         private Vector3 targetPosition;
 
         public Vector3 lastPosition;
 
-        private int f;
-        private int c;
+        public int f;
+        public int c;
 
         void Start()
         {
@@ -50,60 +29,69 @@ namespace Player
 
 
             targetPosition = transform.position;
-            f = 5;
-            c = 1;
+            
+            Manager.TurnBegins();
 
         }
 
         void Update()
         {
             var laberinto = Laberinto.ElLaberinto;
-            lastPosition = transform.position;
 
-
-
-            //empieza en 1,1
-            if (Input.GetKeyDown(KeyCode.UpArrow))
+            if (Manager.currentPlayerIndex == playerIndex)
             {
-                if (Manager.MovimientoValido(laberinto, f - 1, c))
+
+                if (Manager.diceNumber > 0)
                 {
-                    Move(Vector3.up);
-                    f--;
+                    lastPosition = transform.position;
+                    //empieza en 1,1
+                    if (Input.GetKeyDown(KeyCode.UpArrow))
+                    {
+                        if (Manager.MovimientoValido(laberinto, f - 1, c))
+                        {
+                            Move(Vector3.up);
+                            f--;
+                            Manager.diceNumber--;
+                        }
+                    }
+                    if (Input.GetKeyDown(KeyCode.DownArrow))
+                    {
+                        if (Manager.MovimientoValido(laberinto, f + 1, c))
+                        {
+                            Move(Vector3.down);
+                            f++;
+                            Manager.diceNumber--;
+                        }
+
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.LeftArrow))
+                    {
+                        if (Manager.MovimientoValido(laberinto, f, c - 1))
+                        {
+                            Move(Vector3.left);
+                            c--;
+                            Manager.diceNumber--;
+                        }
+                    }
+                    if (Input.GetKeyDown(KeyCode.RightArrow))
+                    {
+                        if (Manager.MovimientoValido(laberinto, f, c + 1))
+                        {
+                            Move(Vector3.right);
+
+                            c++;
+                            Manager.diceNumber--;
+                        }
+                    }
+                    transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);
+
+                }
+                else
+                {
+                    Manager.TurnEnds();
                 }
             }
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                if (Manager.MovimientoValido(laberinto, f + 1, c))
-                {
-                    Move(Vector3.down);
-                    f++;
-                }
-
-            }
-
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                if (Manager.MovimientoValido(laberinto, f, c - 1))
-                {
-                    Move(Vector3.left);
-                    c--;
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                if (Manager.MovimientoValido(laberinto, f, c + 1))
-                {
-                    Move(Vector3.right);
-
-                    c++;
-                }
-            }
-            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);
-
-
-
-
-
 
 
 

@@ -23,7 +23,7 @@ namespace Tablero
        
         void Start()
         {
-            var laberinto = new Laberinto(7);
+            var laberinto = new Laberinto(51);
             Laberinto.ElLaberinto = laberinto; 
 
             width = laberinto.Lado();
