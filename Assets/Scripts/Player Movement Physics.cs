@@ -89,7 +89,10 @@ namespace Player
                 }
                 else
                 {
+                    if(Input.GetKeyDown(KeyCode.Space))
+                    {
                     Manager.TurnEnds();
+                    }
                 }
             }
 

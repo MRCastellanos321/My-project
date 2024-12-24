@@ -46,7 +46,7 @@ namespace Tablero
         public static void TurnBegins()
         {
             
-            diceNumber = dice.Next(1, 7);
+            diceNumber = dice.Next(6, 21);
             Debug.Log("puedes hacer" + diceNumber + "movimientos");
         }
 

@@ -60,6 +60,7 @@ namespace Tablero
             IniciarMatriz();
             List<int[]> Backtrack = CrearLista();
             GenerandoCaminos(Backtrack);
+            OpenCenter();
 
         }
         //de esta funcion sale una matriz con casillas camino(0) rodeadas de casillas pared(2) sin conexion entre los caminos
@@ -285,6 +286,19 @@ namespace Tablero
                 f++;
                 Console.WriteLine();
             }
+        }
+
+        public void OpenCenter()
+        {
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2] = 1;
+            matriz[matriz.GetLength(0) / 2 + 1, matriz.GetLength(1) / 2 + 1] = 1;
+            matriz[matriz.GetLength(0) / 2 - 1, matriz.GetLength(1) / 2 - 1] = 1;
+            matriz[matriz.GetLength(0) / 2 - 1, matriz.GetLength(1) / 2 + 1] = 1;
+            matriz[matriz.GetLength(0) / 2 + 1, matriz.GetLength(1) / 2 - 1] = 1;
+            matriz[matriz.GetLength(0) / 2 + 1, matriz.GetLength(1) / 2] = 1;
+            matriz[matriz.GetLength(0) / 2 - 1, matriz.GetLength(1) / 2] = 1;
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 1] = 1;
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 1] = 1;
         }
     }
 }
