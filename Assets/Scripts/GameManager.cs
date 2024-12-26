@@ -42,6 +42,9 @@ namespace Tablero
 
         private static Transform[] playersPosition = new Transform[4];
 
+        public static int[][] FilasColumnas = new int[4][];
+
+
         public GameObject selectedSkin;
 
         public GameObject Player1Sprite;
@@ -54,25 +57,15 @@ namespace Tablero
         {
             if (laberinto.Leer(f, c) == 1)
             {
-                Vector3 currentPosition = playersPosition[currentPlayerIndex - 1].position;
-                Vector3 newPosition = currentPosition + new Vector3(direccion.x * PlayerMovement.cellSize, direccion.y * PlayerMovement.cellSize, direccion.z);
-                // Vector3 newPosition = currentPosition + (direccion * PlayerMovement.cellSize);
-                for (int i = 0; i < playersPosition.Length; i++)
-                {
-
-                    Vector3 othersPosition = playersPosition[i].position;
-                    /* if (newPosition == othersPosition && currentPlayerIndex - 1 != i)
-                     {
-                         atackButtons[currentPlayerIndex - 1].gameObject.SetActive(true);
-                         return false;
-                     }
-                */
-                    if (Mathf.Approximately(newPosition.x, othersPosition.x) && Mathf.Approximately(newPosition.y, othersPosition.y) && currentPlayerIndex-1 != i)
+                
+                for (int i = 0; i < FilasColumnas.Length; i++)
+                  
+                    if (f == FilasColumnas[i][0] && c == FilasColumnas[i][1] && currentPlayerIndex - 1!= i)
                     {
-                        atackButtons[currentPlayerIndex - 1].gameObject.SetActive(true);
+                        
+
                         return false;
                     }
-                }
 
                 return true;
             }
@@ -116,6 +109,25 @@ namespace Tablero
                 atackButtons[i].gameObject.SetActive(false);
             }
 
+            int[] Player1FC = new int[2];
+            Player1FC[0] = 50 - (int)player1Position.position.y / PlayerMovement.cellSize;
+            Player1FC[1] = (int)player1Position.position.x / PlayerMovement.cellSize;
+            FilasColumnas[0] = Player1FC;
+
+            int[] Player2FC = new int[2];
+            Player2FC[0] = 50 - ((int)player2Position.position.y / PlayerMovement.cellSize);
+            Player2FC[1] = (int)player2Position.position.x / PlayerMovement.cellSize;
+            FilasColumnas[1] = Player2FC;
+
+            int[] Player3FC = new int[2];
+            Player3FC[0] = 50 - ((int)player3Position.position.y / PlayerMovement.cellSize);
+            Player3FC[1] = (int)player3Position.position.x / PlayerMovement.cellSize;
+            FilasColumnas[2] = Player3FC;
+
+            int[] Player4FC = new int[2];
+            Player4FC[0] = 50 - ((int)player4Position.position.y / PlayerMovement.cellSize);
+            Player4FC[1] = (int)player4Position.position.x / PlayerMovement.cellSize;
+            FilasColumnas[3] = Player4FC;
 
         }
 
@@ -133,7 +145,6 @@ namespace Tablero
         }
         public static void TurnBegins()
         {
-
             diceNumber = dice.Next(40, 41);
             Debug.Log("puedes hacer" + diceNumber + "movimientos");
         }
@@ -157,3 +168,30 @@ namespace Tablero
 
     }
 }
+/*
+  public static bool MovimientoValido(Laberinto laberinto, int f, int c, Vector3 direccion)
+        {
+            if (laberinto.Leer(f, c) == 1)
+            {
+                Vector3 currentPosition = playersPosition[currentPlayerIndex - 1].position;
+                Vector3 newPosition = currentPosition + new Vector3(direccion.x * PlayerMovement.cellSize, direccion.y * PlayerMovement.cellSize, direccion.z);
+                // Vector3 newPosition = currentPosition + (direccion * PlayerMovement.cellSize);
+                for (int i = 0; i < playersPosition.Length; i++)
+                {
+
+                    Vector3 othersPosition = playersPosition[i].position;
+                    /* if (newPosition == othersPosition && currentPlayerIndex - 1 != i)
+                     {
+                         atackButtons[currentPlayerIndex - 1].gameObject.SetActive(true);
+                         return false;
+                     }
+                
+                    if (Mathf.Approximately(newPosition.x, othersPosition.x) && Mathf.Approximately(newPosition.y, othersPosition.y) && currentPlayerIndex - 1 != i)
+                    {
+                        atackButtons[currentPlayerIndex - 1].gameObject.SetActive(true);
+                        return false;
+                    }
+                }
+
+                return true;
+            }*/
