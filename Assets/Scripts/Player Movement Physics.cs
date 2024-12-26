@@ -1,9 +1,10 @@
+using JetBrains.Annotations;
 using Tablero;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Player
+namespace Tablero
 {
 
     public class PlayerMovement : MonoBehaviour
@@ -19,6 +20,12 @@ namespace Player
         public int f;
         public int c;
 
+        public Transform PlayerA;
+
+        public Transform PlayerB;
+
+        public Transform PlayerC;
+
         void Start()
         {
 
@@ -29,7 +36,7 @@ namespace Player
 
 
             targetPosition = transform.position;
-            
+
             Manager.TurnBegins();
 
         }
@@ -37,6 +44,8 @@ namespace Player
         void Update()
         {
             var laberinto = Laberinto.ElLaberinto;
+
+
 
             if (Manager.currentPlayerIndex == playerIndex)
             {
@@ -85,26 +94,67 @@ namespace Player
                         }
                     }
                     transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);
+                    if (transform.position == PlayerA.position)
+                    {
+                        transform.position = lastPosition;
+                        Manager.diceNumber--;
+
+                    }
+                     if (transform.position == PlayerB.position)
+                    {
+                        transform.position = lastPosition;
+                        Manager.diceNumber--;
+
+                    }
+                     if (transform.position == PlayerC.position)
+                    {
+                        transform.position = lastPosition;
+                        Manager.diceNumber--;
+
+                    }
+                    
+
 
                 }
+
                 else
                 {
-                    if(Input.GetKeyDown(KeyCode.Space))
+                    if (Input.GetKeyDown(KeyCode.Space))
                     {
-                    Manager.TurnEnds();
+                        Manager.TurnEnds();
                     }
                 }
+
+
+            }
+
+            else if (transform.position == PlayerA.position)
+            {
+                //llamar a la funcion donde dice cuanto me ataca el player
+                //turnos sin participar = lo que retorne
+            }
+
+            else if (transform.position == PlayerB.position)
+            {
+                //llamar a la funcion donde dice cuanto me ataca el player
+                //turnos sin participar = lo que retorne
+            }
+            else if (transform.position == PlayerC.position)
+            {
+                //llamar a la funcion donde dice cuanto me ataca el player
+                //turnos sin participar = lo que retorne
             }
 
 
+           
 
-            void Move(Vector3 direction)
+        }
+
+         void Move(Vector3 direction)
             {
 
                 targetPosition += direction * cellSize;
             }
-
-        }
     }
 }
 

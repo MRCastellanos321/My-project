@@ -13,6 +13,14 @@ namespace Tablero
         public static int diceNumber;
         private static System.Random dice = new System.Random();
 
+        public GameObject player1;
+
+        public GameObject selectedSkin;
+
+        private Sprite player1Sprite;
+
+        public static int player1Type;
+
 
         public static bool MovimientoValido(Laberinto laberinto, int f, int c)
         {
@@ -41,11 +49,15 @@ namespace Tablero
                 cameras[i].gameObject.SetActive(i + 1 == currentPlayerIndex);
             }
 
+            player1Sprite = selectedSkin.GetComponent<SpriteRenderer>().sprite;
+            player1.GetComponent<SpriteRenderer>().sprite = player1Sprite;
+
+
         }
 
         public static void TurnBegins()
         {
-            
+
             diceNumber = dice.Next(6, 21);
             Debug.Log("puedes hacer" + diceNumber + "movimientos");
         }
