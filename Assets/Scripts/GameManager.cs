@@ -57,16 +57,18 @@ namespace Tablero
         {
             if (laberinto.Leer(f, c) == 1)
             {
-                
+
                 for (int i = 0; i < FilasColumnas.Length; i++)
-                  
-                    if (f == FilasColumnas[i][0] && c == FilasColumnas[i][1] && currentPlayerIndex - 1!= i)
+
+                    if (f == FilasColumnas[i][0] && c == FilasColumnas[i][1] && currentPlayerIndex - 1 != i)
                     {
-                        
+
+                        atackButtons[currentPlayerIndex - 1].gameObject.SetActive(true);
 
                         return false;
                     }
 
+                atackButtons[currentPlayerIndex - 1].gameObject.SetActive(false);
                 return true;
             }
 
@@ -135,12 +137,6 @@ namespace Tablero
         void Update()
         {
 
-            /*  for (int i = 0; i < playersPosition.Length; i++)
-                  if (playersPosition[currentPlayerIndex - 1] == playersPosition[i] && currentPlayerIndex - 1 != i)
-                  {
-                      playersPosition[currentPlayerIndex - 1].position = PlayerMovement.lastPosition;
-                      //Vector3.Lerp(playersPosition[currentPlayerIndex - 1].position, PlayerMovement.lastPosition, Time.deltaTime * 10f);
-                  }*/
 
         }
         public static void TurnBegins()

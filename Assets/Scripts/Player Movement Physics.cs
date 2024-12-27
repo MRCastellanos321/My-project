@@ -21,9 +21,8 @@ namespace Tablero
 
         private Vector3 original;
 
-
-
-
+        
+       
         private Transform[] playersPosition = new Transform[4];
 
         public Transform player1Position;
@@ -34,11 +33,7 @@ namespace Tablero
 
 
 
-        //  public Transform PlayerA;
 
-        // public Transform PlayerB;
-
-        // public Transform PlayerC;
 
         void Start()
         {
@@ -59,144 +54,105 @@ namespace Tablero
 
         void Update()
         {
+
+
+
             var laberinto = Laberinto.ElLaberinto;
-                Debug.Log(Manager.FilasColumnas[0][0] +"y" + Manager.FilasColumnas[0][1]);
-                Debug.Log(Manager.FilasColumnas[1][0] +"y" + Manager.FilasColumnas[1][1]);
-                Debug.Log(Manager.FilasColumnas[2][0] +"y" + Manager.FilasColumnas[2][1]);
-             Debug.Log(Manager.FilasColumnas[3][0] +"y" + Manager.FilasColumnas[3][1]);
+            Debug.Log(Manager.FilasColumnas[0][0] + "y" + Manager.FilasColumnas[0][1]);
+            Debug.Log(Manager.FilasColumnas[1][0] + "y" + Manager.FilasColumnas[1][1]);
+            Debug.Log(Manager.FilasColumnas[2][0] + "y" + Manager.FilasColumnas[2][1]);
+            Debug.Log(Manager.FilasColumnas[3][0] + "y" + Manager.FilasColumnas[3][1]);
+
+
+
+
 
             if (Manager.currentPlayerIndex == playerIndex)
             {
+
                 int f = Manager.FilasColumnas[Manager.currentPlayerIndex - 1][0];
                 int c = Manager.FilasColumnas[Manager.currentPlayerIndex - 1][1];
+
               
-                StartCoroutine(WaitAndExecute());
-                if (Manager.diceNumber > 0)
-                {
-                    
-                    if (Input.GetKeyDown(KeyCode.UpArrow))
+                    if (Manager.diceNumber > 0)
                     {
-                        if (Manager.MovimientoValido(laberinto, f - 1, c, Vector3.up))
+
+                        if (Input.GetKeyDown(KeyCode.UpArrow))
                         {
-                            Move(Vector3.up);
-                            f--;
-                            Manager.diceNumber--;
+                            if (Manager.MovimientoValido(laberinto, f - 1, c, Vector3.up))
+                            {
+                                FindTarget(Vector3.up);
+                                f--;
+                                Manager.diceNumber--;
+
+                            }
+                        }
+                        if (Input.GetKeyDown(KeyCode.DownArrow))
+                        {
+                            if (Manager.MovimientoValido(laberinto, f + 1, c, Vector3.down))
+                            {
+                                FindTarget(Vector3.down);
+                                f++;
+                                Manager.diceNumber--;
+                              
+                            }
 
                         }
-                    }
-                    if (Input.GetKeyDown(KeyCode.DownArrow))
-                    {
-                        if (Manager.MovimientoValido(laberinto, f + 1, c, Vector3.down))
-                        {
-                            Move(Vector3.down);
-                            f++;
-                            Manager.diceNumber--;
 
+                        if (Input.GetKeyDown(KeyCode.LeftArrow))
+                        {
+                            if (Manager.MovimientoValido(laberinto, f, c - 1, Vector3.left))
+                            {
+                                FindTarget(Vector3.left);
+                                c--;
+                                Manager.diceNumber--;
+                                
+
+                            }
+                        }
+                        if (Input.GetKeyDown(KeyCode.RightArrow))
+                        {
+                            if (Manager.MovimientoValido(laberinto, f, c + 1, Vector3.right))
+                            {
+                                FindTarget(Vector3.right);
+
+                                c++;
+                                Manager.diceNumber--;
+                                
+                            }
                         }
 
+                        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);//elapsedTime / moveDuration
+                       
+                        Manager.FilasColumnas[Manager.currentPlayerIndex - 1][0] = f;
+                        Manager.FilasColumnas[Manager.currentPlayerIndex - 1][1] = c;
+
                     }
 
-                    if (Input.GetKeyDown(KeyCode.LeftArrow))
-                    {
-                        if (Manager.MovimientoValido(laberinto, f, c - 1, Vector3.left))
-                        {
-                            Move(Vector3.left);
-                            c--;
-                            Manager.diceNumber--;
 
+                    else
+                    {
+                        transform.position = targetPosition; //pa que ni casualidad termine mal
+                        // RoundPosition();
+
+                        if (Input.GetKeyDown(KeyCode.Space))
+                        {
+
+                            Manager.TurnEnds();
                         }
                     }
-                    if (Input.GetKeyDown(KeyCode.RightArrow))
-                    {
-                        if (Manager.MovimientoValido(laberinto, f, c + 1, Vector3.right))
-                        {
-                            Move(Vector3.right);
-
-                            c++;
-                            Manager.diceNumber--;
-
-                        }
-                    }
-                    transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10);
-                    Manager.FilasColumnas[Manager.currentPlayerIndex - 1][0] = f;
-                    Manager.FilasColumnas[Manager.currentPlayerIndex - 1][1] = c;
 
 
 
                 }
 
-                /* for (int i = 0; i < playersPosition.Length; i++)
-                 {
-                     if (playersPosition[Manager.currentPlayerIndex - 1] == playersPosition[i] && Manager.currentPlayerIndex - 1 != i)
-                     {
-
-                         Vector3.Lerp(playersPosition[Manager.currentPlayerIndex - 1].position, lastPosition, Time.deltaTime * 10f);
-                     }
-                 }
-                 /* if (transform.position == PlayerA.position)
-                  {
-                      transform.position = lastPosition;
-                      Manager.diceNumber--;
-
-                  }
-                   if (transform.position == PlayerB.position)
-                  {
-                      transform.position = lastPosition;
-                      Manager.diceNumber--;
-
-                  }
-                   if (transform.position == PlayerC.position)
-                  {
-                      transform.position = lastPosition;
-                      Manager.diceNumber--;
-
-                  }*/
-
-
-
-
-                else
-                {
-                    RoundPosition();
-
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        //transform.position = ((transform.position.x - transform.position.x % cellSize) , transform.position.y, transform.position.z);
-
-                        Manager.TurnEnds();
-                    }
-                }
-
-
             }
-
-            IEnumerator WaitAndExecute()
-            {
-
-                yield return new WaitForSeconds(3f);
-            }
-
-            /* else if (transform.position == PlayerA.position)
-             {
-                 //llamar a la funcion donde dice cuanto me ataca el player
-                 //turnos sin participar = lo que retorne
-             }
-
-             else if (transform.position == PlayerB.position)
-             {
-                 //llamar a la funcion donde dice cuanto me ataca el player
-                 //turnos sin participar = lo que retorne
-             }
-             else if (transform.position == PlayerC.position)
-             {
-                 //llamar a la funcion donde dice cuanto me ataca el player
-                 //turnos sin participar = lo que retorne
-             }
-
- */
+        
 
 
-        }
+
+
+
 
 
         void RoundPosition()
@@ -207,11 +163,28 @@ namespace Tablero
             transform.position = original;
         }
 
-        void Move(Vector3 direction)
+        void FindTarget(Vector3 direction)
         {
 
             targetPosition += direction * cellSize;
+
         }
+        /* IEnumerator MoveToPosition(Vector3 targetPosition)
+         {
+             onMovement = true;
+             float elapsedTime = 0f;
+             while (elapsedTime < moveDuration)
+             {
+                 transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f );//elapsedTime / moveDuration
+                 elapsedTime += Time.deltaTime;
+                 yield return null;
+                 //espera al frame que viene
+             }
+             transform.position = targetPosition; //pa que ni casualidad termine mal
+
+             onMovement = false;
+         }*/
+
     }
 }
 
