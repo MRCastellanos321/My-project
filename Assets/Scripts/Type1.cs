@@ -1,13 +1,10 @@
 using UnityEngine;
 namespace Tablero
 {
-    public class NewMonoBehaviourScript : MonoBehaviour
+    public class Type1 : MonoBehaviour
     {
-        private int atack = 2;
+        public int attack = 2;
         public int turnsPassed = 0;
-        
-
-
 
     }
 }

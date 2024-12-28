@@ -16,39 +16,53 @@ namespace Tablero
         public static int diceNumber;
         private static System.Random dice = new System.Random();
 
+        //los game object player y su posicion
         public GameObject player1;
-
         public Transform player1Position;
 
         public GameObject player2;
-
         public Transform player2Position;
 
         public GameObject player3;
-
         public Transform player3Position;
 
         public GameObject player4;
         public Transform player4Position;
 
-        public Button atackButton1;
+        public Button attackButton1;
 
-        public Button atackButton2;
+        public Button attackButton2;
 
-        public Button atackButton3;
-        public Button atackButton4;
+        public Button attackButton3;
+        public Button attackButton4;
 
-        public static Button[] atackButtons = new Button[4];
+        public static Button[] attackButtons = new Button[4];
 
         private static Transform[] playersPosition = new Transform[4];
 
         public static int[][] FilasColumnas = new int[4][];
 
-
-        public GameObject selectedSkin;
-
+        // estos son para inicializar los player prefab con la skin seleccionada en el menu
+        public GameObject selectedSkin1;
         public GameObject Player1Sprite;
         private Sprite player1Sprite;
+
+
+        public GameObject selectedSkin2;
+        public GameObject Player2Sprite;
+        private Sprite player2Sprite;
+
+
+        public GameObject selectedSkin3;
+        public GameObject Player3Sprite;
+        private Sprite player3Sprite;
+
+
+        public GameObject selectedSkin4;
+
+        public GameObject Player4Sprite;
+        private Sprite player4Sprite;
+
 
         public static int player1Type;
 
@@ -63,12 +77,12 @@ namespace Tablero
                     if (f == FilasColumnas[i][0] && c == FilasColumnas[i][1] && currentPlayerIndex - 1 != i)
                     {
 
-                        atackButtons[currentPlayerIndex - 1].gameObject.SetActive(true);
+                        attackButtons[currentPlayerIndex - 1].gameObject.SetActive(true);
 
                         return false;
                     }
 
-                atackButtons[currentPlayerIndex - 1].gameObject.SetActive(false);
+                attackButtons[currentPlayerIndex - 1].gameObject.SetActive(false);
                 return true;
             }
 
@@ -82,6 +96,24 @@ namespace Tablero
 
         void Start()
         {
+
+            //Busca la imagen seleccionada que guardamos en los prefab selected skin y los guarda en el prefab de cada player
+            player1Sprite = selectedSkin1.GetComponent<SpriteRenderer>().sprite;
+            Player1Sprite.GetComponent<SpriteRenderer>().sprite = player1Sprite;
+
+
+            player2Sprite = selectedSkin2.GetComponent<SpriteRenderer>().sprite;
+            Player2Sprite.GetComponent<SpriteRenderer>().sprite = player2Sprite;
+
+            player3Sprite = selectedSkin3.GetComponent<SpriteRenderer>().sprite;
+            Player3Sprite.GetComponent<SpriteRenderer>().sprite = player3Sprite;
+
+
+            player4Sprite = selectedSkin4.GetComponent<SpriteRenderer>().sprite;
+            Player4Sprite.GetComponent<SpriteRenderer>().sprite = player4Sprite;
+
+
+
             cameras = new Camera[4];
 
             cameras[0] = GameObject.Find("camera1").GetComponent<Camera>();
@@ -93,24 +125,25 @@ namespace Tablero
                 cameras[i].gameObject.SetActive(i + 1 == currentPlayerIndex);
             }
 
-            player1Sprite = selectedSkin.GetComponent<SpriteRenderer>().sprite;
-            Player1Sprite.GetComponent<SpriteRenderer>().sprite = player1Sprite;
 
             playersPosition[0] = player1Position;
             playersPosition[1] = player2Position;
             playersPosition[2] = player3Position;
             playersPosition[3] = player4Position;
 
-            atackButtons[0] = atackButton1;
-            atackButtons[1] = atackButton2;
-            atackButtons[2] = atackButton3;
-            atackButtons[3] = atackButton4;
+            attackButtons[0] = attackButton1;
+            attackButtons[1] = attackButton2;
+            attackButtons[2] = attackButton3;
+            attackButtons[3] = attackButton4;
 
-            for (int i = 0; i < atackButtons.Length; i++)
+            for (int i = 0; i < attackButtons.Length; i++)
             {
-                atackButtons[i].gameObject.SetActive(false);
+                attackButtons[i].gameObject.SetActive(false);
             }
 
+
+
+            //esto inicializa las f y las c segund la posicion en cooredenadas del player
             int[] Player1FC = new int[2];
             Player1FC[0] = 50 - (int)player1Position.position.y / PlayerMovement.cellSize;
             Player1FC[1] = (int)player1Position.position.x / PlayerMovement.cellSize;

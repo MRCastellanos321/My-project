@@ -129,10 +129,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5881219235859042051, guid: 76c43536654c9f01e94d2c7269d6f0cd, type: 3}
   m_PrefabInstance: {fileID: 7747105607452869642}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &159246115 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2059321778233807273, guid: f7d3e4c26e1b6ad2b878417b7b5daa42, type: 3}
+  m_PrefabInstance: {fileID: 4497279861657080293}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &259977237 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1533585769234561632, guid: c5c40651c57f434148098fe67f7e8fa2, type: 3}
   m_PrefabInstance: {fileID: 5775478082726828202}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &279558846 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5813176738979981, guid: 4d67b83847a033b3d9c32382111fc6fe, type: 3}
+  m_PrefabInstance: {fileID: 2774203700121408907}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &312910186 stripped
 MonoBehaviour:
@@ -442,7 +452,7 @@ GameObject:
   - component: {fileID: 840353945}
   - component: {fileID: 840353944}
   m_Layer: 5
-  m_Name: Atack2
+  m_Name: Attack2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -636,12 +646,18 @@ MonoBehaviour:
   player3Position: {fileID: 1372388339}
   player4: {fileID: 1874413358}
   player4Position: {fileID: 1347486040}
-  atackButton1: {fileID: 1574689133}
-  atackButton2: {fileID: 840353944}
-  atackButton3: {fileID: 1203463250}
-  atackButton4: {fileID: 1035292789}
-  selectedSkin: {fileID: 3607574088253721971, guid: 7ced7fe670af8e980afc2f45d3496262, type: 3}
+  attackButton1: {fileID: 1574689133}
+  attackButton2: {fileID: 840353944}
+  attackButton3: {fileID: 1203463250}
+  attackButton4: {fileID: 1035292789}
+  selectedSkin1: {fileID: 3177161676800272479, guid: 768970acc00b186f6bbb905febc035a3, type: 3}
   Player1Sprite: {fileID: 2045608566}
+  selectedSkin2: {fileID: 5316863715427208192, guid: 7d42121cfda165e44997520d967460ce, type: 3}
+  Player2Sprite: {fileID: 159246115}
+  selectedSkin3: {fileID: 421084880854658990, guid: 3a08c985192a1215c9c50bda55b22cc3, type: 3}
+  Player3Sprite: {fileID: 1421062908}
+  selectedSkin4: {fileID: 1430462680185820522, guid: 641d5ca97044c40c2a8ef82e003dd771, type: 3}
+  Player4Sprite: {fileID: 279558846}
 --- !u!4 &983695910
 Transform:
   m_ObjectHideFlags: 0
@@ -806,7 +822,7 @@ GameObject:
   - component: {fileID: 1035292790}
   - component: {fileID: 1035292789}
   m_Layer: 5
-  m_Name: Atack4
+  m_Name: Attack4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -932,7 +948,7 @@ GameObject:
   - component: {fileID: 1203463251}
   - component: {fileID: 1203463250}
   m_Layer: 5
-  m_Name: Atack3
+  m_Name: Attack3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1105,6 +1121,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1421062908 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5322761227648659065, guid: 76c43536654c9f01e94d2c7269d6f0cd, type: 3}
+  m_PrefabInstance: {fileID: 7747105607452869642}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1451341443
 GameObject:
   m_ObjectHideFlags: 0
@@ -1264,7 +1285,7 @@ GameObject:
   - component: {fileID: 1574689134}
   - component: {fileID: 1574689133}
   m_Layer: 5
-  m_Name: Atack1
+  m_Name: Attack1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
