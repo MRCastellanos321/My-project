@@ -58,15 +58,11 @@ namespace Tablero
 
 
             var laberinto = Laberinto.ElLaberinto;
-            Debug.Log(Manager.FilasColumnas[0][0] + "y" + Manager.FilasColumnas[0][1]);
-            Debug.Log(Manager.FilasColumnas[1][0] + "y" + Manager.FilasColumnas[1][1]);
-            Debug.Log(Manager.FilasColumnas[2][0] + "y" + Manager.FilasColumnas[2][1]);
-            Debug.Log(Manager.FilasColumnas[3][0] + "y" + Manager.FilasColumnas[3][1]);
+          
 
 
 
-
-
+            
             if (Manager.currentPlayerIndex == playerIndex)
             {
 

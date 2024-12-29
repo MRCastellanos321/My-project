@@ -282,11 +282,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &361593317 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2113567068939239361, guid: 4d67b83847a033b3d9c32382111fc6fe, type: 3}
-  m_PrefabInstance: {fileID: 2774203700121408907}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &545977434
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,7 +516,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 840353945}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 983695909}
+        m_TargetAssemblyTypeName: Tablero.Manager, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &840353945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -891,7 +898,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1035292790}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 983695909}
+        m_TargetAssemblyTypeName: Tablero.Manager, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1035292790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1017,7 +1036,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1203463251}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 983695909}
+        m_TargetAssemblyTypeName: Tablero.Manager, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1203463251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1355,13 +1386,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 983695908}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 983695909}
+        m_TargetAssemblyTypeName: Tablero.Manager, Assembly-CSharp
+        m_MethodName: Attack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1607,7 +1638,7 @@ PrefabInstance:
     - target: {fileID: 1221298786999518691, guid: 4d67b83847a033b3d9c32382111fc6fe, type: 3}
       propertyPath: player4Position
       value: 
-      objectReference: {fileID: 361593317}
+      objectReference: {fileID: 1347486040}
     - target: {fileID: 2166446012588544737, guid: 4d67b83847a033b3d9c32382111fc6fe, type: 3}
       propertyPath: m_Name
       value: Player 4
@@ -1858,6 +1889,22 @@ PrefabInstance:
       objectReference: {fileID: 1508363334}
     - target: {fileID: 3296120590387598357, guid: 76c43536654c9f01e94d2c7269d6f0cd, type: 3}
       propertyPath: PlayerC
+      value: 
+      objectReference: {fileID: 1347486040}
+    - target: {fileID: 3296120590387598357, guid: 76c43536654c9f01e94d2c7269d6f0cd, type: 3}
+      propertyPath: player1Position
+      value: 
+      objectReference: {fileID: 2141533012}
+    - target: {fileID: 3296120590387598357, guid: 76c43536654c9f01e94d2c7269d6f0cd, type: 3}
+      propertyPath: player2Position
+      value: 
+      objectReference: {fileID: 1508363334}
+    - target: {fileID: 3296120590387598357, guid: 76c43536654c9f01e94d2c7269d6f0cd, type: 3}
+      propertyPath: player3Position
+      value: 
+      objectReference: {fileID: 1372388339}
+    - target: {fileID: 3296120590387598357, guid: 76c43536654c9f01e94d2c7269d6f0cd, type: 3}
+      propertyPath: player4Position
       value: 
       objectReference: {fileID: 1347486040}
     - target: {fileID: 5881219235859042051, guid: 76c43536654c9f01e94d2c7269d6f0cd, type: 3}

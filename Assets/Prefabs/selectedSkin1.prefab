@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2420270732590458499}
   - component: {fileID: 7822286929130716570}
-  - component: {fileID: -8668046587521335585}
   m_Layer: 0
   m_Name: selectedSkin1
   m_TagString: Untagged
@@ -77,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 9100893146494740960, guid: d0b708599b3c32c6199c4522842e65e5, type: 3}
+  m_Sprite: {fileID: 1571779149083167574, guid: 0f5b9ea793b909705aa17c359decabc5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -88,17 +87,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-8668046587521335585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3177161676800272479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21f4e1d53c073920baa786d5d21ca8ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attack: 2
-  turnsPassed: 0

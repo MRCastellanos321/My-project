@@ -2619,10 +2619,10 @@ MonoBehaviour:
   skins4:
   - {fileID: 1571779149083167574, guid: 0f5b9ea793b909705aa17c359decabc5, type: 3}
   - {fileID: 9100893146494740960, guid: d0b708599b3c32c6199c4522842e65e5, type: 3}
-  player1Skin: {fileID: 1468846957}
-  player2Skin: {fileID: 1985296979}
-  player3Skin: {fileID: 1730155360}
-  player4Skin: {fileID: 1968579427}
+  player1Type: {fileID: 1468846957}
+  player2Type: {fileID: 1985296979}
+  player3Type: {fileID: 1730155360}
+  player4Type: {fileID: 1968579427}
 --- !u!1 &895024363
 GameObject:
   m_ObjectHideFlags: 0
@@ -2759,6 +2759,78 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 895024363}
   m_CullTransparentMesh: 1
+--- !u!1 &901371064
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 901371068}
+  - component: {fileID: 901371067}
+  - component: {fileID: 901371066}
+  - component: {fileID: 901371065}
+  m_Layer: 0
+  m_Name: ScriptStorage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &901371065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901371064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7b051e525e806adb9582aac4e965547, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &901371066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901371064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f85bea7c5b0eca592b64b7f703a0af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &901371067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901371064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21f4e1d53c073920baa786d5d21ca8ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack: 2
+  turnsPassed: 0
+--- !u!4 &901371068
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901371064}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 185.99478, y: 278.61646, z: -1.6361797}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1332287571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4257,7 +4329,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: selectedSkin1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -4274,3 +4347,4 @@ SceneRoots:
   - {fileID: 63896182}
   - {fileID: 1332287571}
   - {fileID: 1592648000}
+  - {fileID: 901371068}
