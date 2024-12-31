@@ -3,20 +3,12 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.Properties;
+using Unity.VisualScripting;
 using UnityEngine.Rendering.Universal.Internal;
 
 namespace Tablero
 {
-    public class Program
-    {
-        /* public static void Main(string[] args)
-         {
-             var laberinto = new Laberinto(51);
-             laberinto.Iniciar();
-             laberinto.ImprimirDebug();
-         }
- */
-    }
+
     public class Laberinto
     {
         private int[,] matriz;
@@ -44,7 +36,7 @@ namespace Tablero
 
         public int Leer(int f, int c)
         {
-            if (f <= matriz.GetLength(0) && f >= -1 && c <= matriz.GetLength(1) && c >= -1)
+            if (f < matriz.GetLength(0) && f > -1 && c < matriz.GetLength(1) && c > -1)
             {
                 return matriz[f, c];
             }
@@ -61,12 +53,14 @@ namespace Tablero
             List<int[]> Backtrack = CrearLista();
             GenerandoCaminos(Backtrack);
             OpenCenter();
-
+            SpawnTrap1();
+            SpawnTrap2();
         }
         //de esta funcion sale una matriz con casillas camino(0) rodeadas de casillas pared(2) sin conexion entre los caminos
         private void IniciarMatriz()
-        // estos deben ser impares para que pueda haber una casilla centro del tablero
+
         {
+            // estos deben ser impares para que pueda haber una casilla centro del tablero y se pueda comenzar por columna piedra y terminar columna piedra
             int filas = matriz.GetLength(0);
             int columnas = matriz.GetLength(1);
 
@@ -264,6 +258,45 @@ namespace Tablero
             else if (ramificar == "abajo" && f + 1 != matriz.GetLength(0) - 1)
             {
                 matriz[f + 1, c] = 1;
+            }
+        }
+
+        private void SpawnTrap1()
+        {
+            System.Random random3 = new Random();
+            int i = 0;
+            while (i < 10)
+            {
+                int trapF = random3.Next(0, matriz.GetLength(0));
+                int trapC = random3.Next(0, matriz.GetLength(1));
+                if (matriz[trapF, trapC] == 1 && (trapF != 25 || trapC != 25))
+                {
+                    matriz[trapF, trapC] = 3;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+        private void SpawnTrap2()
+        {
+            System.Random random4 = new Random();
+            int i = 0;
+            while (i < 10)
+            {
+                int trapF = random4.Next(0, matriz.GetLength(0));
+                int trapC = random4.Next(0, matriz.GetLength(1));
+                if (matriz[trapF, trapC] == 1 && (trapF != 25 || trapC != 25))
+                {
+                    matriz[trapF, trapC] = 4;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
             }
         }
 

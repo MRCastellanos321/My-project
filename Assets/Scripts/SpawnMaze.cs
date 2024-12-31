@@ -8,23 +8,23 @@ namespace Tablero
 
     // Use this for initialization
 
-    
+
 
     public class SpawnMaze : MonoBehaviour
     {
-        
-       public int width;
-        public int height;
-        public int tileWidth = 64; 
-        
 
-        public GameObject Camino; 
+        public int width;
+        public int height;
+        public int tileWidth = 64;
+
+
+        public GameObject Camino;
         public GameObject Bloque2;
-       
+
         void Start()
         {
             var laberinto = new Laberinto(51);
-            Laberinto.ElLaberinto = laberinto; 
+            Laberinto.ElLaberinto = laberinto;
 
             width = laberinto.Lado();
             height = laberinto.Lado();
@@ -39,7 +39,7 @@ namespace Tablero
                 for (int y = height - 1; y >= 0; y--)
                 {
                     SpawnTile(x * tileWidth, y * tileWidth, laberinto.Leer(height - y - 1, x));
-                //la funcion lee primero fila y luego columna
+                    //la funcion lee primero fila y luego columna
                 }
             }
         }
@@ -47,16 +47,17 @@ namespace Tablero
         void SpawnTile(int x, int y, int tileType)
         {
             GameObject tile;
-            if (tileType == 1)
+            if (tileType == 2)
             {
-            tile = Instantiate(Camino);
+                tile = Instantiate(Bloque2);
             }
             else
             {
-            tile = Instantiate(Bloque2);
+                tile = Instantiate(Camino);
             }
-            tile.transform.position = new Vector3(x, y, 0); 
-            tile.name = "Tile " + x/tileWidth + "," + y/tileWidth; 
+
+            tile.transform.position = new Vector3(x, y, 0);
+            tile.name = "Tile " + x / tileWidth + "," + y / tileWidth;
         }
 
 
@@ -69,4 +70,3 @@ namespace Tablero
     }
 }
 
-   

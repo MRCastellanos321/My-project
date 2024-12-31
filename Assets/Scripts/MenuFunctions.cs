@@ -48,7 +48,7 @@ public class MenuFunctions : MonoBehaviour
   public static int selectedType4;
 
 
-
+  public GameObject UnvalidSelectionText;
   public void NextButton1()
   {
     selectedType1++;
@@ -149,13 +149,20 @@ public class MenuFunctions : MonoBehaviour
 
   public void StartButton()
   {
+    if (selectedType1 == selectedType2 || selectedType2 == selectedType3 || selectedType1 == selectedType3 || selectedType1 == selectedType4 || selectedType4 == selectedType2 || selectedType4 == selectedType3)
+    {
+      UnvalidSelectionText.SetActive(true);
+    }
+    else
+    {
+      UnvalidSelectionText.SetActive(false);
+      PrefabUtility.SaveAsPrefabAsset(player1Type, "Assets/Prefabs/selectedSkin1.prefab");
+      PrefabUtility.SaveAsPrefabAsset(player2Type, "Assets/Prefabs/selectedSkin2.prefab");
+      PrefabUtility.SaveAsPrefabAsset(player3Type, "Assets/Prefabs/selectedSkin3.prefab");
+      PrefabUtility.SaveAsPrefabAsset(player4Type, "Assets/Prefabs/selectedSkin4.prefab");
 
-    PrefabUtility.SaveAsPrefabAsset(player1Type, "Assets/Prefabs/selectedSkin1.prefab");
-    PrefabUtility.SaveAsPrefabAsset(player2Type, "Assets/Prefabs/selectedSkin2.prefab");
-    PrefabUtility.SaveAsPrefabAsset(player3Type, "Assets/Prefabs/selectedSkin3.prefab");
-    PrefabUtility.SaveAsPrefabAsset(player4Type, "Assets/Prefabs/selectedSkin4.prefab");
-
-    SceneManager.LoadScene("SampleScene");
+      SceneManager.LoadScene("SampleScene");
+    }
 
     /*if (selectedType1 == 0)
     {

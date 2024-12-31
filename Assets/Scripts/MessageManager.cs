@@ -15,6 +15,15 @@ namespace Tablero
         public TextMeshProUGUI text3;
 
         public TextMeshProUGUI text4;
+        private static TextMeshProUGUI[] changeTurnTexts;
+
+
+        public TextMeshProUGUI validAtackText1;
+        public TextMeshProUGUI validAtackText2;
+        public TextMeshProUGUI validAtackText3;
+        public TextMeshProUGUI validAtackText4;
+
+        private static TextMeshProUGUI[] validAttacks;
 
         void Start()
         {
@@ -25,25 +34,36 @@ namespace Tablero
             // textObject[2] = GameObject.Find("Text3").GetComponent<TextMeshProUGUI>();
             // textObject[3] = GameObject.Find("Text4").GetComponent<TextMeshProUGUI>();
 
+            changeTurnTexts = new TextMeshProUGUI[4];
+            changeTurnTexts[0] = text1;
+            changeTurnTexts[1] = text2;
+            changeTurnTexts[2] = text3;
+            changeTurnTexts[3] = text4;
+
+
+
 
             MessageShowing(false, 1);
             MessageShowing(false, 2);
             MessageShowing(false, 3);
             MessageShowing(false, 4);
+
+            validAttacks = new TextMeshProUGUI[4];
+
+            validAttacks[0] = validAtackText1;
+            validAttacks[1] = validAtackText2;
+            validAttacks[2] = validAtackText3;
+            validAttacks[3] = validAtackText4;
+
         }
 
-        public void MessageShowing(bool show, int currentPlayerIndex)
+        public static void MessageShowing(bool show, int currentPlayerIndex)
+
         {
-            text1.gameObject.SetActive(show);
-
-
-            text2.gameObject.SetActive(show);
-
-
-            text3.gameObject.SetActive(show);
-
-
-            text4.gameObject.SetActive(show);
+            for (int i = 0; i < changeTurnTexts.Length; i++)
+            {
+                changeTurnTexts[i].gameObject.SetActive(show);
+            }
             /* if (currentPlayerIndex == 1)
              {
                  text1.gameObject.SetActive(show);
@@ -64,27 +84,33 @@ namespace Tablero
         }
 
 
-        public void ChangeMessage(string message, int currentPlayerIndex)
+        public static void ChangeMessage(string message, int currentPlayerIndex)
         {
             MessageShowing(true, currentPlayerIndex);
 
             if (currentPlayerIndex == 1)
             {
-                text1.text = message;
+                changeTurnTexts[0].text = message;
             }
             else if (currentPlayerIndex == 2)
             {
-                text2.text = message;
+                changeTurnTexts[1].text = message;
             }
             else if (currentPlayerIndex == 3)
             {
-                text3.text = message;
+                changeTurnTexts[2].text = message;
             }
             else if (currentPlayerIndex == 4)
             {
-                text4.text = message;
+                changeTurnTexts[3].text = message;
             }
 
+        }
+
+        public static void AttackMessage(bool show, string message)
+        {
+            validAttacks[Manager.currentPlayerIndex - 1].text = message;
+            validAttacks[Manager.currentPlayerIndex - 1].gameObject.SetActive(show);
         }
 
 
