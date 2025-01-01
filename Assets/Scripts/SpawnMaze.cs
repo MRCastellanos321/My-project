@@ -4,12 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Tablero
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-    // Use this for initialization
-
-
-
     public class SpawnMaze : MonoBehaviour
     {
 
@@ -58,13 +52,6 @@ namespace Tablero
 
             tile.transform.position = new Vector3(x, y, 0);
             tile.name = "Tile " + x / tileWidth + "," + y / tileWidth;
-        }
-
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
 
     }

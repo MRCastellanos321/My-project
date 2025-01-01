@@ -19,7 +19,7 @@ public class MenuFunctions : MonoBehaviour
   public SpriteRenderer sr3;
   public SpriteRenderer sr4;
 
-  //Lista de todos los posibles sprite
+  //Lista de todos los posibles sprite, temporalmente son cuatro listas pq aun no me decido si los jugadores pueden ser igyaes con cuatro colores distintos o algo asi
   public List<Sprite> skins1 = new List<Sprite>();
   public List<Sprite> skins2 = new List<Sprite>();
 

@@ -10,5 +10,7 @@ namespace Tablero
 
         public static int attackCoolDown;
 
+        public static int collectedShards;
+
     }
 }

@@ -107,102 +107,22 @@ namespace Tablero
 
         void Start()
         {
-
-            NewGameButtons = new GameObject[4] { NewGameButton1, NewGameButton2, NewGameButton3, NewGameButton4 };
-            for (int i = 0; i < NewGameButtons.Length; i++)
-            {
-                NewGameButtons[i].SetActive(false);
-            }
-
-            VictoryMessages = new TextMeshProUGUI[4] { Victory1, Victory2, Victory3, Victory4 };
-            for (int i = 0; i < VictoryMessages.Length; i++)
-            {
-               VictoryMessages[i].gameObject.SetActive(false);
-            }
-
-            TrapMessages = new TextMeshProUGUI[4] { Trap1, Trap2, Trap3, Trap4 };
-            for (int i = 0; i < TrapMessages.Length; i++)
-            {
-              TrapMessages[i].gameObject.SetActive(false);
-            }
-
-
-            MazeCenter = new int[2] { 25, 25 };
-
-            Debug.Log(MazeCenter[0] + "y" + MazeCenter[1]);
-
-            //Busca la imagen seleccionada que guardamos en los prefab selected skin y los guarda en la instancia de cada player
-            player1Sprite = selectedSkin1.GetComponent<SpriteRenderer>().sprite;
-            Player1Sprite.GetComponent<SpriteRenderer>().sprite = player1Sprite;
-
-
-            player2Sprite = selectedSkin2.GetComponent<SpriteRenderer>().sprite;
-            Player2Sprite.GetComponent<SpriteRenderer>().sprite = player2Sprite;
-
-            player3Sprite = selectedSkin3.GetComponent<SpriteRenderer>().sprite;
-            Player3Sprite.GetComponent<SpriteRenderer>().sprite = player3Sprite;
-
-
-            player4Sprite = selectedSkin4.GetComponent<SpriteRenderer>().sprite;
-            Player4Sprite.GetComponent<SpriteRenderer>().sprite = player4Sprite;
-
-
-
-
-            cameras = new Camera[4];
-
-            cameras[0] = GameObject.Find("camera1").GetComponent<Camera>();
-            cameras[1] = GameObject.Find("camera2").GetComponent<Camera>();
-            cameras[2] = GameObject.Find("camera3").GetComponent<Camera>();
-            cameras[3] = GameObject.Find("camera4").GetComponent<Camera>();
-            for (int i = 0; i < cameras.Length; i++)
-            {
-                cameras[i].gameObject.SetActive(i + 1 == currentPlayerIndex);
-            }
-
-            attackButtons[0] = attackButton1;
-            attackButtons[1] = attackButton2;
-            attackButtons[2] = attackButton3;
-            attackButtons[3] = attackButton4;
-
-            for (int i = 0; i < attackButtons.Length; i++)
-            {
-                attackButtons[i].gameObject.SetActive(false);
-            }
-
-
-
-            playersPosition[0] = player1Position;
-            playersPosition[1] = player2Position;
-            playersPosition[2] = player3Position;
-            playersPosition[3] = player4Position;
-
-            //esto inicializa las f y las c segund la posicion en coordenadas del player
-            int[] Player1FC = new int[2];
-            Player1FC[0] = 50 - (int)player1Position.position.y / PlayerMovement.cellSize;
-            Player1FC[1] = (int)player1Position.position.x / PlayerMovement.cellSize;
-            FilasColumnas[0] = Player1FC;
-
-            int[] Player2FC = new int[2];
-            Player2FC[0] = 50 - ((int)player2Position.position.y / PlayerMovement.cellSize);
-            Player2FC[1] = (int)player2Position.position.x / PlayerMovement.cellSize;
-            FilasColumnas[1] = Player2FC;
-
-            int[] Player3FC = new int[2];
-            Player3FC[0] = 50 - ((int)player3Position.position.y / PlayerMovement.cellSize);
-            Player3FC[1] = (int)player3Position.position.x / PlayerMovement.cellSize;
-            FilasColumnas[2] = Player3FC;
-
-            int[] Player4FC = new int[2];
-            Player4FC[0] = 50 - ((int)player4Position.position.y / PlayerMovement.cellSize);
-            Player4FC[1] = (int)player4Position.position.x / PlayerMovement.cellSize;
-            FilasColumnas[3] = Player4FC;
-
             selectedTypes = new int[4];
             selectedTypes[0] = MenuFunctions.selectedType1;
             selectedTypes[1] = MenuFunctions.selectedType2;
             selectedTypes[2] = MenuFunctions.selectedType3;
             selectedTypes[3] = MenuFunctions.selectedType4;
+
+
+            //si cualquier slected type es igual a otro significa que el juego no se esta ejecutando desde el menu
+            //si el juego no se ejecuta desde el menu, todos los selected types van a ser igual a cero pero el sprite sera igual
+            //al mismo que se uso antes. Entonces esto es una medida extra para cuando se ejecute desde la escena del juego
+            //para que se cargue primero el menu
+            if (selectedTypes[0] == selectedTypes[1])
+            {
+                SceneManager.LoadScene("MainMenu");
+            }
+
             playersType = new string[4];
             for (int i = 0; i < selectedTypes.Length; i++)
             {
@@ -249,6 +169,95 @@ namespace Tablero
             Debug.Log(playersType[2]);
             Debug.Log(playersType[3]);
 
+            //Busca la imagen seleccionada que guardamos en los prefab selected skin y los guarda en la instancia de cada player
+            player1Sprite = selectedSkin1.GetComponent<SpriteRenderer>().sprite;
+            Player1Sprite.GetComponent<SpriteRenderer>().sprite = player1Sprite;
+
+
+            player2Sprite = selectedSkin2.GetComponent<SpriteRenderer>().sprite;
+            Player2Sprite.GetComponent<SpriteRenderer>().sprite = player2Sprite;
+
+            player3Sprite = selectedSkin3.GetComponent<SpriteRenderer>().sprite;
+            Player3Sprite.GetComponent<SpriteRenderer>().sprite = player3Sprite;
+
+
+            player4Sprite = selectedSkin4.GetComponent<SpriteRenderer>().sprite;
+            Player4Sprite.GetComponent<SpriteRenderer>().sprite = player4Sprite;
+
+
+
+            NewGameButtons = new GameObject[4] { NewGameButton1, NewGameButton2, NewGameButton3, NewGameButton4 };
+            for (int i = 0; i < NewGameButtons.Length; i++)
+            {
+                NewGameButtons[i].SetActive(false);
+            }
+
+            VictoryMessages = new TextMeshProUGUI[4] { Victory1, Victory2, Victory3, Victory4 };
+            for (int i = 0; i < VictoryMessages.Length; i++)
+            {
+                VictoryMessages[i].gameObject.SetActive(false);
+            }
+
+            TrapMessages = new TextMeshProUGUI[4] { Trap1, Trap2, Trap3, Trap4 };
+            for (int i = 0; i < TrapMessages.Length; i++)
+            {
+                TrapMessages[i].gameObject.SetActive(false);
+            }
+
+
+            MazeCenter = new int[2] { 25, 25 };
+
+            Debug.Log(MazeCenter[0] + "y" + MazeCenter[1]);
+
+            cameras = new Camera[4];
+
+            cameras[0] = GameObject.Find("camera1").GetComponent<Camera>();
+            cameras[1] = GameObject.Find("camera2").GetComponent<Camera>();
+            cameras[2] = GameObject.Find("camera3").GetComponent<Camera>();
+            cameras[3] = GameObject.Find("camera4").GetComponent<Camera>();
+            for (int i = 0; i < cameras.Length; i++)
+            {
+                cameras[i].gameObject.SetActive(i + 1 == currentPlayerIndex);
+            }
+
+            attackButtons[0] = attackButton1;
+            attackButtons[1] = attackButton2;
+            attackButtons[2] = attackButton3;
+            attackButtons[3] = attackButton4;
+
+            for (int i = 0; i < attackButtons.Length; i++)
+            {
+                attackButtons[i].gameObject.SetActive(false);
+            }
+
+
+
+            playersPosition[0] = player1Position;
+            playersPosition[1] = player2Position;
+            playersPosition[2] = player3Position;
+            playersPosition[3] = player4Position;
+
+            //esto inicializa las f y las c segun la posicion en coordenadas del player
+            int[] Player1FC = new int[2];
+            Player1FC[0] = 50 - (int)player1Position.position.y / PlayerMovement.cellSize;
+            Player1FC[1] = (int)player1Position.position.x / PlayerMovement.cellSize;
+            FilasColumnas[0] = Player1FC;
+
+            int[] Player2FC = new int[2];
+            Player2FC[0] = 50 - ((int)player2Position.position.y / PlayerMovement.cellSize);
+            Player2FC[1] = (int)player2Position.position.x / PlayerMovement.cellSize;
+            FilasColumnas[1] = Player2FC;
+
+            int[] Player3FC = new int[2];
+            Player3FC[0] = 50 - ((int)player3Position.position.y / PlayerMovement.cellSize);
+            Player3FC[1] = (int)player3Position.position.x / PlayerMovement.cellSize;
+            FilasColumnas[2] = Player3FC;
+
+            int[] Player4FC = new int[2];
+            Player4FC[0] = 50 - ((int)player4Position.position.y / PlayerMovement.cellSize);
+            Player4FC[1] = (int)player4Position.position.x / PlayerMovement.cellSize;
+            FilasColumnas[3] = Player4FC;
+
         }
 
 
@@ -270,6 +279,7 @@ namespace Tablero
                         }
                         return false;
                     }
+
                 }
                 MessageManager.AttackMessage(false, "neutral");
                 attackButtons[currentPlayerIndex - 1].gameObject.SetActive(false);
@@ -284,21 +294,8 @@ namespace Tablero
             Debug.Log("puedes hacer" + diceNumber + "movimientos");
         }
 
-        /*if (currentPlayerIndex != 4)
-                   {
-                       currentPlayerIndex++;
-                   }
-                   else
-                   {
-                       currentPlayerIndex = 1;
-                   }
-                   cameras[currentPlayerIndex - 1].gameObject.SetActive(true);
-                   TurnBegins();
-       */
-
         public static void TurnEnds()
         {
-
             int nextPlayerIndex;
             while (true)
             {
@@ -418,8 +415,8 @@ namespace Tablero
                 {
                     Ninfa.attackCoolDown--;
                 }
-                //Esto va aqui y no fuera del "for" porque si todos llegaran a estar incapacitados(ej: trampas) entonces es posible que pasen varios turnos para todo el mundo
-                //dentro del ciclo
+                //Esto va aqui y no fuera del "for" porque si todos llegaran a estar incapacitados(ej: trampas) entonces 
+                //es posible que pasen varios turnos para todo el mundo dentro del ciclo
 
                 currentPlayerIndex = nextPlayerIndex;
             }
@@ -708,79 +705,7 @@ namespace Tablero
             }
         }
 
-        public void BrujaSkill()
-        {
-            if (Bruja.skillCoolDown == 0)
-            {
-                diceNumber = diceNumber * 2;
-                Bruja.skillCoolDown = 7;
-
-            }
-        }
-        public void HongoSkill()
-        {
-
-            //Revisa las posiciones en un radio de 4 casillas desde el hongo e incapacita a todos los jugadores "atacables" que encuentre
-            if (Hongo.skillCoolDown == 0)
-            {
-                bool canAttack = false;
-                int f = FilasColumnas[currentPlayerIndex - 1][0] - 4;
-                int c = FilasColumnas[currentPlayerIndex - 1][1] - 4;
-
-                while (f <= FilasColumnas[currentPlayerIndex - 1][0] + 4)
-                {
-                    while (c <= FilasColumnas[currentPlayerIndex - 1][1] + 4)
-                    {
-                        for (int i = 0; i < FilasColumnas.Length; i++)
-                        {
-                            if (f == FilasColumnas[i][0] && c == FilasColumnas[i][1])
-                            {
-                                if (i == 1 && Bruja.turnsPassed == 0)
-                                {
-                                    canAttack = true;
-                                    Bruja.turnsPassed += 2;
-                                }
-                                else if (i == 2 && Fantasma.turnsPassed == 0)
-                                {
-                                    canAttack = true;
-                                    Fantasma.turnsPassed += 2;
-                                }
-                                else if (i == 4 && Ninfa.turnsPassed == 0)
-                                {
-                                    canAttack = true;
-                                    Ninfa.turnsPassed += 2;
-                                }
-                                i++;
-                            }
-                        }
-                        c++;
-                    }
-                    c = 0;
-                    f++;
-                    //no debe importar si f y c se salen del tablero porque no las estoy usando para acceder a nada, simplemente la comprobacion no va a dar igual
-                }
-
-
-                if (canAttack == true)
-                {
-                    Hongo.skillCoolDown += 10;
-                }
-
-                /*for (int j = 0; j < 5; j++)
-                {
-                    //revisa diagonal derecha superior
-                    /*if (FilasColumnas[currentPlayerIndex - 1][0] + j == FilasColumnas[i][0] && FilasColumnas[currentPlayerIndex - 1][1] + j == FilasColumnas[i + 1][1])
-                    {
-                    }
-                    if (FilasColumnas[currentPlayerIndex - 1][0] - j == FilasColumnas[i][0] && FilasColumnas[currentPlayerIndex - 1][1] - j == FilasColumnas[i + 1][1])
-                    {
-                    }
-                }*/
-
-            }
-        }
-
-        public void StartNewGame()
+              public void StartNewGame()
         {
             SceneManager.LoadScene("MainMenu");
         }
@@ -819,6 +744,8 @@ namespace Tablero
             //hay que programar aun la otra condicion de final
             if (FilasColumnas[currentPlayerIndex - 1][0] == MazeCenter[0] && FilasColumnas[currentPlayerIndex - 1][1] == MazeCenter[1])
             {
+
+               // if(playersType[currentPlayerIndex - 1] == "Ninfa" && Ninfa.collectedShards == 3 )
                 NewGameButtons[currentPlayerIndex - 1].SetActive(true);
                 VictoryMessages[currentPlayerIndex - 1].gameObject.SetActive(true);
 
@@ -826,78 +753,6 @@ namespace Tablero
             FellInTrap(laberinto);
 
         }
-
-        /*public static void TurnEnds()
-               {
-
-                   int nextPlayerIndex;
-                   while (true)
-                   {
-                       if (currentPlayerIndex != 4)
-                       {
-                           nextPlayerIndex = currentPlayerIndex + 1;
-                       }
-                       else
-                       {
-                           nextPlayerIndex = 1;
-                       }
-
-
-                       if (playersType[nextPlayerIndex - 1] == "Vampiro")
-                       {
-                           if (Vampiro.turnsPassed == 0)
-                           {
-                               cameras[currentPlayerIndex - 1].gameObject.SetActive(false);
-                               currentPlayerIndex = nextPlayerIndex;
-                               cameras[currentPlayerIndex - 1].gameObject.SetActive(true);
-                               TurnBegins();
-                               break;
-                           }
-                           else
-                           {
-                               Vampiro.turnsPassed--;
-                           }
-
-                       }
-
-
-                       if (playersType[nextPlayerIndex - 1] == "Bruja")
-                       {
-
-                           if (Bruja.turnsPassed == 0)
-                           {
-                               cameras[currentPlayerIndex - 1].gameObject.SetActive(false);
-                               currentPlayerIndex = nextPlayerIndex;
-                               cameras[currentPlayerIndex - 1].gameObject.SetActive(true);
-                               TurnBegins();
-                               break;
-                           }
-                           else
-                           {
-                               Bruja.turnsPassed--;
-                           }
-                       }
-
-
-                       if (playersType[nextPlayerIndex - 1] == "Fantasma")
-                       {
-                           if (Fantasma.turnsPassed == 0)
-                           {
-                               cameras[currentPlayerIndex - 1].gameObject.SetActive(false);
-                               currentPlayerIndex = nextPlayerIndex;
-                               cameras[currentPlayerIndex - 1].gameObject.SetActive(true);
-                               TurnBegins();
-                               break;
-                           }
-
-                           else
-                           {
-                               Fantasma.turnsPassed--;
-                           }
-                       }
-
-                   }
-               }*/
 
     }
 }

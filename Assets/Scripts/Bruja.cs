@@ -10,5 +10,17 @@ namespace Tablero
 
       public static int attackCoolDown;
       public static int skillCoolDown;
+
+      public static int collectedShards;
+
+       public void BrujaSkill()
+        {
+            if (Bruja.skillCoolDown == 0)
+            {
+                Manager.diceNumber = Manager.diceNumber * 2;
+                Bruja.skillCoolDown = 7;
+
+            }
+        }
    }
 }
