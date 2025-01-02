@@ -15,6 +15,8 @@ namespace Tablero
         public GameObject Camino;
         public GameObject Bloque2;
 
+        public GameObject Shard;
+
         void Start()
         {
             var laberinto = new Laberinto(51);
@@ -41,6 +43,7 @@ namespace Tablero
         void SpawnTile(int x, int y, int tileType)
         {
             GameObject tile;
+            GameObject shard;
             if (tileType == 2)
             {
                 tile = Instantiate(Bloque2);
@@ -52,6 +55,13 @@ namespace Tablero
 
             tile.transform.position = new Vector3(x, y, 0);
             tile.name = "Tile " + x / tileWidth + "," + y / tileWidth;
+
+            if (tileType == 5)
+            {
+                shard = Instantiate(Shard);
+                shard.transform.position = new Vector3(x, y, 0);
+                shard.name = "shard " + x / tileWidth + "," + y / tileWidth;
+            }
         }
 
     }

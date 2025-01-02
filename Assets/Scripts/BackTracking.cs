@@ -55,6 +55,7 @@ namespace Tablero
             OpenCenter();
             SpawnTrap1();
             SpawnTrap2();
+            SpawnShard();
         }
         //de esta funcion sale una matriz con casillas camino(0) rodeadas de casillas pared(2) sin conexion entre los caminos
         private void IniciarMatriz()
@@ -300,6 +301,42 @@ namespace Tablero
             }
         }
 
+
+        private void SpawnShard()
+        {
+            System.Random random4 = new Random();
+            int i = 0;
+            while (i < 16)
+            {
+                int shardF = random4.Next(0, matriz.GetLength(0));
+                int shardC = random4.Next(0, matriz.GetLength(1));
+                if (matriz[shardF, shardC] == 1 && (shardF != 25 || shardC != 25))
+                {
+                    matriz[shardF, shardC] = 5;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+
+
+        public void OpenCenter()
+        {
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2] = 1;
+            matriz[matriz.GetLength(0) / 2 + 1, matriz.GetLength(1) / 2 + 1] = 1;
+            matriz[matriz.GetLength(0) / 2 - 1, matriz.GetLength(1) / 2 - 1] = 1;
+            matriz[matriz.GetLength(0) / 2 - 1, matriz.GetLength(1) / 2 + 1] = 1;
+            matriz[matriz.GetLength(0) / 2 + 1, matriz.GetLength(1) / 2 - 1] = 1;
+            matriz[matriz.GetLength(0) / 2 + 1, matriz.GetLength(1) / 2] = 1;
+            matriz[matriz.GetLength(0) / 2 - 1, matriz.GetLength(1) / 2] = 1;
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 1] = 1;
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 1] = 1;
+        }
+
+        //esto fue de cuando esta probando en consola        
         public void ImprimirDebug()
         {
             int filas = matriz.GetLength(0);
@@ -321,17 +358,5 @@ namespace Tablero
             }
         }
 
-        public void OpenCenter()
-        {
-            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2] = 1;
-            matriz[matriz.GetLength(0) / 2 + 1, matriz.GetLength(1) / 2 + 1] = 1;
-            matriz[matriz.GetLength(0) / 2 - 1, matriz.GetLength(1) / 2 - 1] = 1;
-            matriz[matriz.GetLength(0) / 2 - 1, matriz.GetLength(1) / 2 + 1] = 1;
-            matriz[matriz.GetLength(0) / 2 + 1, matriz.GetLength(1) / 2 - 1] = 1;
-            matriz[matriz.GetLength(0) / 2 + 1, matriz.GetLength(1) / 2] = 1;
-            matriz[matriz.GetLength(0) / 2 - 1, matriz.GetLength(1) / 2] = 1;
-            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 1] = 1;
-            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 1] = 1;
-        }
     }
 }

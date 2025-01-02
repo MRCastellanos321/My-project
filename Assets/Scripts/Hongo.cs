@@ -1,18 +1,53 @@
 using UnityEngine;
 namespace Tablero
 {
-    public class Hongo : MonoBehaviour
+    public class Hongo : characterInterface
     {
-        public static int attack = 2;
+        private int attack = 2;
+        private int turnsPassed = 0;
+        private int attackCoolDown = 0;
+        private int collectedShards = 0;
+        private int skillCoolDown = 0; 
+        
+        public int GetAttack()
+        {
+            return attack;
+        }
 
-        public static int turnsPassed;
+        public int GetTurnsPassed()
+        {
+            return turnsPassed;
+        }
+        public void SetTurnsPassed(int number)
+        {
+            turnsPassed = +number;
+        }
 
-        public static int attackCoolDown;
+        public int GetAttackCoolDown()
+        {
+            return attackCoolDown;
+        }
+        public void SetAttackCoolDown(int number)
+        {
+            attackCoolDown = +number;
+        }
 
-        public static int skillCoolDown;
-
-        public static int collectedShards;
-
+        public int GetCollectedShards()
+        {
+            return collectedShards;
+        }
+        public void SetCollectedShards(int number)
+        {
+            collectedShards = +number;
+        }
+        public int GetSkillCoolDown()
+        {
+            return skillCoolDown;
+        }
+        public void SetSkillCoolDown(int number)
+        {
+            skillCoolDown = +number;
+        }
 
         public void HongoSkill()
         {
@@ -21,42 +56,31 @@ namespace Tablero
             if (skillCoolDown == 0)
             {
                 bool canAttack = false;
-                int f = Manager.FilasColumnas[Manager.currentPlayerIndex - 1][0] - 4;
-                int c = Manager.FilasColumnas[Manager.currentPlayerIndex - 1][1] - 4;
+                int f = Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] - 4;
+                int c = Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] - 4;
 
-                while (f <= Manager.FilasColumnas[Manager.currentPlayerIndex - 1][0] + 4)
+                while (f <= Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] + 4)
                 {
-                    while (c <= Manager.FilasColumnas[Manager.currentPlayerIndex - 1][1] + 4)
+                    while (c <= Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] + 4)
                     {
                         for (int i = 0; i < Manager.FilasColumnas.Length; i++)
                         {
                             if (f == Manager.FilasColumnas[i][0] && c == Manager.FilasColumnas[i][1])
                             {
-                                if (i == 1 && Bruja.turnsPassed == 0)
-                                {
+                                if (Manager.playersType[i].GetTurnsPassed() == 0)
+
                                     canAttack = true;
-                                    Bruja.turnsPassed += 2;
-                                }
-                                else if (i == 2 && Fantasma.turnsPassed == 0)
-                                {
-                                    canAttack = true;
-                                    Fantasma.turnsPassed += 2;
-                                }
-                                else if (i == 4 && Ninfa.turnsPassed == 0)
-                                {
-                                    canAttack = true;
-                                    Ninfa.turnsPassed += 2;
-                                }
-                                i++;
+                                Manager.playersType[i].SetTurnsPassed(2);
                             }
+                            i++;
                         }
                         c++;
                     }
                     c = 0;
                     f++;
-                    //no debe importar si f y c se salen del tablero porque no las estoy usando para acceder a nada, simplemente la comprobacion no va a dar igual
                 }
 
+                //no debe importar si f y c se salen del tablero porque no las estoy usando para acceder a nada, simplemente la comprobacion no va a dar igual
                 if (canAttack == true)
                 {
                     skillCoolDown += 10;

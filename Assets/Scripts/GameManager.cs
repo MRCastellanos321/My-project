@@ -11,9 +11,11 @@ namespace Tablero
     public class Manager : MonoBehaviour
     {
 
+        public static Manager Instancia;
+
         static Camera[] cameras;
 
-        public static int currentPlayerIndex = 1;
+        public int currentPlayerIndex = 1;
         public static int diceNumber;
         private static System.Random dice = new System.Random();
 
@@ -36,12 +38,9 @@ namespace Tablero
 
 
         //Los botones de attack
-        public Button attackButton1;
-        public Button attackButton2;
-        public Button attackButton3;
-        public Button attackButton4;
+        public Button attackButton;
+        public static Button[] attackButtons;
 
-        public static Button[] attackButtons = new Button[4];
         public static int nearF;
         public static int nearC;
 
@@ -75,38 +74,26 @@ namespace Tablero
 
 
         //tipo de jugador por string(la forma en que lo trabaja el manager para que sea mas entendible el codigo)
-        public static string[] playersType;
+        public static characterInterface[] playersType;
 
         //guarda las coordenadas f y c de la casilla central
         public int[] MazeCenter;
 
 
         //Botones de new game, aparecen una vez gana un jugador
-        public GameObject NewGameButton1;
-        public GameObject NewGameButton2;
-        public GameObject NewGameButton3;
-        public GameObject NewGameButton4;
-
-        GameObject[] NewGameButtons;
+        public GameObject NewGameButton;
 
 
         //Text en pantalla de Victoria
-        public TextMeshProUGUI Victory1;
-        public TextMeshProUGUI Victory2;
-        public TextMeshProUGUI Victory3;
-        public TextMeshProUGUI Victory4;
-
-        TextMeshProUGUI[] VictoryMessages;
+        public TextMeshProUGUI Victory;
 
 
-        public TextMeshProUGUI Trap1;
-        public TextMeshProUGUI Trap2;
-        public TextMeshProUGUI Trap3;
-        public TextMeshProUGUI Trap4;
-        TextMeshProUGUI[] TrapMessages;
+        public TextMeshProUGUI TrapMessage;
+
 
         void Start()
         {
+            Instancia = this;
             selectedTypes = new int[4];
             selectedTypes[0] = MenuFunctions.selectedType1;
             selectedTypes[1] = MenuFunctions.selectedType2;
@@ -123,46 +110,32 @@ namespace Tablero
                 SceneManager.LoadScene("MainMenu");
             }
 
-            playersType = new string[4];
+            playersType = new characterInterface[4];
             for (int i = 0; i < selectedTypes.Length; i++)
             {
 
                 if (selectedTypes[i] == 0)
                 {
-                    playersType[i] = "Vampiro";
+                    playersType[i] = new Vampiro();
                 }
                 else if (selectedTypes[i] == 1)
                 {
-                    playersType[i] = "Bruja";
+                    playersType[i] = new Bruja();
                 }
                 else if (selectedTypes[i] == 2)
                 {
-                    playersType[i] = "Fantasma";
+                    playersType[i] = new Fantasma();
                 }
                 else if (selectedTypes[i] == 3)
                 {
-                    playersType[i] = "Hongo";
+                    playersType[i] = new Hongo();
                 }
                 else if (selectedTypes[i] == 4)
                 {
-                    playersType[i] = "Ninfa";
+                    playersType[i] = new Ninfa();
                 }
 
             }
-
-            Vampiro.turnsPassed = 0;
-            Bruja.turnsPassed = 0;
-            Fantasma.turnsPassed = 0;
-            Hongo.turnsPassed = 0;
-            Ninfa.turnsPassed = 0;
-
-
-            Vampiro.attackCoolDown = 0;
-            Bruja.attackCoolDown = 0;
-            Fantasma.attackCoolDown = 0;
-            Hongo.attackCoolDown = 0;
-            Ninfa.attackCoolDown = 0;
-
 
             Debug.Log(playersType[0]);
             Debug.Log(playersType[1]);
@@ -185,24 +158,9 @@ namespace Tablero
             Player4Sprite.GetComponent<SpriteRenderer>().sprite = player4Sprite;
 
 
-
-            NewGameButtons = new GameObject[4] { NewGameButton1, NewGameButton2, NewGameButton3, NewGameButton4 };
-            for (int i = 0; i < NewGameButtons.Length; i++)
-            {
-                NewGameButtons[i].SetActive(false);
-            }
-
-            VictoryMessages = new TextMeshProUGUI[4] { Victory1, Victory2, Victory3, Victory4 };
-            for (int i = 0; i < VictoryMessages.Length; i++)
-            {
-                VictoryMessages[i].gameObject.SetActive(false);
-            }
-
-            TrapMessages = new TextMeshProUGUI[4] { Trap1, Trap2, Trap3, Trap4 };
-            for (int i = 0; i < TrapMessages.Length; i++)
-            {
-                TrapMessages[i].gameObject.SetActive(false);
-            }
+            NewGameButton.SetActive(false);
+            Victory.gameObject.SetActive(false);
+            TrapMessage.gameObject.SetActive(false);
 
 
             MazeCenter = new int[2] { 25, 25 };
@@ -220,17 +178,7 @@ namespace Tablero
                 cameras[i].gameObject.SetActive(i + 1 == currentPlayerIndex);
             }
 
-            attackButtons[0] = attackButton1;
-            attackButtons[1] = attackButton2;
-            attackButtons[2] = attackButton3;
-            attackButtons[3] = attackButton4;
-
-            for (int i = 0; i < attackButtons.Length; i++)
-            {
-                attackButtons[i].gameObject.SetActive(false);
-            }
-
-
+            attackButton.gameObject.SetActive(false);
 
             playersPosition[0] = player1Position;
             playersPosition[1] = player2Position;
@@ -262,9 +210,10 @@ namespace Tablero
 
 
         //esta funcion se encarga tanto de revisar que la casilla a la que se dirige es un camino como de revisar que no hay otro jugador ahi
-        public static bool MovimientoValido(Laberinto laberinto, int f, int c, Vector3 direccion)
+        public bool MovimientoValido(Laberinto laberinto, int f, int c)
         {
-            if (laberinto.Leer(f, c) == 1 || laberinto.Leer(f, c) == 3 || laberinto.Leer(f, c) == 4)
+            int posNumber = laberinto.Leer(f, c);
+            if (posNumber == 1 || posNumber == 3 || posNumber == 4 || posNumber == 5)
             {
                 for (int i = 0; i < FilasColumnas.Length; i++)
                 {
@@ -272,7 +221,7 @@ namespace Tablero
                     {
                         if (laberinto.Leer(f, c) == 1)
                         {
-                            attackButtons[currentPlayerIndex - 1].gameObject.SetActive(true);
+                            attackButton.gameObject.SetActive(true);
                             nearF = f;
                             nearC = c;
                             //la comprobacion del 1 es para que no pueda atacar al otro jugador si este esta en una trampa
@@ -281,8 +230,8 @@ namespace Tablero
                     }
 
                 }
-                MessageManager.AttackMessage(false, "neutral");
-                attackButtons[currentPlayerIndex - 1].gameObject.SetActive(false);
+                MessageManager.MessageShowing(false, MessageManager.validAttackText);
+                attackButton.gameObject.SetActive(false);
                 return true;
             }
             return false;
@@ -299,9 +248,9 @@ namespace Tablero
             int nextPlayerIndex;
             while (true)
             {
-                if (currentPlayerIndex != 4)
+                if (Instancia.currentPlayerIndex != 4)
                 {
-                    nextPlayerIndex = currentPlayerIndex + 1;
+                    nextPlayerIndex = Instancia.currentPlayerIndex + 1;
                 }
                 else
                 {
@@ -309,121 +258,257 @@ namespace Tablero
                 }
 
 
-                if (playersType[nextPlayerIndex - 1] == "Vampiro")
+                if (playersType[nextPlayerIndex - 1].GetTurnsPassed() == 0)
                 {
-                    if (Vampiro.turnsPassed == 0)
-                    {
-                        cameras[currentPlayerIndex - 1].gameObject.SetActive(false);
-                        currentPlayerIndex = nextPlayerIndex;
-                        cameras[currentPlayerIndex - 1].gameObject.SetActive(true);
+                    cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(false);
+                    Instancia.currentPlayerIndex = nextPlayerIndex;
+                    cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(true);
 
-                        break;
-                    }
-                    else
-                    {
-                        Vampiro.turnsPassed--;
-                    }
-
+                    break;
+                }
+                else
+                {
+                    playersType[nextPlayerIndex - 1].SetTurnsPassed(-1);
                 }
 
-
-                if (playersType[nextPlayerIndex - 1] == "Bruja")
+                for (int i = 0; i < playersType.Length; i++)
                 {
-
-                    if (Bruja.turnsPassed == 0)
+                    if (playersType[i].GetAttackCoolDown() != 0)
                     {
-                        cameras[currentPlayerIndex - 1].gameObject.SetActive(false);
-                        currentPlayerIndex = nextPlayerIndex;
-                        cameras[currentPlayerIndex - 1].gameObject.SetActive(true);
-
-                        break;
-                    }
-                    else
-                    {
-                        Bruja.turnsPassed--;
-
+                        playersType[i].SetAttackCoolDown(-1);
                     }
                 }
-
-
-                if (playersType[nextPlayerIndex - 1] == "Fantasma")
-                {
-                    if (Fantasma.turnsPassed == 0)
-                    {
-                        cameras[currentPlayerIndex - 1].gameObject.SetActive(false);
-                        currentPlayerIndex = nextPlayerIndex;
-                        cameras[currentPlayerIndex - 1].gameObject.SetActive(true);
-
-                        break;
-                    }
-
-                    else
-                    {
-                        Fantasma.turnsPassed--;
-                    }
-                }
-                if (playersType[nextPlayerIndex - 1] == "Hongo")
-                {
-                    if (Hongo.turnsPassed == 0)
-                    {
-                        cameras[currentPlayerIndex - 1].gameObject.SetActive(false);
-                        currentPlayerIndex = nextPlayerIndex;
-                        cameras[currentPlayerIndex - 1].gameObject.SetActive(true);
-
-                        break;
-                    }
-
-                    else
-                    {
-                        Hongo.turnsPassed--;
-                    }
-                }
-                if (playersType[nextPlayerIndex - 1] == "Ninfa")
-                {
-                    if (Ninfa.turnsPassed == 0)
-                    {
-                        cameras[currentPlayerIndex - 1].gameObject.SetActive(false);
-                        currentPlayerIndex = nextPlayerIndex;
-                        cameras[currentPlayerIndex - 1].gameObject.SetActive(true);
-
-                        break;
-                    }
-
-                    else
-                    {
-                        Ninfa.turnsPassed--;
-                    }
-                }
-
-                if (Fantasma.attackCoolDown != 0)
-                {
-                    Fantasma.attackCoolDown--;
-                }
-                if (Bruja.attackCoolDown != 0)
-                {
-                    Bruja.attackCoolDown--;
-                }
-                if (Vampiro.attackCoolDown != 0)
-                {
-                    Vampiro.attackCoolDown--;
-                }
-                if (Hongo.attackCoolDown != 0)
-                {
-                    Hongo.attackCoolDown--;
-                }
-                if (Ninfa.attackCoolDown != 0)
-                {
-                    Ninfa.attackCoolDown--;
-                }
-                //Esto va aqui y no fuera del "for" porque si todos llegaran a estar incapacitados(ej: trampas) entonces 
+                //Esto va aqui y no fuera del "while" porque si todos llegaran a estar incapacitados(ej: trampas) entonces 
                 //es posible que pasen varios turnos para todo el mundo dentro del ciclo
 
-                currentPlayerIndex = nextPlayerIndex;
+                Instancia.currentPlayerIndex = nextPlayerIndex;
             }
             TurnBegins();
         }
 
         public void Attack()
+        {
+
+            //esta funcion va a atacar al que yo inente acercarme con "movimiento valido"(nearF y nearC) asi nos deshacemos de los casos donde 
+            //la casilla del currentPlayerIndex es adyacente a la de mas de un jugador;
+
+            //Puede que tenga que considerar eliminar las clases de tipo y acceder a las variables de otra forma, la funcion es demasiado larga
+            for (int i = 0; i < FilasColumnas.Length; i++)
+            {
+
+                if (nearF == FilasColumnas[i][0] && nearC == FilasColumnas[i][1] && currentPlayerIndex - 1 != i)
+                {
+
+                    if (playersType[currentPlayerIndex - 1].GetAttackCoolDown() == 0)
+                    {
+                        playersType[currentPlayerIndex - 1].SetAttackCoolDown(3);
+
+                        if (playersType[i].GetTurnsPassed() == 0)
+                        {
+                            playersType[i].SetTurnsPassed(playersType[currentPlayerIndex - 1].GetAttack());
+                            MessageManager.ChangeMessage("Ataque Exitoso!", MessageManager.validAttackText);
+                        }
+
+                        else
+                        {
+                            MessageManager.ChangeMessage("Este jugador ya esta incapacitado", MessageManager.validAttackText);
+                        }
+                    }
+                    else
+                    {
+                        MessageManager.ChangeMessage("Aun no puedes atacar", MessageManager.validAttackText);
+                    }
+                    break; // porque cuando encuentre quien es el jugador al que me acerque para atacar ya no hace falta revisar los otros
+                }
+            }
+        }
+
+
+        public void StartNewGame()
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
+
+        public void FellInTrap(Laberinto laberinto)
+        {
+            if (laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]) == 3)
+            {
+                //la trampa  va a hacer al jugador perder un shard
+                // TrapMessages[0].text = "Has caido en la trampa 3"; // texto temporal
+                TrapMessage.gameObject.SetActive(true);
+            }
+            else
+            {
+                TrapMessage.gameObject.SetActive(false);
+            }
+            if (laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]) == 4)
+            {
+                //la trampa va a incapacitarte 3 turnos
+                TrapMessage.text = "Has caido en la trampa 4"; // texto temporal
+                TrapMessage.gameObject.SetActive(true);
+            }
+            else
+            {
+                TrapMessage.gameObject.SetActive(false);
+            }
+
+            //mas trampas: teletransportarte al inicio del juego, Teletransportarte junto al jugador al que le toca el turno siguiente y pierdes tu turno
+            //disminuye tu numero en los dados durate x turnos
+        }
+        void Update()
+        {
+            var laberinto = Laberinto.ElLaberinto;
+
+
+            //hay que programar aun la otra condicion de final
+            if (FilasColumnas[currentPlayerIndex - 1][0] == MazeCenter[0] && FilasColumnas[currentPlayerIndex - 1][1] == MazeCenter[1])
+            {
+
+                // if(playersType[currentPlayerIndex - 1] == "Ninfa" && Ninfa.collectedShards == 3 )
+                NewGameButton.SetActive(true);
+                Victory.gameObject.SetActive(true);
+
+            }
+            FellInTrap(laberinto);
+
+        }
+
+    }
+}
+/* public static void TurnEnds()
+ {
+     int nextPlayerIndex;
+     while (true)
+     {
+         if (Instancia.currentPlayerIndex != 4)
+         {
+             nextPlayerIndex = Instancia.currentPlayerIndex + 1;
+         }
+         else
+         {
+             nextPlayerIndex = 1;
+         }
+
+
+         if (playersType[nextPlayerIndex - 1] == "Vampiro")
+         {
+             if (Vampiro.turnsPassed == 0)
+             {
+                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(false);
+                 Instancia.currentPlayerIndex = nextPlayerIndex;
+                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(true);
+
+                 break;
+             }
+             else
+             {
+                 Vampiro.turnsPassed--;
+             }
+
+         }
+
+
+         if (playersType[nextPlayerIndex - 1] == "Bruja")
+         {
+
+             if (Bruja.turnsPassed == 0)
+             {
+                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(false);
+                 Instancia.currentPlayerIndex = nextPlayerIndex;
+                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(true);
+
+                 break;
+             }
+             else
+             {
+                 Bruja.turnsPassed--;
+
+             }
+         }
+
+
+         if (playersType[nextPlayerIndex - 1] == "Fantasma")
+         {
+             if (Fantasma.turnsPassed == 0)
+             {
+                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(false);
+                 Instancia.currentPlayerIndex = nextPlayerIndex;
+                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(true);
+
+                 break;
+             }
+
+             else
+             {
+                 Fantasma.turnsPassed--;
+             }
+         }
+         if (playersType[nextPlayerIndex - 1] == "Hongo")
+         {
+             if (Hongo.turnsPassed == 0)
+             {
+                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(false);
+                 Instancia.currentPlayerIndex = nextPlayerIndex;
+                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(true);
+
+                 break;
+             }
+
+             else
+             {
+                 Hongo.turnsPassed--;
+             }
+         }
+         if (playersType[nextPlayerIndex - 1] == "Ninfa")
+         {
+             if (Ninfa.turnsPassed == 0)
+             {
+                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(false);
+                 Instancia.currentPlayerIndex = nextPlayerIndex;
+                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(true);
+
+                 break;
+             }
+
+             else
+             {
+                 Ninfa.turnsPassed--;
+             }
+         }
+
+         if (Fantasma.attackCoolDown != 0)
+         {
+             Fantasma.attackCoolDown--;
+         }
+         if (Bruja.attackCoolDown != 0)
+         {
+             Bruja.attackCoolDown--;
+         }
+         if (Vampiro.attackCoolDown != 0)
+         {
+             Vampiro.attackCoolDown--;
+         }
+         if (Hongo.attackCoolDown != 0)
+         {
+             Hongo.attackCoolDown--;
+         }
+         if (Ninfa.attackCoolDown != 0)
+         {
+             Ninfa.attackCoolDown--;
+         }
+         //Esto va aqui y no fuera del "for" porque si todos llegaran a estar incapacitados(ej: trampas) entonces 
+         //es posible que pasen varios turnos para todo el mundo dentro del ciclo
+
+         Instancia.currentPlayerIndex = nextPlayerIndex;
+     }
+     TurnBegins();
+ }*/
+
+
+
+
+
+/* public void Attack()
         {
 
             //esta funcion va a atacar al que yo inente acercarme con "movimiento valido"(nearF y nearC) asi nos deshacemos de los casos donde 
@@ -703,56 +788,4 @@ namespace Tablero
                     }
                 }
             }
-        }
-
-              public void StartNewGame()
-        {
-            SceneManager.LoadScene("MainMenu");
-        }
-
-        public void FellInTrap(Laberinto laberinto)
-        {
-            if (laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]) == 3)
-            {
-                //la trampa  va a hacer al jugador perder un shard
-                TrapMessages[currentPlayerIndex - 1].text = "Has caido en la trampa 3"; // texto temporal
-                TrapMessages[currentPlayerIndex - 1].gameObject.SetActive(true);
-            }
-            else
-            {
-                TrapMessages[currentPlayerIndex - 1].gameObject.SetActive(false);
-            }
-            if (laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]) == 4)
-            {
-                //la trampa va a incapacitarte 3 turnos
-                TrapMessages[currentPlayerIndex - 1].text = "Has caido en la trampa 4"; // texto temporal
-                TrapMessages[currentPlayerIndex - 1].gameObject.SetActive(true);
-            }
-            else
-            {
-                TrapMessages[currentPlayerIndex - 1].gameObject.SetActive(false);
-            }
-
-            //mas trampas: teletransportarte al inicio del juego, Teletransportarte junto al jugador al que le toca el turno siguiente y pierdes tu turno
-            //disminuye tu numero en los dados durate x turnos
-        }
-        void Update()
-        {
-            var laberinto = Laberinto.ElLaberinto;
-            Debug.Log(FilasColumnas[currentPlayerIndex - 1][0] + "y" + FilasColumnas[currentPlayerIndex - 1][1]);
-
-            //hay que programar aun la otra condicion de final
-            if (FilasColumnas[currentPlayerIndex - 1][0] == MazeCenter[0] && FilasColumnas[currentPlayerIndex - 1][1] == MazeCenter[1])
-            {
-
-               // if(playersType[currentPlayerIndex - 1] == "Ninfa" && Ninfa.collectedShards == 3 )
-                NewGameButtons[currentPlayerIndex - 1].SetActive(true);
-                VictoryMessages[currentPlayerIndex - 1].gameObject.SetActive(true);
-
-            }
-            FellInTrap(laberinto);
-
-        }
-
-    }
-}
+        }*/
