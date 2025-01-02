@@ -73,22 +73,23 @@ namespace Tablero
         public static int[] selectedTypes;
 
 
-        //tipo de jugador por string(la forma en que lo trabaja el manager para que sea mas entendible el codigo)
+        //tipo de jugador por clase e interfaz
         public static characterInterface[] playersType;
+
 
         //guarda las coordenadas f y c de la casilla central
         public int[] MazeCenter;
 
 
-        //Botones de new game, aparecen una vez gana un jugador
+        //Boton de new game, aparecen una vez gana un jugador
         public GameObject NewGameButton;
 
 
-        //Text en pantalla de Victoria
-        public TextMeshProUGUI Victory;
-
-
-        public TextMeshProUGUI TrapMessage;
+        public TextMeshProUGUI victoryText;
+        public TextMeshProUGUI trapText;
+        public TextMeshProUGUI changeTurnText;
+        public TextMeshProUGUI validAttackText;
+        public TextMeshProUGUI shardCollectionText;
 
 
         void Start()
@@ -159,8 +160,10 @@ namespace Tablero
 
 
             NewGameButton.SetActive(false);
-            Victory.gameObject.SetActive(false);
-            TrapMessage.gameObject.SetActive(false);
+            victoryText.gameObject.SetActive(false);
+            trapText.gameObject.SetActive(false);
+            changeTurnText.gameObject.SetActive(false);
+            validAttackText.gameObject.SetActive(false);
 
 
             MazeCenter = new int[2] { 25, 25 };
@@ -230,7 +233,7 @@ namespace Tablero
                     }
 
                 }
-                MessageManager.MessageShowing(false, MessageManager.validAttackText);
+                validAttackText.gameObject.SetActive(false);
                 attackButton.gameObject.SetActive(false);
                 return true;
             }
@@ -285,6 +288,11 @@ namespace Tablero
             }
             TurnBegins();
         }
+        public static void ChangeMessage(string message, TextMeshProUGUI textObject)
+        {
+            textObject.gameObject.SetActive(true);
+            textObject.text = message;
+        }
 
         public void Attack()
         {
@@ -306,17 +314,17 @@ namespace Tablero
                         if (playersType[i].GetTurnsPassed() == 0)
                         {
                             playersType[i].SetTurnsPassed(playersType[currentPlayerIndex - 1].GetAttack());
-                            MessageManager.ChangeMessage("Ataque Exitoso!", MessageManager.validAttackText);
+                            ChangeMessage("Ataque Exitoso!", validAttackText);
                         }
 
                         else
                         {
-                            MessageManager.ChangeMessage("Este jugador ya esta incapacitado", MessageManager.validAttackText);
+                            ChangeMessage("Este jugador ya esta incapacitado", validAttackText);
                         }
                     }
                     else
                     {
-                        MessageManager.ChangeMessage("Aun no puedes atacar", MessageManager.validAttackText);
+                        ChangeMessage("Aun no puedes atacar", validAttackText);
                     }
                     break; // porque cuando encuentre quien es el jugador al que me acerque para atacar ya no hace falta revisar los otros
                 }
@@ -334,22 +342,22 @@ namespace Tablero
             if (laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]) == 3)
             {
                 //la trampa  va a hacer al jugador perder un shard
-                // TrapMessages[0].text = "Has caido en la trampa 3"; // texto temporal
-                TrapMessage.gameObject.SetActive(true);
+                // trapTexts[0].text = "Has caido en la trampa 3"; // texto temporal
+                trapText.gameObject.SetActive(true);
             }
             else
             {
-                TrapMessage.gameObject.SetActive(false);
+                trapText.gameObject.SetActive(false);
             }
             if (laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]) == 4)
             {
                 //la trampa va a incapacitarte 3 turnos
-                TrapMessage.text = "Has caido en la trampa 4"; // texto temporal
-                TrapMessage.gameObject.SetActive(true);
+                trapText.text = "Has caido en la trampa 4"; // texto temporal
+                trapText.gameObject.SetActive(true);
             }
             else
             {
-                TrapMessage.gameObject.SetActive(false);
+                trapText.gameObject.SetActive(false);
             }
 
             //mas trampas: teletransportarte al inicio del juego, Teletransportarte junto al jugador al que le toca el turno siguiente y pierdes tu turno
@@ -359,433 +367,28 @@ namespace Tablero
         {
             var laberinto = Laberinto.ElLaberinto;
 
-
+            ChangeMessage($"Tienes + {playersType[currentPlayerIndex - 1].GetCollectedShards()}", shardCollectionText);
             //hay que programar aun la otra condicion de final
             if (FilasColumnas[currentPlayerIndex - 1][0] == MazeCenter[0] && FilasColumnas[currentPlayerIndex - 1][1] == MazeCenter[1])
             {
 
                 // if(playersType[currentPlayerIndex - 1] == "Ninfa" && Ninfa.collectedShards == 3 )
                 NewGameButton.SetActive(true);
-                Victory.gameObject.SetActive(true);
+                victoryText.gameObject.SetActive(true);
 
             }
+            if (Manager.diceNumber == 0)
+            {
+                ChangeMessage("Presiona espacio para pasar el turno", changeTurnText);
+            }
+            else
+            {
+                changeTurnText.gameObject.SetActive(false);
+            }
+
             FellInTrap(laberinto);
 
         }
 
     }
 }
-/* public static void TurnEnds()
- {
-     int nextPlayerIndex;
-     while (true)
-     {
-         if (Instancia.currentPlayerIndex != 4)
-         {
-             nextPlayerIndex = Instancia.currentPlayerIndex + 1;
-         }
-         else
-         {
-             nextPlayerIndex = 1;
-         }
-
-
-         if (playersType[nextPlayerIndex - 1] == "Vampiro")
-         {
-             if (Vampiro.turnsPassed == 0)
-             {
-                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(false);
-                 Instancia.currentPlayerIndex = nextPlayerIndex;
-                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(true);
-
-                 break;
-             }
-             else
-             {
-                 Vampiro.turnsPassed--;
-             }
-
-         }
-
-
-         if (playersType[nextPlayerIndex - 1] == "Bruja")
-         {
-
-             if (Bruja.turnsPassed == 0)
-             {
-                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(false);
-                 Instancia.currentPlayerIndex = nextPlayerIndex;
-                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(true);
-
-                 break;
-             }
-             else
-             {
-                 Bruja.turnsPassed--;
-
-             }
-         }
-
-
-         if (playersType[nextPlayerIndex - 1] == "Fantasma")
-         {
-             if (Fantasma.turnsPassed == 0)
-             {
-                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(false);
-                 Instancia.currentPlayerIndex = nextPlayerIndex;
-                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(true);
-
-                 break;
-             }
-
-             else
-             {
-                 Fantasma.turnsPassed--;
-             }
-         }
-         if (playersType[nextPlayerIndex - 1] == "Hongo")
-         {
-             if (Hongo.turnsPassed == 0)
-             {
-                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(false);
-                 Instancia.currentPlayerIndex = nextPlayerIndex;
-                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(true);
-
-                 break;
-             }
-
-             else
-             {
-                 Hongo.turnsPassed--;
-             }
-         }
-         if (playersType[nextPlayerIndex - 1] == "Ninfa")
-         {
-             if (Ninfa.turnsPassed == 0)
-             {
-                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(false);
-                 Instancia.currentPlayerIndex = nextPlayerIndex;
-                 cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(true);
-
-                 break;
-             }
-
-             else
-             {
-                 Ninfa.turnsPassed--;
-             }
-         }
-
-         if (Fantasma.attackCoolDown != 0)
-         {
-             Fantasma.attackCoolDown--;
-         }
-         if (Bruja.attackCoolDown != 0)
-         {
-             Bruja.attackCoolDown--;
-         }
-         if (Vampiro.attackCoolDown != 0)
-         {
-             Vampiro.attackCoolDown--;
-         }
-         if (Hongo.attackCoolDown != 0)
-         {
-             Hongo.attackCoolDown--;
-         }
-         if (Ninfa.attackCoolDown != 0)
-         {
-             Ninfa.attackCoolDown--;
-         }
-         //Esto va aqui y no fuera del "for" porque si todos llegaran a estar incapacitados(ej: trampas) entonces 
-         //es posible que pasen varios turnos para todo el mundo dentro del ciclo
-
-         Instancia.currentPlayerIndex = nextPlayerIndex;
-     }
-     TurnBegins();
- }*/
-
-
-
-
-
-/* public void Attack()
-        {
-
-            //esta funcion va a atacar al que yo inente acercarme con "movimiento valido"(nearF y nearC) asi nos deshacemos de los casos donde 
-            //la casilla del currentPlayerIndex es adyacente a la de mas de un jugador;
-
-            //Puede que tenga que considerar eliminar las clases de tipo y acceder a las variables de otra forma, la funcion es demasiado larga
-            for (int i = 0; i < FilasColumnas.Length; i++)
-            {
-
-                if (nearF == FilasColumnas[i][0] && nearC == FilasColumnas[i][1] && currentPlayerIndex - 1 != i)
-                {
-
-                    if (playersType[currentPlayerIndex - 1] == "Vampiro")
-                    {
-
-                        if (Vampiro.attackCoolDown == 0)
-                        {
-                            Vampiro.attackCoolDown = +3;
-                            if (playersType[i] == "Bruja")
-                            {
-                                if (Bruja.turnsPassed == 0)
-                                {
-                                    Debug.Log("ataque una bruja");
-                                    Bruja.turnsPassed = +Vampiro.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-
-                                }
-                            }
-
-                            else if (playersType[i] == "Fantasma")
-                            {
-                                if (Fantasma.turnsPassed == 0)
-                                {
-                                    Fantasma.turnsPassed = +Vampiro.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-
-                            else if (playersType[i] == "Hongo")
-                            {
-                                if (Hongo.turnsPassed == 0)
-                                {
-                                    Hongo.turnsPassed = +Vampiro.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-
-                            else if (playersType[i] == "Ninfa")
-                            {
-                                if (Ninfa.turnsPassed == 0)
-                                {
-                                    Ninfa.turnsPassed = +Vampiro.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MessageManager.AttackMessage(true, "Aun no puedes atacar");
-                        }
-
-                    }
-
-                    else if (playersType[currentPlayerIndex - 1] == "Bruja")
-                    {
-                        if (Bruja.attackCoolDown == 0)
-                        {
-                            Bruja.attackCoolDown = +3;
-                            if (playersType[i] == "Fantasma")
-                            {
-                                if (Fantasma.turnsPassed == 0)
-                                {
-                                    Fantasma.turnsPassed = +Bruja.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-                            else if (playersType[i] == "Hongo")
-                            {
-                                if (Hongo.turnsPassed == 0)
-                                {
-                                    Hongo.turnsPassed = +Bruja.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-                            else if (playersType[i] == "Ninfa")
-                            {
-                                if (Ninfa.turnsPassed == 0)
-                                {
-                                    Ninfa.turnsPassed = +Bruja.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MessageManager.AttackMessage(true, "Aun no puedes atacar");
-                        }
-
-                    }
-
-                    else if (playersType[currentPlayerIndex - 1] == "Fantasma")
-                    {
-                        if (Fantasma.attackCoolDown == 0)
-                        {
-                            Fantasma.attackCoolDown = +3;
-                            if (playersType[i] == "Bruja")
-                            {
-                                if (Bruja.turnsPassed == 0)
-                                {
-                                    Bruja.turnsPassed = +Fantasma.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-
-                            else if (playersType[i] == "Hongo")
-                            {
-                                if (Hongo.turnsPassed == 0)
-                                {
-                                    Hongo.turnsPassed = +Fantasma.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-                            else if (playersType[i] == "Ninfa")
-                            {
-                                if (Ninfa.turnsPassed == 0)
-                                {
-                                    Ninfa.turnsPassed = +Fantasma.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MessageManager.AttackMessage(true, "Aun no puedes atacar");
-                        }
-
-                    }
-
-
-                    else if (playersType[currentPlayerIndex - 1] == "Hongo")
-                    {
-                        if (Hongo.attackCoolDown == 0)
-                        {
-                            Hongo.attackCoolDown = +3;
-
-                            if (playersType[i] == "Bruja")
-                            {
-                                if (Bruja.turnsPassed == 0)
-                                {
-                                    Bruja.turnsPassed = +Hongo.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-
-                            else if (playersType[i] == "Fantasma")
-                            {
-                                if (Fantasma.turnsPassed == 0)
-                                {
-                                    Fantasma.turnsPassed = +Hongo.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-                            else if (playersType[i] == "Ninfa")
-                            {
-                                if (Ninfa.turnsPassed == 0)
-                                {
-                                    Ninfa.turnsPassed = +Hongo.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MessageManager.AttackMessage(true, "Aun no puedes atacar");
-                        }
-                    }
-                    else if (playersType[currentPlayerIndex - 1] == "Ninfa")
-                    {
-                        if (Fantasma.attackCoolDown == 0)
-                        {
-                            Fantasma.attackCoolDown = +3;
-                            if (playersType[i] == "Bruja")
-                            {
-                                if (Bruja.turnsPassed == 0)
-                                {
-                                    Bruja.turnsPassed = +Ninfa.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-
-                            else if (playersType[i] == "Hongo")
-                            {
-                                if (Hongo.turnsPassed == 0)
-                                {
-                                    Hongo.turnsPassed = +Ninfa.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-                            else if (playersType[i] == "Fantasma")
-                            {
-                                if (Fantasma.turnsPassed == 0)
-                                {
-                                    Fantasma.turnsPassed = +Ninfa.attack;
-                                    MessageManager.AttackMessage(true, "Ataque Exitoso!");
-                                }
-                                else
-                                {
-                                    MessageManager.AttackMessage(true, "Este jugador ya esta incapacitado");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MessageManager.AttackMessage(true, "Aun no puedes atacar");
-                        }
-                    }
-                }
-            }
-        }*/

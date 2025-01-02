@@ -18,7 +18,7 @@ public class Fantasma : characterInterface
     }
     public void SetTurnsPassed(int number)
     {
-        turnsPassed = +number;
+        turnsPassed += number;
     }
 
     public int GetAttackCoolDown()
@@ -27,7 +27,7 @@ public class Fantasma : characterInterface
     }
     public void SetAttackCoolDown(int number)
     {
-        attackCoolDown = +number;
+        attackCoolDown += number;
     }
 
     public int GetCollectedShards()
@@ -37,7 +37,7 @@ public class Fantasma : characterInterface
 
     public void SetCollectedShards(int number)
     {
-        collectedShards = +number;
+        collectedShards += number;
     }
     public int GetSkillCoolDown()
     {
@@ -45,7 +45,7 @@ public class Fantasma : characterInterface
     }
     public void SetSkillCoolDown(int number)
     {
-        skillCoolDown = +number;
+        skillCoolDown += number;
     }
 
 }

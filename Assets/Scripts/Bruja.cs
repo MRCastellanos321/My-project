@@ -9,7 +9,7 @@ namespace Tablero
         private int attackCoolDown = 0;
         private int collectedShards = 0;
         private int skillCoolDown = 0;
-        
+
         public int GetAttack()
         {
             return attack;
@@ -21,7 +21,7 @@ namespace Tablero
         }
         public void SetTurnsPassed(int number)
         {
-            turnsPassed = +number;
+            turnsPassed += number;
         }
 
         public int GetAttackCoolDown()
@@ -30,15 +30,17 @@ namespace Tablero
         }
         public void SetAttackCoolDown(int number)
         {
-            attackCoolDown = +number;
+            attackCoolDown += number;
         }
+
         public int GetCollectedShards()
         {
             return collectedShards;
         }
+
         public void SetCollectedShards(int number)
         {
-            collectedShards = +number;
+            collectedShards += number;
         }
         public int GetSkillCoolDown()
         {
@@ -46,9 +48,8 @@ namespace Tablero
         }
         public void SetSkillCoolDown(int number)
         {
-            skillCoolDown = +number;
+            skillCoolDown += number;
         }
-
         public void BrujaSkill()
         {
             if (skillCoolDown == 0)

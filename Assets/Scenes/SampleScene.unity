@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 55595557}
   - component: {fileID: 55595556}
   m_Layer: 5
-  m_Name: Victory
+  m_Name: VictoryText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -490,52 +490,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 332960360}
   m_CullTransparentMesh: 1
---- !u!1 &350623363
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 350623365}
-  - component: {fileID: 350623364}
-  m_Layer: 0
-  m_Name: MessageManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &350623364
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 350623363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120afece07826893c979ffd373d36084, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text: {fileID: 1351353718}
-  validAtackText: {fileID: 1866405612}
---- !u!4 &350623365
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 350623363}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1976.3477, y: -418.87628, z: -23.205954}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &575570915
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,7 +615,7 @@ GameObject:
   - component: {fileID: 689520879}
   - component: {fileID: 689520878}
   m_Layer: 5
-  m_Name: ShardCollection
+  m_Name: ShardCollectionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -984,7 +938,7 @@ GameObject:
   - component: {fileID: 962796570}
   - component: {fileID: 962796569}
   m_Layer: 5
-  m_Name: Attack
+  m_Name: Attack Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1154,8 +1108,11 @@ MonoBehaviour:
   Player4Sprite: {fileID: 279558846}
   MazeCenter: 
   NewGameButton: {fileID: 1163872875}
-  Victory: {fileID: 55595556}
-  TrapMessage: {fileID: 1773317704}
+  victoryText: {fileID: 55595556}
+  trapText: {fileID: 1773317704}
+  changeTurnText: {fileID: 1351353718}
+  validAttackText: {fileID: 1866405612}
+  shardCollectionText: {fileID: 689520878}
 --- !u!4 &983695910
 Transform:
   m_ObjectHideFlags: 0
@@ -1198,7 +1155,7 @@ GameObject:
   - component: {fileID: 1163872878}
   - component: {fileID: 1163872877}
   m_Layer: 5
-  m_Name: New Game
+  m_Name: NewGame Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1676,7 +1633,7 @@ GameObject:
   - component: {fileID: 1773317705}
   - component: {fileID: 1773317704}
   m_Layer: 5
-  m_Name: Trap
+  m_Name: TrapText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2343,6 +2300,5 @@ SceneRoots:
   - {fileID: 2774203700121408907}
   - {fileID: 325476717}
   - {fileID: 983695910}
-  - {fileID: 350623365}
   - {fileID: 1639365113}
   - {fileID: 575570919}
