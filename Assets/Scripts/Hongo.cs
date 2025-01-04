@@ -1,4 +1,4 @@
-using UnityEngine;
+
 namespace Tablero
 {
     public class Hongo : characterInterface
@@ -8,6 +8,27 @@ namespace Tablero
         private int attackCoolDown = 0;
         private int collectedShards = 0;
         private int skillCoolDown = 0;
+        private int attackInmunity = 0;
+        private int trapInmunity = 0;
+
+        public int GetTrapInmunity()
+        {
+            return trapInmunity;
+        }
+        public void SetTrapInmunity(int value)
+        {
+            trapInmunity += value;
+        }
+        public int GetAttackInmunity()
+        {
+            return attackInmunity;
+        }
+        public void SetAttackInmunity(int value)
+        {
+            attackInmunity += value;
+        }
+
+
 
         public int GetAttack()
         {
@@ -49,7 +70,7 @@ namespace Tablero
         {
             skillCoolDown += number;
         }
-        public void HongoSkill()
+        public void Skill()
         {
 
             //Revisa las posiciones en un radio de 4 casillas desde el hongo e incapacita a todos los jugadores "atacables" que encuentre
@@ -65,12 +86,13 @@ namespace Tablero
                     {
                         for (int i = 0; i < Manager.FilasColumnas.Length; i++)
                         {
-                            if (f == Manager.FilasColumnas[i][0] && c == Manager.FilasColumnas[i][1])
+                            if (f == Manager.FilasColumnas[i][0] && c == Manager.FilasColumnas[i][1] && i != Manager.Instancia.currentPlayerIndex - 1)
                             {
-                                if (Manager.playersType[i].GetTurnsPassed() == 0)
-
+                                if (Manager.playersType[i].GetTurnsPassed() == 0 && Manager.playersType[i].GetAttackInmunity() == 0)
+                                {
                                     canAttack = true;
-                                Manager.playersType[i].SetTurnsPassed(2);
+                                    Manager.playersType[i].SetTurnsPassed(2);
+                                }
                             }
                             i++;
                         }
@@ -84,6 +106,11 @@ namespace Tablero
                 if (canAttack == true)
                 {
                     skillCoolDown += 10;
+                    Manager.ChangeMessage("Atacaste los jugadores!", Manager.Instancia.skillEffectText);
+                }
+                else
+                {
+                    Manager.ChangeMessage("No hay jugadores atacables", Manager.Instancia.skillEffectText);
                 }
             }
         }

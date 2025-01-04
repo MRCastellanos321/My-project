@@ -11,9 +11,7 @@ public class MazeCanvas : MonoBehaviour
     {
         var laberinto = Laberinto.ElLaberinto;
         CreateMazeGuideCanvas(laberinto);
-
     }
-
     void CreateMazeGuideCanvas(Laberinto laberinto)
     {
     float size = 2f;
@@ -32,12 +30,5 @@ public class MazeCanvas : MonoBehaviour
                 img.color = laberinto.Leer(i, j) == 2 ? Color.black : Color.white;
             }
         }
-    }
-
-
-    void Update()
-    {
-      
-
     }
 }

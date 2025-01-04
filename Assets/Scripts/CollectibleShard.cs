@@ -1,5 +1,4 @@
 using Tablero;
-using TMPro;
 using UnityEngine;
 
 public class CollectibleShard : MonoBehaviour

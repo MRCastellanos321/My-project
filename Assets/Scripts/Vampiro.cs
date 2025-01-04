@@ -1,5 +1,3 @@
-using UnityEngine;
-using UnityEngine.TextCore.Text;
 namespace Tablero
 {
     public class Vampiro : characterInterface
@@ -9,7 +7,25 @@ namespace Tablero
         private int attackCoolDown = 0;
         private int collectedShards = 0;
         private int skillCoolDown = 0;
-        // private int skillCoolDown;
+        private int attackInmunity = 0;
+        private int trapInmunity = 0;
+
+        public int GetTrapInmunity()
+        {
+            return trapInmunity;
+        }
+        public void SetTrapInmunity(int value)
+        {
+            trapInmunity += value;
+        }
+        public int GetAttackInmunity()
+        {
+            return attackInmunity;
+        }
+        public void SetAttackInmunity(int value)
+        {
+            attackInmunity += value;
+        }
 
         public int GetAttack()
         {
@@ -50,6 +66,15 @@ namespace Tablero
         public void SetSkillCoolDown(int number)
         {
             skillCoolDown += number;
+        }
+
+        public void Skill()
+        {
+            // attack inmunity funciona segun los ataques que recibe y no los turnos. A los jugadores se les aumenta
+            //el attack cooldown incluso aunque no lo hayan podido atacar
+            attackInmunity += 2;
+            skillCoolDown += 3;
+            Manager.ChangeMessage("Inmunidad a ataques: 2 oportunidades", Manager.Instancia.skillEffectText);
         }
     }
 

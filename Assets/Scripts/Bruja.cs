@@ -1,5 +1,4 @@
-using Unity.VisualScripting;
-using UnityEngine;
+
 namespace Tablero
 {
     public class Bruja : characterInterface
@@ -9,6 +8,25 @@ namespace Tablero
         private int attackCoolDown = 0;
         private int collectedShards = 0;
         private int skillCoolDown = 0;
+        private int attackInmunity = 0;
+        private int trapInmunity = 0;
+
+        public int GetTrapInmunity()
+        {
+            return trapInmunity;
+        }
+        public void SetTrapInmunity(int value)
+        {
+            trapInmunity += value;
+        }
+        public int GetAttackInmunity()
+        {
+            return attackInmunity;
+        }
+        public void SetAttackInmunity(int value)
+        {
+            attackInmunity += value;
+        }
 
         public int GetAttack()
         {
@@ -50,13 +68,13 @@ namespace Tablero
         {
             skillCoolDown += number;
         }
-        public void BrujaSkill()
+        public void Skill()
         {
             if (skillCoolDown == 0)
             {
-                Manager.diceNumber = Manager.diceNumber * 2;
-                skillCoolDown = 7;
-
+                Manager.diceNumber *= 2;
+                skillCoolDown += 7;
+                Manager.ChangeMessage("Has duplicado tus movimientos!", Manager.Instancia.skillEffectText);
             }
         }
     }

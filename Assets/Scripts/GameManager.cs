@@ -1,10 +1,8 @@
-using Unity.VisualScripting;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using System;
+using Unity.VisualScripting;
 namespace Tablero
 {
 
@@ -34,12 +32,6 @@ namespace Tablero
 
 
         private static Transform[] playersPosition = new Transform[4];
-
-
-
-        //Los botones de attack
-        public Button attackButton;
-        public static Button[] attackButtons;
 
         public static int nearF;
         public static int nearC;
@@ -81,8 +73,11 @@ namespace Tablero
         public int[] MazeCenter;
 
 
-        //Boton de new game, aparecen una vez gana un jugador
-        public GameObject NewGameButton;
+
+        public Button NewGameButton;
+        public Button attackButton;
+        public Button skillButton;
+
 
 
         public TextMeshProUGUI victoryText;
@@ -90,6 +85,8 @@ namespace Tablero
         public TextMeshProUGUI changeTurnText;
         public TextMeshProUGUI validAttackText;
         public TextMeshProUGUI shardCollectionText;
+        public TextMeshProUGUI RemainingMovesText;
+        public TextMeshProUGUI skillEffectText;
 
 
         void Start()
@@ -159,11 +156,13 @@ namespace Tablero
             Player4Sprite.GetComponent<SpriteRenderer>().sprite = player4Sprite;
 
 
-            NewGameButton.SetActive(false);
+            NewGameButton.gameObject.SetActive(false);
+
             victoryText.gameObject.SetActive(false);
             trapText.gameObject.SetActive(false);
             changeTurnText.gameObject.SetActive(false);
             validAttackText.gameObject.SetActive(false);
+            skillEffectText.gameObject.SetActive(false);
 
 
             MazeCenter = new int[2] { 25, 25 };
@@ -251,6 +250,21 @@ namespace Tablero
             int nextPlayerIndex;
             while (true)
             {
+                for (int i = 0; i < playersType.Length; i++)
+                {
+                    if (playersType[i].GetAttackCoolDown() != 0)
+                    {
+                        playersType[i].SetAttackCoolDown(-1);
+                    }
+                    if (playersType[i].GetSkillCoolDown() != 0)
+                    {
+                        playersType[i].SetSkillCoolDown(-1);
+                    }
+                }
+                //Esto va aqui y no fuera del "while" porque si todos llegaran a estar incapacitados(ej: trampas) entonces 
+                //es posible que pasen varios turnos para todo el mundo dentro del ciclo
+
+
                 if (Instancia.currentPlayerIndex != 4)
                 {
                     nextPlayerIndex = Instancia.currentPlayerIndex + 1;
@@ -273,16 +287,6 @@ namespace Tablero
                 {
                     playersType[nextPlayerIndex - 1].SetTurnsPassed(-1);
                 }
-
-                for (int i = 0; i < playersType.Length; i++)
-                {
-                    if (playersType[i].GetAttackCoolDown() != 0)
-                    {
-                        playersType[i].SetAttackCoolDown(-1);
-                    }
-                }
-                //Esto va aqui y no fuera del "while" porque si todos llegaran a estar incapacitados(ej: trampas) entonces 
-                //es posible que pasen varios turnos para todo el mundo dentro del ciclo
 
                 Instancia.currentPlayerIndex = nextPlayerIndex;
             }
@@ -309,17 +313,26 @@ namespace Tablero
 
                     if (playersType[currentPlayerIndex - 1].GetAttackCoolDown() == 0)
                     {
-                        playersType[currentPlayerIndex - 1].SetAttackCoolDown(3);
-
                         if (playersType[i].GetTurnsPassed() == 0)
                         {
-                            playersType[i].SetTurnsPassed(playersType[currentPlayerIndex - 1].GetAttack());
-                            ChangeMessage("Ataque Exitoso!", validAttackText);
+
+                            if (playersType[i].GetAttackInmunity() == 0)
+                            {
+
+                                playersType[i].SetTurnsPassed(playersType[currentPlayerIndex - 1].GetAttack());
+                                ChangeMessage("Ataque Exitoso!", validAttackText);
+                            }
+                            else
+                            {
+                                ChangeMessage("Ha evadido tu ataque", validAttackText);
+                                playersType[i].SetAttackInmunity(-1);
+                            }
+                            playersType[currentPlayerIndex - 1].SetAttackCoolDown(3);
                         }
 
                         else
                         {
-                            ChangeMessage("Este jugador ya esta incapacitado", validAttackText);
+                            ChangeMessage("Ya esta incapacitado", validAttackText);
                         }
                     }
                     else
@@ -342,7 +355,7 @@ namespace Tablero
             if (laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]) == 3)
             {
                 //la trampa  va a hacer al jugador perder un shard
-                // trapTexts[0].text = "Has caido en la trampa 3"; // texto temporal
+                trapText.text = "Has caido en la trampa 3"; // texto temporal
                 trapText.gameObject.SetActive(true);
             }
             else
@@ -363,21 +376,38 @@ namespace Tablero
             //mas trampas: teletransportarte al inicio del juego, Teletransportarte junto al jugador al que le toca el turno siguiente y pierdes tu turno
             //disminuye tu numero en los dados durate x turnos
         }
+
+
+        public void SkillButton()
+        {
+            playersType[currentPlayerIndex - 1].Skill();
+        }
+
         void Update()
         {
             var laberinto = Laberinto.ElLaberinto;
-
-            ChangeMessage($"Tienes + {playersType[currentPlayerIndex - 1].GetCollectedShards()}", shardCollectionText);
+            ChangeMessage($"{diceNumber}", RemainingMovesText);
+            ChangeMessage($"Tienes {playersType[currentPlayerIndex - 1].GetCollectedShards()} shards", shardCollectionText);
             //hay que programar aun la otra condicion de final
             if (FilasColumnas[currentPlayerIndex - 1][0] == MazeCenter[0] && FilasColumnas[currentPlayerIndex - 1][1] == MazeCenter[1])
             {
-
-                // if(playersType[currentPlayerIndex - 1] == "Ninfa" && Ninfa.collectedShards == 3 )
-                NewGameButton.SetActive(true);
-                victoryText.gameObject.SetActive(true);
-
+                if (playersType[currentPlayerIndex - 1].GetCollectedShards() == 3)
+                {
+                    NewGameButton.gameObject.SetActive(true);
+                    ChangeMessage("Has ganado!", victoryText);
+                }
+                else
+                {
+                    ChangeMessage("Shards Insuficientes", victoryText);
+                }
             }
-            if (Manager.diceNumber == 0)
+            else
+            {
+              victoryText.gameObject.SetActive(false);
+            }
+
+
+            if (diceNumber == 0)
             {
                 ChangeMessage("Presiona espacio para pasar el turno", changeTurnText);
             }
@@ -386,7 +416,22 @@ namespace Tablero
                 changeTurnText.gameObject.SetActive(false);
             }
 
+
+            if (playersType[currentPlayerIndex - 1].GetSkillCoolDown() == 0)
+            {
+                skillButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                skillButton.gameObject.SetActive(false);
+            }
+
             FellInTrap(laberinto);
+
+            if (Input.anyKeyDown)
+            {
+                skillEffectText.gameObject.SetActive(false);
+            }
 
         }
 

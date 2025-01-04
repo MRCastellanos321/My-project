@@ -1,7 +1,10 @@
-using UnityEngine;
 
 public interface characterInterface
 {
+    public int GetTrapInmunity();
+    public void SetTrapInmunity(int value);
+    public int GetAttackInmunity();
+    public void SetAttackInmunity(int value);
     public int GetAttack();
     public int GetTurnsPassed();
     public void SetTurnsPassed(int number);
@@ -11,5 +14,8 @@ public interface characterInterface
     public void SetCollectedShards(int number);
     public int GetSkillCoolDown();
     public void SetSkillCoolDown(int number);
+    public void Skill();
+    //public string GetSkillEffectText();
 }
+
 

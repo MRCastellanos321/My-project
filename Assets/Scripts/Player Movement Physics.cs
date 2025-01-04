@@ -1,10 +1,5 @@
-using System.Collections;
-using JetBrains.Annotations;
-using Tablero;
-using Unity.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+
 
 namespace Tablero
 {

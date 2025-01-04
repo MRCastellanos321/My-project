@@ -1,10 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
-using Unity.Properties;
-using Unity.VisualScripting;
-using UnityEngine.Rendering.Universal.Internal;
+
 
 namespace Tablero
 {
@@ -114,8 +111,8 @@ namespace Tablero
         {
 
 
-            System.Random random = new System.Random();
-            System.Random random2 = new System.Random();
+            Random random = new Random();
+            Random random2 = new Random();
 
             //aqui se realiza una iteracion en cada entrada a la recursividad para volver una casilla vacia un camino cada vez que exista una direcciin valida
 
@@ -241,7 +238,7 @@ namespace Tablero
             ramificarValidas.AddRange(direcciones);
             ramificarValidas.Remove(no);
 
-            System.Random random2 = new Random();
+            Random random2 = new Random();
             int posRandom2 = random2.Next(0, ramificarValidas.Count);
             string ramificar = ramificarValidas[posRandom2];
             if (ramificar == "izquierda" && c - 1 != 0)
@@ -264,7 +261,7 @@ namespace Tablero
 
         private void SpawnTrap1()
         {
-            System.Random random3 = new Random();
+            Random random3 = new Random();
             int i = 0;
             while (i < 10)
             {
@@ -283,7 +280,7 @@ namespace Tablero
         }
         private void SpawnTrap2()
         {
-            System.Random random4 = new Random();
+            Random random4 = new Random();
             int i = 0;
             while (i < 10)
             {
@@ -304,13 +301,14 @@ namespace Tablero
 
         private void SpawnShard()
         {
-            System.Random random4 = new Random();
+            Random random4 = new Random();
             int i = 0;
             while (i < 16)
             {
                 int shardF = random4.Next(0, matriz.GetLength(0));
                 int shardC = random4.Next(0, matriz.GetLength(1));
-                if (matriz[shardF, shardC] == 1 && (shardF != 25 || shardC != 25))
+                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+                if (matriz[shardF, shardC] == 1 && shardF > 28 && shardF < 22 && shardC > 28 && shardC < 22 && shardF > 3 && shardF < 47 && shardC > 3 && shardC < 47)
                 {
                     matriz[shardF, shardC] = 5;
                     i++;
@@ -334,6 +332,14 @@ namespace Tablero
             matriz[matriz.GetLength(0) / 2 - 1, matriz.GetLength(1) / 2] = 1;
             matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 1] = 1;
             matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 1] = 1;
+            //nueve casillas centrales
+            
+           /* matriz[matriz.GetLength(0) / 2 + 2, matriz.GetLength(1) / 2] = 1;
+            matriz[matriz.GetLength(0) / 2 - 2, matriz.GetLength(1) / 2] = 1;
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 2] = 1;
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 2] = 1;
+            //crea 4 caminos saliendo del centro*/
+
         }
 
         //esto fue de cuando esta probando en consola        
