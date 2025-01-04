@@ -31,4 +31,10 @@ public class MazeCanvas : MonoBehaviour
             }
         }
     }
+
+    public void Update()
+    {
+        //buscar como poner un puntico rojo
+
+    }
 }

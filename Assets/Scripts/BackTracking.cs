@@ -308,7 +308,7 @@ namespace Tablero
                 int shardF = random4.Next(0, matriz.GetLength(0));
                 int shardC = random4.Next(0, matriz.GetLength(1));
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[shardF, shardC] == 1 && shardF > 28 && shardF < 22 && shardC > 28 && shardC < 22 && shardF > 3 && shardF < 47 && shardC > 3 && shardC < 47)
+                if (matriz[shardF, shardC] == 1)
                 {
                     matriz[shardF, shardC] = 5;
                     i++;
@@ -333,13 +333,12 @@ namespace Tablero
             matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 1] = 1;
             matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 1] = 1;
             //nueve casillas centrales
-            
-           /* matriz[matriz.GetLength(0) / 2 + 2, matriz.GetLength(1) / 2] = 1;
-            matriz[matriz.GetLength(0) / 2 - 2, matriz.GetLength(1) / 2] = 1;
-            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 2] = 1;
-            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 2] = 1;
-            //crea 4 caminos saliendo del centro*/
 
+            matriz[matriz.GetLength(0) / 2 + 2, matriz.GetLength(1) / 2] = 1;
+             matriz[matriz.GetLength(0) / 2 - 2, matriz.GetLength(1) / 2] = 1;
+             matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 2] = 1;
+             matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 2] = 1;
+             //crea 4 caminos saliendo del centro*
         }
 
         //esto fue de cuando esta probando en consola        

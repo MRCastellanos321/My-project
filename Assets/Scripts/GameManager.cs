@@ -403,7 +403,7 @@ namespace Tablero
             }
             else
             {
-              victoryText.gameObject.SetActive(false);
+                victoryText.gameObject.SetActive(false);
             }
 
 
