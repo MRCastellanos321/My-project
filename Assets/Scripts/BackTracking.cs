@@ -30,6 +30,11 @@ namespace Tablero
             return matriz.GetLength(0);
 
         }
+        public void SetPosValue(int f, int c, int value)
+        {
+            matriz[f,c] = value;
+
+        }
 
         public int Leer(int f, int c)
         {
@@ -157,7 +162,7 @@ namespace Tablero
                     matriz[f, c] = 1;
                 }
 
-                if (3 == random2.Next(0, 5))
+                if (3 == random2.Next(0, 4))
                 {
                     Ramificar(direccion);
                 }

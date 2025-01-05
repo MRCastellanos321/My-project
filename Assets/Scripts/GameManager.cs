@@ -88,6 +88,9 @@ namespace Tablero
         public TextMeshProUGUI shardCollectionText;
         public TextMeshProUGUI RemainingMovesText;
         public TextMeshProUGUI skillEffectText;
+        public TextMeshProUGUI underTrapEffectText;
+
+        private int turnCount = 0;
 
         //private bool onTrap = false;
 
@@ -163,6 +166,7 @@ namespace Tablero
 
             victoryText.gameObject.SetActive(false);
             trapText.gameObject.SetActive(false);
+            underTrapEffectText.gameObject.SetActive(false);
             changeTurnText.gameObject.SetActive(false);
             validAttackText.gameObject.SetActive(false);
             skillEffectText.gameObject.SetActive(false);
@@ -246,11 +250,14 @@ namespace Tablero
         {
             diceNumber = dice.Next(40, 41);
             Debug.Log("puedes hacer" + diceNumber + "movimientos");
+            Instancia.underTrapEffectText.gameObject.SetActive(false);
+            Instancia.turnCount = 0;
         }
 
         public static void TurnEnds()
         {
             int nextPlayerIndex;
+
             while (true)
             {
                 if (Instancia.currentPlayerIndex != 4)
@@ -291,6 +298,7 @@ namespace Tablero
                 }
             }
             TurnBegins();
+
         }
         public static void ChangeMessage(string message, TextMeshProUGUI textObject)
         {
@@ -366,7 +374,13 @@ namespace Tablero
                         if (playersType[currentPlayerIndex - 1].GetCollectedShards() != 0)
                         {
                             playersType[currentPlayerIndex - 1].SetCollectedShards(-1); // texto temporal     
-                            //laberinto.SetPosValue(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1], 1);
+                            laberinto.SetPosValue(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1], 1);
+                            //desactiva la trampa luego de activarla
+                            ChangeMessage("Perdiste un shard", underTrapEffectText);
+                        }
+                        else
+                        {
+                            ChangeMessage("No tienes shards que perder", underTrapEffectText);
                         }
                     }
                     //onTrap = true;
@@ -375,19 +389,22 @@ namespace Tablero
                     {
                         //la trampa va a incapacitarte 3 turnos
                         ChangeMessage("Has caido en la trampa 2", trapText);
+                        ChangeMessage("Te perderas 3 turnos", underTrapEffectText);
                         playersType[currentPlayerIndex - 1].SetTurnsPassed(3);
                         diceNumber = 0;
-                        //laberinto.SetPosValue(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1], 1);
+                        laberinto.SetPosValue(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1], 1);
+
                         //onTrap = true;
                     }
 
                     else if (number == 5)
                     {
                         //la trampa va a hacer al jugador perder su skill por 3 turnos mas de los que ya tiene
-                        ChangeMessage("Has caido en la trampa 3", trapText);
-                        playersType[currentPlayerIndex - 1].SetSkillCoolDown(3); // texto temporal
-                        // onTrap = true;                                                        
-                      //  laberinto.SetPosValue(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1], 1);
+                        ChangeMessage("Has caido en la trampa 3", trapText);// texto temporal
+                        ChangeMessage("3 turnos mas antes de usar tu poder", underTrapEffectText);
+                        playersType[currentPlayerIndex - 1].SetSkillCoolDown(3);
+                        laberinto.SetPosValue(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1], 1);
+                        // onTrap = true;  
                     }
                 }
                 else
@@ -461,6 +478,13 @@ namespace Tablero
             if (Input.anyKeyDown)
             {
                 skillEffectText.gameObject.SetActive(false);
+                turnCount++;
+                if (turnCount == 3)
+                {
+                    underTrapEffectText.gameObject.SetActive(false);
+                    turnCount = 0;
+                }
+
             }
 
         }
