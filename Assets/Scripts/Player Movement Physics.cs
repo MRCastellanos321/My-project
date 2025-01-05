@@ -14,12 +14,10 @@ namespace Tablero
 
         public static Vector3 lastPosition;
 
-
-        private Transform[] playersPosition = new Transform[4];
-        public Transform player1Position;
+        /*public Transform player1Position;
         public Transform player2Position;
         public Transform player3Position;
-        public Transform player4Position;
+        public Transform player4Position;*/
 
 
 

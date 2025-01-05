@@ -5,16 +5,26 @@ using UnityEngine.UI;
 public class MazeCanvas : MonoBehaviour
 {
     public GameObject imagePrefab;
+
+    public GameObject playerImage;
+
     public Transform canvas;
+    private GameObject playerIcon;
 
     void Start()
     {
         var laberinto = Laberinto.ElLaberinto;
+
         CreateMazeGuideCanvas(laberinto);
+        playerIcon = Instantiate(playerImage, canvas);
+        RectTransform prt = playerIcon.GetComponent<RectTransform>();
+        prt.sizeDelta = new Vector2(2f, 2f);
+        UpdatePlayerIcon();
+
     }
     void CreateMazeGuideCanvas(Laberinto laberinto)
     {
-    float size = 2f;
+        float size = 2f;
 
         for (int i = 0; i < laberinto.Lado(); i++)
         {
@@ -32,9 +42,23 @@ public class MazeCanvas : MonoBehaviour
         }
     }
 
+
+    void UpdatePlayerIcon()
+    {
+        float size = 2f;
+        RectTransform prt = playerIcon.GetComponent<RectTransform>();
+        prt.anchoredPosition = new Vector2(Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] * size + 211, -Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] * size + 232);
+        Debug.Log(Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] - Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0]);
+    }
+
     public void Update()
     {
-        //buscar como poner un puntico rojo
-
+        if (playerIcon != null)
+        {
+            UpdatePlayerIcon();
+        }
+    
     }
+
 }
+

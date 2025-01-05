@@ -72,47 +72,44 @@ namespace Tablero
         }
         public void Skill()
         {
-
+            bool canAttack = false;
             //Revisa las posiciones en un radio de 4 casillas desde el hongo e incapacita a todos los jugadores "atacables" que encuentre
-            if (skillCoolDown == 0)
+            int f = Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] - 4;
+            int c = Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] - 4;
+
+            while (f <= Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] + 4)
             {
-                bool canAttack = false;
-                int f = Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] - 4;
-                int c = Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] - 4;
-
-                while (f <= Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] + 4)
+                while (c <= Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] + 4)
                 {
-                    while (c <= Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] + 4)
+                    for (int i = 0; i < Manager.FilasColumnas.Length; i++)
                     {
-                        for (int i = 0; i < Manager.FilasColumnas.Length; i++)
+                        if (f == Manager.FilasColumnas[i][0] && c == Manager.FilasColumnas[i][1] && i != Manager.Instancia.currentPlayerIndex - 1)
                         {
-                            if (f == Manager.FilasColumnas[i][0] && c == Manager.FilasColumnas[i][1] && i != Manager.Instancia.currentPlayerIndex - 1)
+                            if (Manager.playersType[i].GetTurnsPassed() == 0 && Manager.playersType[i].GetAttackInmunity() == 0)
                             {
-                                if (Manager.playersType[i].GetTurnsPassed() == 0 && Manager.playersType[i].GetAttackInmunity() == 0)
-                                {
-                                    canAttack = true;
-                                    Manager.playersType[i].SetTurnsPassed(2);
-                                }
+                                canAttack = true;
+                                Manager.playersType[i].SetTurnsPassed(2);
                             }
-                            i++;
                         }
-                        c++;
                     }
-                    c = 0;
-                    f++;
+                    c++;
                 }
-
-                //no debe importar si f y c se salen del tablero porque no las estoy usando para acceder a nada, simplemente la comprobacion no va a dar igual
-                if (canAttack == true)
-                {
-                    skillCoolDown += 10;
-                    Manager.ChangeMessage("Atacaste los jugadores!", Manager.Instancia.skillEffectText);
-                }
-                else
-                {
-                    Manager.ChangeMessage("No hay jugadores atacables", Manager.Instancia.skillEffectText);
-                }
+                c = 0;
+                f++;
             }
+
+            //no debe importar si f y c se salen del tablero porque no las estoy usando para acceder a nada, simplemente la comprobacion no va a dar igual
+            if (canAttack == true)
+            {
+                skillCoolDown += 5;
+                Manager.ChangeMessage("Atacaste los jugadores!", Manager.Instancia.skillEffectText);
+            }
+            else
+            {
+                Manager.ChangeMessage("No hay jugadores atacables", Manager.Instancia.skillEffectText);
+            }
+
         }
+        //no hay que analizar si skillcooldown es 0 pq en ese caso el boton simplemente no va a aparecer
     }
 }

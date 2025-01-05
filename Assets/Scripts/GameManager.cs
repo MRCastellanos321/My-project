@@ -2,10 +2,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting;
 namespace Tablero
 {
-
+    //para revisar: Jugador atacable en trampas tiene que tener un cartel, cambiar la comprobacion que pone el ataque activo y en su lugar
+    //que salga un mensaje cuando intentas atacar a alguien en una trammpa
+    //Cambiar onTrap a que cada trampa una vez activada por un jugador se desactive
+    //el cartelito de has caido en una trampa se sigue mostrando cuando se te acabo el turno parado en una hasta que te mueves, no importa pero se ve feo
+    //hay que annadirle un cartelito que diga el efecto que tiene la trampa
     public class Manager : MonoBehaviour
     {
 
@@ -78,8 +81,6 @@ namespace Tablero
         public Button attackButton;
         public Button skillButton;
 
-
-
         public TextMeshProUGUI victoryText;
         public TextMeshProUGUI trapText;
         public TextMeshProUGUI changeTurnText;
@@ -88,9 +89,20 @@ namespace Tablero
         public TextMeshProUGUI RemainingMovesText;
         public TextMeshProUGUI skillEffectText;
 
+        //private bool onTrap = false;
+
 
         void Start()
         {
+            if (MenuFunctions.selectedType1 == MenuFunctions.selectedType2)
+            {
+                SceneManager.LoadScene("MainMenu");
+            }
+            //si cualquier slected type es igual a otro significa que el juego no se esta ejecutando desde el menu
+            //si el juego no se ejecuta desde el menu, todos los selected types van a ser igual a cero pero el sprite sera igual
+            //al mismo que se uso antes. Entonces esto es una medida extra para cuando se ejecute desde la escena del juego
+            //para que se cargue primero el menu
+
             Instancia = this;
             selectedTypes = new int[4];
             selectedTypes[0] = MenuFunctions.selectedType1;
@@ -98,15 +110,6 @@ namespace Tablero
             selectedTypes[2] = MenuFunctions.selectedType3;
             selectedTypes[3] = MenuFunctions.selectedType4;
 
-
-            //si cualquier slected type es igual a otro significa que el juego no se esta ejecutando desde el menu
-            //si el juego no se ejecuta desde el menu, todos los selected types van a ser igual a cero pero el sprite sera igual
-            //al mismo que se uso antes. Entonces esto es una medida extra para cuando se ejecute desde la escena del juego
-            //para que se cargue primero el menu
-            if (selectedTypes[0] == selectedTypes[1])
-            {
-                SceneManager.LoadScene("MainMenu");
-            }
 
             playersType = new characterInterface[4];
             for (int i = 0; i < selectedTypes.Length; i++)
@@ -215,13 +218,13 @@ namespace Tablero
         public bool MovimientoValido(Laberinto laberinto, int f, int c)
         {
             int posNumber = laberinto.Leer(f, c);
-            if (posNumber == 1 || posNumber == 3 || posNumber == 4 || posNumber == 5)
+            if (posNumber != 2)
             {
                 for (int i = 0; i < FilasColumnas.Length; i++)
                 {
                     if (f == FilasColumnas[i][0] && c == FilasColumnas[i][1] && currentPlayerIndex - 1 != i)
                     {
-                        if (laberinto.Leer(f, c) == 1)
+                        if (laberinto.Leer(f, c) == 1 || laberinto.Leer(f, c) == 6)
                         {
                             attackButton.gameObject.SetActive(true);
                             nearF = f;
@@ -250,21 +253,6 @@ namespace Tablero
             int nextPlayerIndex;
             while (true)
             {
-                for (int i = 0; i < playersType.Length; i++)
-                {
-                    if (playersType[i].GetAttackCoolDown() != 0)
-                    {
-                        playersType[i].SetAttackCoolDown(-1);
-                    }
-                    if (playersType[i].GetSkillCoolDown() != 0)
-                    {
-                        playersType[i].SetSkillCoolDown(-1);
-                    }
-                }
-                //Esto va aqui y no fuera del "while" porque si todos llegaran a estar incapacitados(ej: trampas) entonces 
-                //es posible que pasen varios turnos para todo el mundo dentro del ciclo
-
-
                 if (Instancia.currentPlayerIndex != 4)
                 {
                     nextPlayerIndex = Instancia.currentPlayerIndex + 1;
@@ -289,6 +277,18 @@ namespace Tablero
                 }
 
                 Instancia.currentPlayerIndex = nextPlayerIndex;
+            }
+            //si todos los jugadoresquedan incapacitados, no se va a contar esa ronda de turnos como cambios en los skill y attack cooldown
+            for (int i = 0; i < playersType.Length; i++)
+            {
+                if (playersType[i].GetAttackCoolDown() != 0)
+                {
+                    playersType[i].SetAttackCoolDown(-1);
+                }
+                if (playersType[i].GetSkillCoolDown() != 0)
+                {
+                    playersType[i].SetSkillCoolDown(-1);
+                }
             }
             TurnBegins();
         }
@@ -318,7 +318,6 @@ namespace Tablero
 
                             if (playersType[i].GetAttackInmunity() == 0)
                             {
-
                                 playersType[i].SetTurnsPassed(playersType[currentPlayerIndex - 1].GetAttack());
                                 ChangeMessage("Ataque Exitoso!", validAttackText);
                             }
@@ -352,29 +351,60 @@ namespace Tablero
 
         public void FellInTrap(Laberinto laberinto)
         {
-            if (laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]) == 3)
-            {
-                //la trampa  va a hacer al jugador perder un shard
-                trapText.text = "Has caido en la trampa 3"; // texto temporal
-                trapText.gameObject.SetActive(true);
-            }
-            else
-            {
-                trapText.gameObject.SetActive(false);
-            }
-            if (laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]) == 4)
-            {
-                //la trampa va a incapacitarte 3 turnos
-                trapText.text = "Has caido en la trampa 4"; // texto temporal
-                trapText.gameObject.SetActive(true);
-            }
-            else
-            {
-                trapText.gameObject.SetActive(false);
-            }
+            int number = laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]);
 
+            if (number != 1 && number != 6 && number != 2)
+            {
+                //if (onTrap == false){}
+
+                if (playersType[currentPlayerIndex - 1].GetTrapInmunity() == 0)
+                {
+                    if (number == 3)
+                    {
+                        //la trampa  va a hacer al jugador perder un shard
+                        ChangeMessage("Has caido en la trampa 1", trapText);
+                        if (playersType[currentPlayerIndex - 1].GetCollectedShards() != 0)
+                        {
+                            playersType[currentPlayerIndex - 1].SetCollectedShards(-1); // texto temporal     
+                            //laberinto.SetPosValue(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1], 1);
+                        }
+                    }
+                    //onTrap = true;
+
+                    else if (number == 4)
+                    {
+                        //la trampa va a incapacitarte 3 turnos
+                        ChangeMessage("Has caido en la trampa 2", trapText);
+                        playersType[currentPlayerIndex - 1].SetTurnsPassed(3);
+                        diceNumber = 0;
+                        //laberinto.SetPosValue(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1], 1);
+                        //onTrap = true;
+                    }
+
+                    else if (number == 5)
+                    {
+                        //la trampa va a hacer al jugador perder su skill por 3 turnos mas de los que ya tiene
+                        ChangeMessage("Has caido en la trampa 3", trapText);
+                        playersType[currentPlayerIndex - 1].SetSkillCoolDown(3); // texto temporal
+                        // onTrap = true;                                                        
+                      //  laberinto.SetPosValue(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1], 1);
+                    }
+                }
+                else
+                {
+                    playersType[currentPlayerIndex - 1].SetTrapInmunity(-1);
+                    ChangeMessage("Has evadido una trampa", trapText);
+                }
+            }
             //mas trampas: teletransportarte al inicio del juego, Teletransportarte junto al jugador al que le toca el turno siguiente y pierdes tu turno
             //disminuye tu numero en los dados durate x turnos
+            else
+            {
+                trapText.gameObject.SetActive(false);
+                //onTrap = false;
+            }
+            //el sistema de onTrap es para que no se aplique el efecto mas de una vez mientras se queda en la misma casilla
+            //considerando hacer que la trampa se desactive una vez alguien la toca
         }
 
 
@@ -426,7 +456,7 @@ namespace Tablero
                 skillButton.gameObject.SetActive(false);
             }
 
-            FellInTrap(laberinto);
+            Instancia.FellInTrap(laberinto);
 
             if (Input.anyKeyDown)
             {

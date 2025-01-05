@@ -50,8 +50,7 @@ namespace Tablero
             List<int[]> Backtrack = CrearLista();
             GenerandoCaminos(Backtrack);
             OpenCenter();
-            SpawnTrap1();
-            SpawnTrap2();
+            SpawnTraps();
             SpawnShard();
         }
         //de esta funcion sale una matriz con casillas camino(0) rodeadas de casillas pared(2) sin conexion entre los caminos
@@ -259,11 +258,12 @@ namespace Tablero
             }
         }
 
-        private void SpawnTrap1()
+        private void SpawnTraps()
         {
             Random random3 = new Random();
             int i = 0;
-            while (i < 10)
+            //2, 4, 4
+            while (i <= 10)
             {
                 int trapF = random3.Next(0, matriz.GetLength(0));
                 int trapC = random3.Next(0, matriz.GetLength(1));
@@ -277,15 +277,11 @@ namespace Tablero
                     continue;
                 }
             }
-        }
-        private void SpawnTrap2()
-        {
-            Random random4 = new Random();
-            int i = 0;
-            while (i < 10)
+            i = 0;
+            while (i <= 10)
             {
-                int trapF = random4.Next(0, matriz.GetLength(0));
-                int trapC = random4.Next(0, matriz.GetLength(1));
+                int trapF = random3.Next(0, matriz.GetLength(0));
+                int trapC = random3.Next(0, matriz.GetLength(1));
                 if (matriz[trapF, trapC] == 1 && (trapF != 25 || trapC != 25))
                 {
                     matriz[trapF, trapC] = 4;
@@ -296,21 +292,38 @@ namespace Tablero
                     continue;
                 }
             }
+            i = 0;
+            while (i <= 10)
+            {
+                int trapF = random3.Next(0, matriz.GetLength(0));
+                int trapC = random3.Next(0, matriz.GetLength(1));
+                if (matriz[trapF, trapC] == 1 && (trapF != 25 || trapC != 25))
+                {
+                    matriz[trapF, trapC] = 5;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+            }
         }
+
 
 
         private void SpawnShard()
         {
             Random random4 = new Random();
             int i = 0;
-            while (i < 16)
+            while (i < 14)
             {
                 int shardF = random4.Next(0, matriz.GetLength(0));
                 int shardC = random4.Next(0, matriz.GetLength(1));
+                // arreglar luego para que aparezca cierta cantidad por area
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[shardF, shardC] == 1)
+                if (matriz[shardF, shardC] == 1 && shardF > 4 && shardF < 46 && shardC > 4 && shardC < 46 && (shardF > 28 || shardF < 22 || shardC > 28 || shardC < 22))
                 {
-                    matriz[shardF, shardC] = 5;
+                    matriz[shardF, shardC] = 6;
                     i++;
                 }
                 else
@@ -335,10 +348,10 @@ namespace Tablero
             //nueve casillas centrales
 
             matriz[matriz.GetLength(0) / 2 + 2, matriz.GetLength(1) / 2] = 1;
-             matriz[matriz.GetLength(0) / 2 - 2, matriz.GetLength(1) / 2] = 1;
-             matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 2] = 1;
-             matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 2] = 1;
-             //crea 4 caminos saliendo del centro*
+            matriz[matriz.GetLength(0) / 2 - 2, matriz.GetLength(1) / 2] = 1;
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 2] = 1;
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 2] = 1;
+            //crea 4 caminos saliendo del centro*
         }
 
         //esto fue de cuando esta probando en consola        

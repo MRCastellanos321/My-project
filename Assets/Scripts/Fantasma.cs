@@ -71,8 +71,7 @@ namespace Tablero
 
         public void Skill()
         {
-            // attack inmunity funciona segun los ataques que recibe y no los turnos. A los jugadores se les aumenta
-            //el attack cooldown incluso aunque no lo hayan podido atacar
+            // attack inmunity funciona segun las trampas en las que cae y no en los turnos          
             trapInmunity += 2;
             skillCoolDown += 3;
             Manager.ChangeMessage("Inmunidad a trampas: 2 oportunidades", Manager.Instancia.skillEffectText);

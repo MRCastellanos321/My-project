@@ -53,7 +53,7 @@ namespace Tablero
             tile.transform.position = new Vector3(x, y, 0);
             tile.name = "Tile " + x / tileWidth + "," + y / tileWidth;
 
-            if (tileType == 5)
+            if (tileType == 6)
             {
                 shard = Instantiate(Shard);
                 shard.transform.position = new Vector3(x, y, 0);
