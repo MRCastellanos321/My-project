@@ -4,9 +4,9 @@ namespace Tablero
     public class SpawnMaze : MonoBehaviour
     {
 
-        public int width;
-        public int height;
-        public int tileWidth = 64;
+        public static int width;
+        public static int height;
+        public static int tileWidth = 64;
 
 
         public GameObject Camino;
@@ -33,39 +33,48 @@ namespace Tablero
             {
                 for (int y = height - 1; y >= 0; y--)
                 {
-                    SpawnTile(x * tileWidth, y * tileWidth, laberinto.Leer(height - y - 1, x));
+                    int value = laberinto.Leer(height - y - 1, x);
+                    if (value == 2)
+                    {
+                        SpawnTile(x * tileWidth, y * tileWidth, Bloque2);
+                    }
+                    else if (value == 7)
+                    {
+                        SpawnTile(x * tileWidth, y * tileWidth, Puerta);
+                    }
+                    else
+                    {
+                        SpawnTile(x * tileWidth, y * tileWidth, Camino);
+                    }
+
+                    if (value == 6)
+                    {
+                        SpawnShard(x * tileWidth, y * tileWidth);
+                    }
                     //la funcion lee primero fila y luego columna
                 }
             }
         }
         //esto genera el tile y lo pone donde va
-        public void SpawnTile(int x, int y, int tileType)
+        public static void SpawnTile(int x, int y, GameObject TileType)
         {
             GameObject tile;
-            GameObject shard;
-            if (tileType == 2)
-            {
-                tile = Instantiate(Bloque2);
-            }
-            else if (tileType == 7)
-            {
-                tile = Instantiate(Puerta);
-            }
-            else
-            {
-                tile = Instantiate(Camino);
-            }
+
+
+            tile = Instantiate(TileType);
+
 
             tile.transform.position = new Vector3(x, y, 0);
             tile.name = "Tile " + x / tileWidth + "," + y / tileWidth;
 
-            if (tileType == 6)
-            {
-                shard = Instantiate(Shard);
-                shard.transform.position = new Vector3(x, y, 0);
-                shard.name = "shard " + x / tileWidth + "," + y / tileWidth;
-            }
+        }
+        public void SpawnShard(int x, int y)
+        {
+            GameObject shard;
+            shard = Instantiate(Shard);
+            shard.transform.position = new Vector3(x, y, 0);
+            shard.name = "shard " + x / tileWidth + "," + y / tileWidth;
         }
     }
 }
-
+//revisar luego los parches que puse por lo de static

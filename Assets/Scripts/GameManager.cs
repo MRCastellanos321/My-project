@@ -96,6 +96,8 @@ namespace Tablero
 
         private int turnCount = 0;
 
+        public GameObject OpenDoor;
+
         //private bool onTrap = false;
 
 
@@ -231,7 +233,7 @@ namespace Tablero
             int posNumber = laberinto.Leer(f, c);
             if (posNumber != 2)
             {
-                if (posNumber != 7 || playersType[currentPlayerIndex - 1].GetCollectedKeys() == 0)
+                if (posNumber != 7)
                 {
                     for (int i = 0; i < FilasColumnas.Length; i++)
                     {
@@ -256,9 +258,13 @@ namespace Tablero
                 {
                     validAttackText.gameObject.SetActive(false);
                     attackButton.gameObject.SetActive(false);
-                    nearDoorF = f;
-                    nearDoorC = c;
-                    useKeyButton.gameObject.SetActive(true);
+
+                    if (playersType[currentPlayerIndex - 1].GetCollectedKeys() != 0)
+                    {
+                        useKeyButton.gameObject.SetActive(true);
+                        nearDoorF = f;
+                        nearDoorC = c;
+                    }
                 }
             }
             return false;
@@ -451,7 +457,7 @@ namespace Tablero
         {
             playersType[currentPlayerIndex - 1].SetCollectedKeys(-1);
             Laberinto.ElLaberinto.SetPosValue(nearDoorF, nearDoorC, 1);
-            //SpawnMaze.SpawnTile(nearDoorC, nearDoorF, 1);
+            SpawnMaze.SpawnTile(nearDoorC, nearDoorF, OpenDoor);
         }
         void Update()
         {
