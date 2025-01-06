@@ -12,6 +12,8 @@ namespace Tablero
         public GameObject Camino;
         public GameObject Bloque2;
 
+        public GameObject Puerta;
+
         public GameObject Shard;
 
         void Start()
@@ -37,13 +39,17 @@ namespace Tablero
             }
         }
         //esto genera el tile y lo pone donde va
-        void SpawnTile(int x, int y, int tileType)
+        public void SpawnTile(int x, int y, int tileType)
         {
             GameObject tile;
             GameObject shard;
             if (tileType == 2)
             {
                 tile = Instantiate(Bloque2);
+            }
+            else if (tileType == 7)
+            {
+                tile = Instantiate(Puerta);
             }
             else
             {
@@ -60,7 +66,6 @@ namespace Tablero
                 shard.name = "shard " + x / tileWidth + "," + y / tileWidth;
             }
         }
-
     }
 }
 

@@ -32,7 +32,7 @@ namespace Tablero
         }
         public void SetPosValue(int f, int c, int value)
         {
-            matriz[f,c] = value;
+            matriz[f, c] = value;
 
         }
 
@@ -320,13 +320,13 @@ namespace Tablero
         {
             Random random4 = new Random();
             int i = 0;
-            while (i < 14)
-            {
-                int shardF = random4.Next(0, matriz.GetLength(0));
-                int shardC = random4.Next(0, matriz.GetLength(1));
-                // arreglar luego para que aparezca cierta cantidad por area
+            //con los 4 while los shards recolectables quedan esparcidos mas equitativamente entre cuatro areas grandes
+            while (i < 4)
+            {   //primer cuadrante
+                int shardF = random4.Next(0, (matriz.GetLength(0) - 1) / 2);
+                int shardC = random4.Next(0, (matriz.GetLength(1) - 1) / 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[shardF, shardC] == 1 && shardF > 4 && shardF < 46 && shardC > 4 && shardC < 46 && (shardF > 28 || shardF < 22 || shardC > 28 || shardC < 22))
+                if (matriz[shardF, shardC] == 1 && shardF > 4 && shardC > 4 && (shardF < 22 || shardC < 22))
                 {
                     matriz[shardF, shardC] = 6;
                     i++;
@@ -336,8 +336,56 @@ namespace Tablero
                     continue;
                 }
             }
-        }
+            i = 0;
+            while (i < 4)
+            {
+                int shardF = random4.Next(0, (matriz.GetLength(0) - 1) / 2);
+                int shardC = random4.Next((matriz.GetLength(1) - 1) / 2, matriz.GetLength(0));
+                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+                if (matriz[shardF, shardC] == 1 && shardF > 4 && shardC < 46 && (shardF < 22 || shardC > 28))
+                {
+                    matriz[shardF, shardC] = 6;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            i = 0;
+            while (i < 4)
+            {
+                int shardF = random4.Next((matriz.GetLength(0) - 1) / 2, matriz.GetLength(0));
+                int shardC = random4.Next(0, (matriz.GetLength(1) - 1) / 2);
+                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+                if (matriz[shardF, shardC] == 1 && shardF < 46 && shardC > 4 && (shardF > 28 || shardC < 22))
+                {
+                    matriz[shardF, shardC] = 6;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            i = 0;
+            while (i < 4)
+            {
+                int shardF = random4.Next((matriz.GetLength(0) - 1) / 2, matriz.GetLength(0) - 1);
+                int shardC = random4.Next((matriz.GetLength(1) - 1) / 2, matriz.GetLength(1) - 1);
+                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+                if (matriz[shardF, shardC] == 1 && shardF < 46 && shardC < 46 && (shardF > 28 || shardC > 28))
+                {
+                    matriz[shardF, shardC] = 6;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+            }
 
+        }
 
         public void OpenCenter()
         {
@@ -352,11 +400,68 @@ namespace Tablero
             matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 1] = 1;
             //nueve casillas centrales
 
-            matriz[matriz.GetLength(0) / 2 + 2, matriz.GetLength(1) / 2] = 1;
-            matriz[matriz.GetLength(0) / 2 - 2, matriz.GetLength(1) / 2] = 1;
-            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 2] = 1;
-            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 2] = 1;
-            //crea 4 caminos saliendo del centro*
+            int c = (matriz.GetLength(0) - 1) / 2 - 2;
+            int f = (matriz.GetLength(0) - 1) / 2 - 2;
+            while (c <= (matriz.GetLength(1) - 1) / 2 + 2)
+            {
+                matriz[f, c] = 2;
+                c++;
+            }
+            c--;
+            while (f <= (matriz.GetLength(1) - 1) / 2 + 2)
+            {
+                matriz[f, c] = 2;
+                f++;
+            }
+            f--;
+            while (c >= (matriz.GetLength(1) - 1) / 2 - 2)
+            {
+                matriz[f, c] = 2;
+                c--;
+            }
+            c++;
+            while (f > (matriz.GetLength(1) - 1) / 2 - 2)
+            {
+                matriz[f, c] = 2;
+                f--;
+            }
+            //circulo de piedra alrededor de esas casillas del centro
+
+            matriz[matriz.GetLength(0) / 2 + 2, matriz.GetLength(1) / 2] = 7;
+            matriz[matriz.GetLength(0) / 2 - 2, matriz.GetLength(1) / 2] = 7;
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 2] = 7;
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 2] = 7;
+            //crea 4 puertas saliendo del centro*
+
+            c = (matriz.GetLength(0) - 1) / 2 - 3;
+            f = (matriz.GetLength(0) - 1) / 2 - 3;
+
+            while (c <= (matriz.GetLength(1) - 1) / 2 + 3)
+            {
+                matriz[f, c] = 1;
+                c++;
+            }
+            c--;
+            while (f <= (matriz.GetLength(1) - 1) / 2 + 3)
+            {
+                matriz[f, c] = 1;
+                f++;
+            }
+            f--;
+            while (c >= (matriz.GetLength(1) - 1) / 2 - 3)
+            {
+                matriz[f, c] = 1;
+                c--;
+            }
+            c++;
+            while (f > (matriz.GetLength(1) - 1) / 2 - 3)
+            {
+                matriz[f, c] = 1;
+                f--;
+            }
+            //crea un circulo de caminos alrededor del circulo de piedra
+
+            //todo esto es para luego poner cuatro puertas alrededor del centro que se tengan que desbloquear con llaves
         }
 
         //esto fue de cuando esta probando en consola        
@@ -383,3 +488,86 @@ namespace Tablero
 
     }
 }
+/* int i = 0;
+            while (i < 14)
+            {
+                int shardF = random4.Next(0, matriz.GetLength(0));
+                int shardC = random4.Next(0, matriz.GetLength(1));
+                // arreglar luego para que aparezca cierta cantidad por area
+                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+                if (matriz[shardF, shardC] == 1 && shardF > 4 && shardF < 46 && shardC > 4 && shardC < 46 && (shardF > 28 || shardF < 22 || shardC > 28 || shardC < 22))
+                {
+                    matriz[shardF, shardC] = 6;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+            }*/
+/*
+ int i = 0;
+//con los 4 while los shards recolectables quedan esparcidos mas equitativamente entre cuatro areas grandes
+while (i < 5)
+{   //primer cuadrante
+    int shardF = random4.Next(0, matriz.GetLength(0) - 1 / 2);
+    int shardC = random4.Next(0, matriz.GetLength(1) - 1 / 2);
+    // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+    if (matriz[shardF, shardC] == 1 && shardF > 4 && shardC > 4 && (shardF < 22 || shardC < 22))
+    {
+        matriz[shardF, shardC] = 6;
+        i++;
+    }
+    else
+    {
+        continue;
+    }
+}
+i = 0;
+while (i < 5)
+{
+    int shardF = random4.Next(0, matriz.GetLength(0) - 1 / 2);
+    int shardC = random4.Next(matriz.GetLength(1) - 1 / 2, matriz.GetLength(0) - 1);
+    // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+    if (matriz[shardF, shardC] == 1 && shardF > 4 && shardC < 46 && (shardF < 22 || shardC > 28))
+    {
+        matriz[shardF, shardC] = 6;
+        i++;
+    }
+    else
+    {
+        continue;
+    }
+}
+i = 0;
+while (i < 5)
+{
+    int shardF = random4.Next(matriz.GetLength(0) - 1 / 2, matriz.GetLength(0) - 1);
+    int shardC = random4.Next(0, matriz.GetLength(1) - 1 / 2);
+    // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+    if (matriz[shardF, shardC] == 1 && shardF < 46 && shardC > 4 && (shardF > 28 || shardC < 22))
+    {
+        matriz[shardF, shardC] = 6;
+        i++;
+    }
+    else
+    {
+        continue;
+    }
+}
+i = 0;
+while (i < 5)
+{
+    int shardF = random4.Next(matriz.GetLength(0) - 1 / 2, matriz.GetLength(0) - 1);
+    int shardC = random4.Next(matriz.GetLength(1) - 1 / 2, matriz.GetLength(1) -1);
+    // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+    if (matriz[shardF, shardC] == 1 && shardF < 46 && shardC < 46 && (shardF > 28 || shardC > 28))
+    {
+        matriz[shardF, shardC] = 6;
+        i++;
+    }
+    else
+    {
+        continue;
+    }
+}*/

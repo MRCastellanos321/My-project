@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Tablero
 {
-
     public class PlayerMovement : MonoBehaviour
     {
         public int playerIndex;
@@ -19,16 +18,12 @@ namespace Tablero
         public Transform player3Position;
         public Transform player4Position;*/
 
-
-
         void Start()
         {
             Vector3 temp = transform.position;
             transform.position = new Vector3(temp.x, temp.y, temp.z);
 
-
             targetPosition = transform.position;
-            Manager.TurnBegins();
         }
 
         void Update()
@@ -107,14 +102,10 @@ namespace Tablero
                     if (Input.GetKeyDown(KeyCode.Space))
                     {
 
-                        Manager.TurnEnds();
+                        Manager.Instancia.TurnEnds();
                     }
                 }
-
-
-
             }
-
         }
 
         void FindTarget(Vector3 direction)

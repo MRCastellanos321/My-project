@@ -1,6 +1,8 @@
 
 public interface characterInterface
 {
+    public int GetCollectedKeys();
+    public void SetCollectedKeys(int value);
     public int GetTrapInmunity();
     public void SetTrapInmunity(int value);
     public int GetAttackInmunity();

@@ -39,6 +39,9 @@ namespace Tablero
         public static int nearF;
         public static int nearC;
 
+        public static int nearDoorF;
+        public static int nearDoorC;
+
         //para acceder e iniciar las filas y columnas que permiten la lectura interna de la matriz
         public static int[][] FilasColumnas = new int[4][];
 
@@ -80,6 +83,7 @@ namespace Tablero
         public Button NewGameButton;
         public Button attackButton;
         public Button skillButton;
+        public Button useKeyButton;
 
         public TextMeshProUGUI victoryText;
         public TextMeshProUGUI trapText;
@@ -97,6 +101,7 @@ namespace Tablero
 
         void Start()
         {
+            Instancia = this;
             if (MenuFunctions.selectedType1 == MenuFunctions.selectedType2)
             {
                 SceneManager.LoadScene("MainMenu");
@@ -106,7 +111,7 @@ namespace Tablero
             //al mismo que se uso antes. Entonces esto es una medida extra para cuando se ejecute desde la escena del juego
             //para que se cargue primero el menu
 
-            Instancia = this;
+
             selectedTypes = new int[4];
             selectedTypes[0] = MenuFunctions.selectedType1;
             selectedTypes[1] = MenuFunctions.selectedType2;
@@ -163,6 +168,7 @@ namespace Tablero
 
 
             NewGameButton.gameObject.SetActive(false);
+            useKeyButton.gameObject.SetActive(false);
 
             victoryText.gameObject.SetActive(false);
             trapText.gameObject.SetActive(false);
@@ -214,6 +220,7 @@ namespace Tablero
             Player4FC[0] = 50 - ((int)player4Position.position.y / PlayerMovement.cellSize);
             Player4FC[1] = (int)player4Position.position.x / PlayerMovement.cellSize;
             FilasColumnas[3] = Player4FC;
+            TurnBegins();
 
         }
 
@@ -224,45 +231,55 @@ namespace Tablero
             int posNumber = laberinto.Leer(f, c);
             if (posNumber != 2)
             {
-                for (int i = 0; i < FilasColumnas.Length; i++)
+                if (posNumber != 7 || playersType[currentPlayerIndex - 1].GetCollectedKeys() == 0)
                 {
-                    if (f == FilasColumnas[i][0] && c == FilasColumnas[i][1] && currentPlayerIndex - 1 != i)
+                    for (int i = 0; i < FilasColumnas.Length; i++)
                     {
-                        if (laberinto.Leer(f, c) == 1 || laberinto.Leer(f, c) == 6)
+                        if (f == FilasColumnas[i][0] && c == FilasColumnas[i][1] && currentPlayerIndex - 1 != i)
                         {
-                            attackButton.gameObject.SetActive(true);
-                            nearF = f;
-                            nearC = c;
-                            //la comprobacion del 1 es para que no pueda atacar al otro jugador si este esta en una trampa
+                            if (laberinto.Leer(f, c) == 1 || laberinto.Leer(f, c) == 6)
+                            {
+                                attackButton.gameObject.SetActive(true);
+                                nearF = f;
+                                nearC = c;
+                                //la comprobacion del 1 es para que no pueda atacar al otro jugador si este esta en una trampa
+                            }
+                            return false;
                         }
-                        return false;
                     }
-
+                    validAttackText.gameObject.SetActive(false);
+                    attackButton.gameObject.SetActive(false);
+                    useKeyButton.gameObject.SetActive(false);
+                    return true;
                 }
-                validAttackText.gameObject.SetActive(false);
-                attackButton.gameObject.SetActive(false);
-                return true;
+                else
+                {
+                    validAttackText.gameObject.SetActive(false);
+                    attackButton.gameObject.SetActive(false);
+                    nearDoorF = f;
+                    nearDoorC = c;
+                    useKeyButton.gameObject.SetActive(true);
+                }
             }
             return false;
         }
 
-        public static void TurnBegins()
+        public void TurnBegins()
         {
             diceNumber = dice.Next(40, 41);
-            Debug.Log("puedes hacer" + diceNumber + "movimientos");
-            Instancia.underTrapEffectText.gameObject.SetActive(false);
-            Instancia.turnCount = 0;
+            underTrapEffectText.gameObject.SetActive(false);
+            turnCount = 0;
         }
 
-        public static void TurnEnds()
+        public void TurnEnds()
         {
             int nextPlayerIndex;
 
             while (true)
             {
-                if (Instancia.currentPlayerIndex != 4)
+                if (currentPlayerIndex != 4)
                 {
-                    nextPlayerIndex = Instancia.currentPlayerIndex + 1;
+                    nextPlayerIndex = currentPlayerIndex + 1;
                 }
                 else
                 {
@@ -272,9 +289,9 @@ namespace Tablero
 
                 if (playersType[nextPlayerIndex - 1].GetTurnsPassed() == 0)
                 {
-                    cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(false);
-                    Instancia.currentPlayerIndex = nextPlayerIndex;
-                    cameras[Instancia.currentPlayerIndex - 1].gameObject.SetActive(true);
+                    cameras[currentPlayerIndex - 1].gameObject.SetActive(false);
+                    currentPlayerIndex = nextPlayerIndex;
+                    cameras[currentPlayerIndex - 1].gameObject.SetActive(true);
 
                     break;
                 }
@@ -283,7 +300,7 @@ namespace Tablero
                     playersType[nextPlayerIndex - 1].SetTurnsPassed(-1);
                 }
 
-                Instancia.currentPlayerIndex = nextPlayerIndex;
+                currentPlayerIndex = nextPlayerIndex;
             }
             //si todos los jugadoresquedan incapacitados, no se va a contar esa ronda de turnos como cambios en los skill y attack cooldown
             for (int i = 0; i < playersType.Length; i++)
@@ -361,7 +378,7 @@ namespace Tablero
         {
             int number = laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]);
 
-            if (number != 1 && number != 6 && number != 2)
+            if (number != 1 && number != 6 && number != 2 && number != 7)
             {
                 //if (onTrap == false){}
 
@@ -430,6 +447,12 @@ namespace Tablero
             playersType[currentPlayerIndex - 1].Skill();
         }
 
+        public void UseKeyButton()
+        {
+            playersType[currentPlayerIndex - 1].SetCollectedKeys(-1);
+            Laberinto.ElLaberinto.SetPosValue(nearDoorF, nearDoorC, 1);
+            //SpawnMaze.SpawnTile(nearDoorC, nearDoorF, 1);
+        }
         void Update()
         {
             var laberinto = Laberinto.ElLaberinto;

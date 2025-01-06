@@ -10,6 +10,7 @@ namespace Tablero
         private int skillCoolDown = 0;
         private int attackInmunity = 0;
         private int trapInmunity = 0;
+        private int doorKeysCollected = 0;
 
         public int GetTrapInmunity()
         {
@@ -67,6 +68,14 @@ namespace Tablero
         public void SetSkillCoolDown(int number)
         {
             skillCoolDown += number;
+        }
+        public void SetCollectedKeys(int value)
+        {
+            doorKeysCollected += value;
+        }
+        public int GetCollectedKeys()
+        {
+            return doorKeysCollected;
         }
         public void Skill()
         {
