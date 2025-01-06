@@ -26,9 +26,9 @@ public class MazeCanvas : MonoBehaviour
     {
         float size = 2f;
 
-        for (int i = 0; i < laberinto.Lado(); i++)
+        for (int i = 0; i < laberinto.GetSize(); i++)
         {
-            for (int j = 0; j < laberinto.Lado(); j++)
+            for (int j = 0; j < laberinto.GetSize(); j++)
             {
                 GameObject newImage = Instantiate(imagePrefab, canvas);
                 RectTransform rt = newImage.GetComponent<RectTransform>();

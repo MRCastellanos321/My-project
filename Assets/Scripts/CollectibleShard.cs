@@ -1,6 +1,5 @@
 using Tablero;
 using UnityEngine;
-
 public class CollectibleShard : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D other)
@@ -12,7 +11,6 @@ public class CollectibleShard : MonoBehaviour
             {
                 Manager.playersType[Manager.Instancia.currentPlayerIndex - 1].SetCollectedShards(1);            
                 Destroy(gameObject);
-
             }
         }
     }

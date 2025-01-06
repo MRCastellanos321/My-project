@@ -67,6 +67,8 @@ namespace Tablero
         public GameObject Player4Sprite;
         private Sprite player4Sprite;
 
+        private Sprite[] playersSprite;
+
         //tipo de jugador por int(la forma en que lo devuelve el menu)
         public static int[] selectedTypes;
 
@@ -94,11 +96,10 @@ namespace Tablero
         public TextMeshProUGUI skillEffectText;
         public TextMeshProUGUI underTrapEffectText;
 
-        private int turnCount = 0;
-
+        private int messageShowCount = 0;
         public GameObject OpenDoor;
 
-        //private bool onTrap = false;
+
 
 
         void Start()
@@ -124,7 +125,6 @@ namespace Tablero
             playersType = new characterInterface[4];
             for (int i = 0; i < selectedTypes.Length; i++)
             {
-
                 if (selectedTypes[i] == 0)
                 {
                     playersType[i] = new Vampiro();
@@ -145,13 +145,7 @@ namespace Tablero
                 {
                     playersType[i] = new Ninfa();
                 }
-
             }
-
-            Debug.Log(playersType[0]);
-            Debug.Log(playersType[1]);
-            Debug.Log(playersType[2]);
-            Debug.Log(playersType[3]);
 
             //Busca la imagen seleccionada que guardamos en los prefab selected skin y los guarda en la instancia de cada player
             player1Sprite = selectedSkin1.GetComponent<SpriteRenderer>().sprite;
@@ -261,9 +255,9 @@ namespace Tablero
 
                     if (playersType[currentPlayerIndex - 1].GetCollectedKeys() != 0)
                     {
-                        useKeyButton.gameObject.SetActive(true);
                         nearDoorF = f;
                         nearDoorC = c;
+                        useKeyButton.gameObject.SetActive(true);
                     }
                 }
             }
@@ -274,7 +268,7 @@ namespace Tablero
         {
             diceNumber = dice.Next(40, 41);
             underTrapEffectText.gameObject.SetActive(false);
-            turnCount = 0;
+            messageShowCount = 0;
         }
 
         public void TurnEnds()
@@ -386,7 +380,6 @@ namespace Tablero
 
             if (number != 1 && number != 6 && number != 2 && number != 7)
             {
-                //if (onTrap == false){}
 
                 if (playersType[currentPlayerIndex - 1].GetTrapInmunity() == 0)
                 {
@@ -406,7 +399,7 @@ namespace Tablero
                             ChangeMessage("No tienes shards que perder", underTrapEffectText);
                         }
                     }
-                    //onTrap = true;
+
 
                     else if (number == 4)
                     {
@@ -417,7 +410,6 @@ namespace Tablero
                         diceNumber = 0;
                         laberinto.SetPosValue(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1], 1);
 
-                        //onTrap = true;
                     }
 
                     else if (number == 5)
@@ -427,7 +419,7 @@ namespace Tablero
                         ChangeMessage("3 turnos mas antes de usar tu poder", underTrapEffectText);
                         playersType[currentPlayerIndex - 1].SetSkillCoolDown(3);
                         laberinto.SetPosValue(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1], 1);
-                        // onTrap = true;  
+
                     }
                 }
                 else
@@ -441,10 +433,8 @@ namespace Tablero
             else
             {
                 trapText.gameObject.SetActive(false);
-                //onTrap = false;
             }
-            //el sistema de onTrap es para que no se aplique el efecto mas de una vez mientras se queda en la misma casilla
-            //considerando hacer que la trampa se desactive una vez alguien la toca
+
         }
 
 
@@ -457,14 +447,13 @@ namespace Tablero
         {
             playersType[currentPlayerIndex - 1].SetCollectedKeys(-1);
             Laberinto.ElLaberinto.SetPosValue(nearDoorF, nearDoorC, 1);
-            SpawnMaze.SpawnTile(nearDoorC, nearDoorF, OpenDoor);
+            SpawnMaze.SpawnTile(nearDoorC * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - nearDoorF - 1)* SpawnMaze.tileWidth, OpenDoor);
         }
         void Update()
         {
             var laberinto = Laberinto.ElLaberinto;
             ChangeMessage($"{diceNumber}", RemainingMovesText);
             ChangeMessage($"Tienes {playersType[currentPlayerIndex - 1].GetCollectedShards()} shards", shardCollectionText);
-            //hay que programar aun la otra condicion de final
             if (FilasColumnas[currentPlayerIndex - 1][0] == MazeCenter[0] && FilasColumnas[currentPlayerIndex - 1][1] == MazeCenter[1])
             {
                 if (playersType[currentPlayerIndex - 1].GetCollectedShards() == 3)
@@ -507,11 +496,11 @@ namespace Tablero
             if (Input.anyKeyDown)
             {
                 skillEffectText.gameObject.SetActive(false);
-                turnCount++;
-                if (turnCount == 3)
+                messageShowCount++;
+                if (messageShowCount == 3)
                 {
                     underTrapEffectText.gameObject.SetActive(false);
-                    turnCount = 0;
+                    messageShowCount = 0;
                 }
 
             }
