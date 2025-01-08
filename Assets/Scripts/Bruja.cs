@@ -51,15 +51,17 @@ namespace Tablero
         {
             attackCoolDown += number;
         }
-
         public int GetCollectedShards()
         {
             return collectedShards;
         }
-
         public void SetCollectedShards(int number)
         {
             collectedShards += number;
+            if (collectedShards == 3)
+            {
+                Manager.Instancia.TurnInHuman();
+            }
         }
         public int GetSkillCoolDown()
         {
@@ -79,12 +81,7 @@ namespace Tablero
         }
         public void Skill()
         {
-            if (skillCoolDown == 0)
-            {
-                Manager.diceNumber *= 2;
-                skillCoolDown += 7;
-                Manager.ChangeMessage("Has duplicado tus movimientos!", Manager.Instancia.skillEffectText);
-            }
+
         }
     }
 }

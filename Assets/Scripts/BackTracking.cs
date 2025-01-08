@@ -21,10 +21,7 @@ namespace Tablero
         {
             direcciones = new List<string> { "izquierda", "derecha", "arriba", "abajo" };
             matriz = new int[filas, columnas];
-
         }
-
-
         public int GetSize()
         {
             return matriz.GetLength(0);
@@ -137,8 +134,6 @@ namespace Tablero
                     c++;
                     matriz[f, c] = 1;
                 }
-
-
                 else if (direccion == "izquierda")
                 {
                     c--;
@@ -146,8 +141,6 @@ namespace Tablero
                     c--;
                     matriz[f, c] = 1;
                 }
-
-
                 else if (direccion == "abajo")
                 {
                     f++;
@@ -326,7 +319,7 @@ namespace Tablero
                 int shardF = random.Next(0, (matriz.GetLength(0) - 1) / 2);
                 int shardC = random.Next(0, (matriz.GetLength(1) - 1) / 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[shardF, shardC] == 1 && shardF > 4 && shardC > 4 && (shardF < 22 || shardC < 22))
+                if (matriz[shardF, shardC] == 1 && shardF > 4 && shardC > 4 && shardF < 22 && shardC < 22)
                 {
                     matriz[shardF, shardC] = 6;
                     i++;
@@ -342,7 +335,7 @@ namespace Tablero
                 int shardF = random.Next(0, (matriz.GetLength(0) - 1) / 2);
                 int shardC = random.Next((matriz.GetLength(1) - 1) / 2, matriz.GetLength(0));
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[shardF, shardC] == 1 && shardF > 4 && shardC < 46 && (shardF < 22 || shardC > 28))
+                if (matriz[shardF, shardC] == 1 && shardF > 4 && shardC < 46 && shardF < 22 && shardC > 28)
                 {
                     matriz[shardF, shardC] = 6;
                     i++;
@@ -358,7 +351,7 @@ namespace Tablero
                 int shardF = random.Next((matriz.GetLength(0) - 1) / 2, matriz.GetLength(0));
                 int shardC = random.Next(0, (matriz.GetLength(1) - 1) / 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[shardF, shardC] == 1 && shardF < 46 && shardC > 4 && (shardF > 28 || shardC < 22))
+                if (matriz[shardF, shardC] == 1 && shardF < 46 && shardC > 4 && shardF > 28 && shardC < 22)
                 {
                     matriz[shardF, shardC] = 6;
                     i++;
@@ -374,7 +367,7 @@ namespace Tablero
                 int shardF = random.Next((matriz.GetLength(0) - 1) / 2, matriz.GetLength(0) - 1);
                 int shardC = random.Next((matriz.GetLength(1) - 1) / 2, matriz.GetLength(1) - 1);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[shardF, shardC] == 1 && shardF < 46 && shardC < 46 && (shardF > 28 || shardC > 28))
+                if (matriz[shardF, shardC] == 1 && shardF < 46 && shardC < 46 && shardF > 28 && shardC > 28)
                 {
                     matriz[shardF, shardC] = 6;
                     i++;
@@ -395,7 +388,7 @@ namespace Tablero
                 int keyF = random.Next(0, (matriz.GetLength(0) - 1) / 2);
                 int keyC = random.Next(0, (matriz.GetLength(1) - 1) / 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[keyF, keyC] == 1 && keyF > 4 && keyC > 4 && (keyF < 22 || keyC < 22))
+                if (matriz[keyF, keyC] == 1 && keyF > 4 && keyC > 4 && keyF < 22 && keyC < 22)
                 {
                     matriz[keyF, keyC] = 8;
                     i++;
@@ -411,7 +404,7 @@ namespace Tablero
                 int keyF = random.Next(0, (matriz.GetLength(0) - 1) / 2);
                 int keyC = random.Next((matriz.GetLength(1) - 1) / 2, matriz.GetLength(0));
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[keyF, keyC] == 1 && keyF > 4 && keyC < 46 && (keyF < 22 || keyC > 28))
+                if (matriz[keyF, keyC] == 1 && keyF > 4 && keyC < 46 && keyF < 22 && keyC > 28)
                 {
                     matriz[keyF, keyC] = 8;
                     i++;
@@ -427,7 +420,7 @@ namespace Tablero
                 int keyF = random.Next((matriz.GetLength(0) - 1) / 2, matriz.GetLength(0));
                 int keyC = random.Next(0, (matriz.GetLength(1) - 1) / 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[keyF, keyC] == 1 && keyF < 46 && keyC > 4 && (keyF > 28 || keyC < 22))
+                if (matriz[keyF, keyC] == 1 && keyF < 46 && keyC > 4 && keyF > 28 && keyC < 22)
                 {
                     matriz[keyF, keyC] = 8;
                     i++;
@@ -443,7 +436,7 @@ namespace Tablero
                 int keyF = random.Next((matriz.GetLength(0) - 1) / 2, matriz.GetLength(0) - 1);
                 int keyC = random.Next((matriz.GetLength(1) - 1) / 2, matriz.GetLength(1) - 1);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[keyF, keyC] == 1 && keyF < 46 && keyC < 46 && (keyF > 28 || keyC > 28))
+                if (matriz[keyF, keyC] == 1 && keyF < 46 && keyC < 46 && keyF > 28 && keyC > 28)
                 {
                     matriz[keyF, keyC] = 8;
                     i++;
@@ -543,9 +536,7 @@ namespace Tablero
             {
                 while (c < columnas)
                 {
-
                     Console.Write(matriz[f, c] == 1 ? "  " : 22);
-
                     c++;
                 }
                 c = 0;
@@ -553,6 +544,5 @@ namespace Tablero
                 Console.WriteLine();
             }
         }
-
     }
 }

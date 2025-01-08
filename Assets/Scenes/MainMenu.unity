@@ -2609,29 +2609,29 @@ MonoBehaviour:
   sr3: {fileID: 1730155361}
   sr4: {fileID: 1968579428}
   skins1:
-  - {fileID: -8815892250755259674, guid: 57d9f632c4cf1773fa5553c4317c48c0, type: 3}
-  - {fileID: 3351572061641424733, guid: d44b0096b37b3b98d9879f0b01ae1af4, type: 3}
-  - {fileID: -5581797489420728523, guid: 053313adb050b783db5485bf1fba8fa3, type: 3}
-  - {fileID: 4672479217935265728, guid: 3c77f535872747be498d80d093a3e972, type: 3}
-  - {fileID: 5573427023700980448, guid: 5c33d9cbef1a6256b825ccf1f2858b14, type: 3}
+  - {fileID: 21300000, guid: a0142ef019ce015368c6be2701ded132, type: 3}
+  - {fileID: 21300000, guid: 88e684651b34860e4a399cccdb2e76e5, type: 3}
+  - {fileID: 21300000, guid: f8667b0f4e17d55338bcdeff658e8c8e, type: 3}
+  - {fileID: 21300000, guid: ef78d0b1a555dc125b762e5c572e12e1, type: 3}
+  - {fileID: 21300000, guid: c82b121c52232b6db999e140461c6d78, type: 3}
   skins2:
-  - {fileID: -8815892250755259674, guid: 57d9f632c4cf1773fa5553c4317c48c0, type: 3}
-  - {fileID: 3351572061641424733, guid: d44b0096b37b3b98d9879f0b01ae1af4, type: 3}
-  - {fileID: -5581797489420728523, guid: 053313adb050b783db5485bf1fba8fa3, type: 3}
-  - {fileID: 4672479217935265728, guid: 3c77f535872747be498d80d093a3e972, type: 3}
-  - {fileID: 5573427023700980448, guid: 5c33d9cbef1a6256b825ccf1f2858b14, type: 3}
+  - {fileID: 21300000, guid: 8621aee30450c2c8f95c885a399c1396, type: 3}
+  - {fileID: 21300000, guid: 7dbfe4b44cc4999e0a2b9496ef7ca580, type: 3}
+  - {fileID: 21300000, guid: ed86003ab0ffc0d7ab6982ce1f95d034, type: 3}
+  - {fileID: 21300000, guid: 834a4696bcb484228bf5144ff493265e, type: 3}
+  - {fileID: 21300000, guid: 0c6bfab4a868bcc098419ecf1d7350dc, type: 3}
   skins3:
-  - {fileID: -8815892250755259674, guid: 57d9f632c4cf1773fa5553c4317c48c0, type: 3}
-  - {fileID: 3351572061641424733, guid: d44b0096b37b3b98d9879f0b01ae1af4, type: 3}
-  - {fileID: -5581797489420728523, guid: 053313adb050b783db5485bf1fba8fa3, type: 3}
-  - {fileID: 4672479217935265728, guid: 3c77f535872747be498d80d093a3e972, type: 3}
-  - {fileID: 5573427023700980448, guid: 5c33d9cbef1a6256b825ccf1f2858b14, type: 3}
+  - {fileID: 21300000, guid: f8fe6270e2ceccbe5be6d8806e3471fe, type: 3}
+  - {fileID: 21300000, guid: 16516f437508a2710aae4d333debf6de, type: 3}
+  - {fileID: 21300000, guid: 6df8be3e700c509fb9206315d1b1dd87, type: 3}
+  - {fileID: 21300000, guid: fb40b69aa441d19ce8c2d573be3c103c, type: 3}
+  - {fileID: 21300000, guid: 7018a2bfe37b58bab91be7f1a56b12bf, type: 3}
   skins4:
-  - {fileID: -8815892250755259674, guid: 57d9f632c4cf1773fa5553c4317c48c0, type: 3}
-  - {fileID: 3351572061641424733, guid: d44b0096b37b3b98d9879f0b01ae1af4, type: 3}
-  - {fileID: -5581797489420728523, guid: 053313adb050b783db5485bf1fba8fa3, type: 3}
-  - {fileID: 4672479217935265728, guid: 3c77f535872747be498d80d093a3e972, type: 3}
-  - {fileID: 5573427023700980448, guid: 5c33d9cbef1a6256b825ccf1f2858b14, type: 3}
+  - {fileID: 21300000, guid: c139d7fd149bc53599983c03454fe956, type: 3}
+  - {fileID: 21300000, guid: 203e6b96b5efdda2a869eceb6ae37ce2, type: 3}
+  - {fileID: 21300000, guid: feeb7f7ceeb55201ba5a2e1f9fd47716, type: 3}
+  - {fileID: 21300000, guid: 8c96eb23194902317a7f3cdcf6b60100, type: 3}
+  - {fileID: 21300000, guid: 0823ca45c634612dc90cc0831a2396ec, type: 3}
   player1Type: {fileID: 1468846957}
   player2Type: {fileID: 1985296979}
   player3Type: {fileID: 1730155360}

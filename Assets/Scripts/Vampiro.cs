@@ -58,6 +58,10 @@ namespace Tablero
         public void SetCollectedShards(int number)
         {
             collectedShards += number;
+            if(collectedShards == 3)
+            {
+              Manager.Instancia.TurnInHuman();
+            }
         }
         public int GetSkillCoolDown()
         {

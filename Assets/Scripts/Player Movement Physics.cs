@@ -98,12 +98,6 @@ namespace Tablero
                     //esto es para cuando al terminar el turno, dejo de moverse porque ya no es su turno, pero al lerp no le da tiempo a terminar
                     
                     transform.position = targetPosition; 
-
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-
-                        Manager.Instancia.TurnEnds();
-                    }
                 }
             }
         }

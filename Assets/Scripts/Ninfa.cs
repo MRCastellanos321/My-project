@@ -62,6 +62,10 @@ namespace Tablero
         public void SetCollectedShards(int number)
         {
             collectedShards += number;
+            if (collectedShards == 3)
+            {
+                Manager.Instancia.TurnInHuman();
+            }
         }
         public int GetSkillCoolDown()
         {
@@ -93,7 +97,7 @@ namespace Tablero
                 {
                     for (int i = 0; i < Manager.FilasColumnas.Length; i++)
                     {
-                        if (f == Manager.FilasColumnas[i][0] && c == Manager.FilasColumnas[i][1] && i != Manager.Instancia.currentPlayerIndex - 1)
+                        if (f == Manager.FilasColumnas[i][0] && c == Manager.FilasColumnas[i][1] && i != Manager.Instancia.currentPlayerIndex - 1 && !Manager.Instancia.Human[i])
                         {
                             if (Manager.playersType[i].GetCollectedShards() != 0)
                             {
@@ -116,11 +120,11 @@ namespace Tablero
             if (canSteal == true)
             {
                 skillCoolDown += 5;
-                Manager.ChangeMessage("Has robado shards a los jugadores!", Manager.Instancia.skillEffectText);
+                Manager.ChangeMessage("Has robado fragmentos a los jugadores!", Manager.Instancia.skillEffectText);
             }
             else
             {
-                Manager.ChangeMessage("No has podido robar shards", Manager.Instancia.skillEffectText);
+                Manager.ChangeMessage("No has podido robar fragmentos", Manager.Instancia.skillEffectText);
             }
 
         }

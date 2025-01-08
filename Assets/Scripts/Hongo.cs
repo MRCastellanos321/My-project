@@ -62,6 +62,10 @@ namespace Tablero
         public void SetCollectedShards(int number)
         {
             collectedShards += number;
+            if (collectedShards == 3)
+            {
+                Manager.Instancia.TurnInHuman();
+            }
         }
         public int GetSkillCoolDown()
         {
@@ -109,7 +113,7 @@ namespace Tablero
             }
 
             //no debe importar si f y c se salen del tablero porque no las estoy usando para acceder a nada, simplemente la comprobacion no va a dar igual
-            if (canAttack == true)
+            if (canAttack)
             {
                 skillCoolDown += 5;
                 Manager.ChangeMessage("Atacaste los jugadores!", Manager.Instancia.skillEffectText);
