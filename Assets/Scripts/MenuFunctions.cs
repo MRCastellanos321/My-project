@@ -141,7 +141,7 @@ public class MenuFunctions : MonoBehaviour
     PrefabUtility.SaveAsPrefabAsset(player3Type, "Assets/Prefabs/selectedSkin3.prefab");
     PrefabUtility.SaveAsPrefabAsset(player4Type, "Assets/Prefabs/selectedSkin4.prefab");
 
-    SceneManager.LoadScene("SampleScene");
+    SceneManager.LoadScene("GameScene");
   }
   void Start()
   {

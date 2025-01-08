@@ -89,7 +89,7 @@ namespace Tablero
         public Button skillButton;
         public Button useKeyButton;
 
-        public TextMeshProUGUI victoryText;
+        public TextMeshProUGUI unvalidVictoryText;
         public TextMeshProUGUI trapText;
         public TextMeshProUGUI changeTurnText;
         public TextMeshProUGUI validAttackText;
@@ -102,6 +102,8 @@ namespace Tablero
         private int messageShowCount = 0;
         public GameObject OpenDoor;
         public GameObject UnactiveTrap;
+
+        public GameObject WinnerPlayer;
         public bool[] Human;
         private bool onTrap = false;
 
@@ -186,7 +188,7 @@ namespace Tablero
             NewGameButton.gameObject.SetActive(false);
             useKeyButton.gameObject.SetActive(false);
 
-            victoryText.gameObject.SetActive(false);
+            unvalidVictoryText.gameObject.SetActive(false);
             trapText.gameObject.SetActive(false);
             underTrapEffectText.gameObject.SetActive(false);
             changeTurnText.gameObject.SetActive(false);
@@ -499,17 +501,19 @@ namespace Tablero
             {
                 if (Human[currentPlayerIndex - 1] == true)
                 {
-                    NewGameButton.gameObject.SetActive(true);
-                    ChangeMessage("Has ganado!", victoryText);
+                    WinnerPlayer.GetComponent<SpriteRenderer>().sprite = playersSprite[currentPlayerIndex - 1].GetComponent<SpriteRenderer>().sprite;
+                    SceneManager.LoadScene("WinScreen");
+                    //NewGameButton.gameObject.SetActive(true);
+                    // ChangeMessage("Has ganado!", unvalidVictoryText);
                 }
                 else
                 {
-                    ChangeMessage("Aun no has recuperado tu alma", victoryText);
+                    unvalidVictoryText.gameObject.SetActive(true);
                 }
             }
             else
             {
-                victoryText.gameObject.SetActive(false);
+                unvalidVictoryText.gameObject.SetActive(false);
             }
 
 

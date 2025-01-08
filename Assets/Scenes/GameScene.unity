@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 55595557}
   - component: {fileID: 55595556}
   m_Layer: 5
-  m_Name: VictoryText
+  m_Name: UnvalidVictoryText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Has Ganado!
+  m_text: Aun no has recuperado tu alma
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -203,8 +203,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1530,7 +1530,7 @@ MonoBehaviour:
   attackButton: {fileID: 962796569}
   skillButton: {fileID: 1833875512}
   useKeyButton: {fileID: 531312213}
-  victoryText: {fileID: 55595556}
+  unvalidVictoryText: {fileID: 55595556}
   trapText: {fileID: 1773317704}
   changeTurnText: {fileID: 1351353718}
   validAttackText: {fileID: 1866405612}
@@ -1540,7 +1540,8 @@ MonoBehaviour:
   underTrapEffectText: {fileID: 68955009}
   turnInHumanText: {fileID: 1951188131}
   OpenDoor: {fileID: 7980818563897544662, guid: 3e94aa3ae4824632eb55af6631ef254f, type: 3}
-  UnactiveTrap: {fileID: 0}
+  UnactiveTrap: {fileID: 3478276647092961817, guid: dacc8ea9e794e0c6c8c558a548dfa0fd, type: 3}
+  WinnerPlayer: {fileID: 9048689209106890162, guid: 9bb17f005f53d32ea81192d1a51a5622, type: 3}
   Human: 
 --- !u!4 &983695910
 Transform:
