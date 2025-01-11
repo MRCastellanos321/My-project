@@ -86,7 +86,7 @@ namespace Tablero
             if (skillCoolDown == 0)
             {
                 Manager.diceNumber *= 2;
-                skillCoolDown += 7;
+                skillCoolDown += 5;
                 Manager.ChangeMessage("Has duplicado tus movimientos!", Manager.Instancia.skillEffectText);
             }
         }

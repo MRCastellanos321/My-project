@@ -36,57 +36,61 @@ namespace Tablero
                 int f = Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0];
                 int c = Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1];
 
-
                 if (Manager.diceNumber > 0)
                 {
-
-                    if (Input.GetKeyDown(KeyCode.UpArrow))
+                    if (Bruja.onTeleport == true)
                     {
-                        if (Manager.Instancia.MovimientoValido(laberinto, f - 1, c))
+                        targetPosition = new Vector3(Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] * cellSize, (Laberinto.ElLaberinto.GetSize() - Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] - 1) * cellSize, 0);
+                    }
+                    else
+                    {
+                        if (Input.GetKeyDown(KeyCode.UpArrow))
                         {
-                            FindTarget(Vector3.up);
-                            f--;
-                            Manager.diceNumber--;
+                            if (Manager.Instancia.MovimientoValido(laberinto, f - 1, c))
+                            {
+                                FindTarget(Vector3.up);
+                                f--;
+                                Manager.diceNumber--;
+
+                            }
+                        }
+                        if (Input.GetKeyDown(KeyCode.DownArrow))
+                        {
+                            if (Manager.Instancia.MovimientoValido(laberinto, f + 1, c))
+                            {
+                                FindTarget(Vector3.down);
+                                f++;
+                                Manager.diceNumber--;
+
+                            }
 
                         }
-                    }
-                    if (Input.GetKeyDown(KeyCode.DownArrow))
-                    {
-                        if (Manager.Instancia.MovimientoValido(laberinto, f + 1, c))
-                        {
-                            FindTarget(Vector3.down);
-                            f++;
-                            Manager.diceNumber--;
 
+                        if (Input.GetKeyDown(KeyCode.LeftArrow))
+                        {
+                            if (Manager.Instancia.MovimientoValido(laberinto, f, c - 1))
+                            {
+                                FindTarget(Vector3.left);
+                                c--;
+                                Manager.diceNumber--;
+
+
+                            }
                         }
-
-                    }
-
-                    if (Input.GetKeyDown(KeyCode.LeftArrow))
-                    {
-                        if (Manager.Instancia.MovimientoValido(laberinto, f, c - 1))
+                        if (Input.GetKeyDown(KeyCode.RightArrow))
                         {
-                            FindTarget(Vector3.left);
-                            c--;
-                            Manager.diceNumber--;
+                            if (Manager.Instancia.MovimientoValido(laberinto, f, c + 1))
+                            {
+                                FindTarget(Vector3.right);
 
+                                c++;
+                                Manager.diceNumber--;
 
-                        }
-                    }
-                    if (Input.GetKeyDown(KeyCode.RightArrow))
-                    {
-                        if (Manager.Instancia.MovimientoValido(laberinto, f, c + 1))
-                        {
-                            FindTarget(Vector3.right);
-
-                            c++;
-                            Manager.diceNumber--;
-
+                            }
                         }
                     }
-
-                    transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);//elapsedTime / moveDuration
-
+                    transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);
+                    Bruja.onTeleport = false;
                     Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] = f;
                     Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] = c;
 
@@ -96,8 +100,8 @@ namespace Tablero
                 else
                 {
                     //esto es para cuando al terminar el turno, dejo de moverse porque ya no es su turno, pero al lerp no le da tiempo a terminar
-                    
-                    transform.position = targetPosition; 
+
+                    transform.position = targetPosition;
                 }
             }
         }
@@ -107,6 +111,11 @@ namespace Tablero
 
             targetPosition += direction * cellSize;
 
+        }
+
+        public void TeleportTarget(int f, int c)
+        {
+            targetPosition = Manager.playersPosition[Manager.Instancia.currentPlayerIndex - 1].position = new Vector3(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, 0);
         }
     }
 }

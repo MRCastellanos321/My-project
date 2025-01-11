@@ -17,9 +17,12 @@ namespace Tablero
         public GameObject Wall5;
         public GameObject Wall6;
         public GameObject Wall7;
+        public GameObject HalfBrokenWall;
         public GameObject Door;
         public GameObject Shard;
         public GameObject Key;
+        public GameObject SkillBoost;
+        public GameObject AttackBoost;
 
         void Start()
         {
@@ -74,6 +77,10 @@ namespace Tablero
                             SpawnTile(x * tileWidth, y * tileWidth, Wall7);
                         }
                     }
+                    else if (value == 11)
+                    {
+                        SpawnTile(x * tileWidth, y * tileWidth, HalfBrokenWall);
+                    }
                     else if (value == 7)
                     {
                         SpawnTile(x * tileWidth, y * tileWidth, Door);
@@ -92,6 +99,14 @@ namespace Tablero
                     {
                         SpawnKey(x * tileWidth, y * tileWidth);
                     }
+                    if (value == 9)
+                    {
+                        SpawnSkillBoost(x * tileWidth, y * tileWidth);
+                    }
+                    if (value == 10)
+                    {
+                        SpawnAttackBoost(x * tileWidth, y * tileWidth);
+                    }
                 }
             }
         }
@@ -99,14 +114,9 @@ namespace Tablero
         public static void SpawnTile(int x, int y, GameObject TileType)
         {
             GameObject tile;
-
-
             tile = Instantiate(TileType);
-
-
             tile.transform.position = new Vector3(x, y, 0);
             tile.name = "Tile " + x / tileWidth + "," + y / tileWidth;
-
         }
         public void SpawnShard(int x, int y)
         {
@@ -115,13 +125,27 @@ namespace Tablero
             shard.transform.position = new Vector3(x, y, 0);
             shard.name = "shard " + x / tileWidth + "," + y / tileWidth;
         }
-        public void SpawnKey(int x, int y)
+        private void SpawnKey(int x, int y)
         {
             GameObject key;
             key = Instantiate(Key);
             key.transform.position = new Vector3(x, y, 0);
             key.name = "key " + x / tileWidth + "," + y / tileWidth;
         }
+
+        private void SpawnSkillBoost(int x, int y)
+        {
+            GameObject skillBoost;
+            skillBoost = Instantiate(SkillBoost);
+            skillBoost.transform.position = new Vector3(x, y, 0);
+            skillBoost.name = "skillBoost " + x / tileWidth + "," + y / tileWidth;
+        }
+        private void SpawnAttackBoost(int x, int y)
+        {
+            GameObject attackBoost;
+            attackBoost = Instantiate(AttackBoost);
+            attackBoost.transform.position = new Vector3(x, y, 0);
+            attackBoost.name = "attackBoost " + x / tileWidth + "," + y / tileWidth;
+        }
     }
 }
-//revisar luego los parches que puse por lo de static

@@ -30,13 +30,16 @@ namespace Tablero
         public Transform player4Position;
 
 
-        private static Transform[] playersPosition = new Transform[4];
+        public static Transform[] playersPosition = new Transform[4];
 
         public static int nearF;
         public static int nearC;
 
         public static int nearDoorF;
         public static int nearDoorC;
+
+        public static int nearBrokenWallF;
+        public static int nearBrokenWallC;
 
         //para acceder e iniciar las filas y columnas que permiten la lectura interna de la matriz
         public static int[][] FilasColumnas = new int[4][];
@@ -88,6 +91,7 @@ namespace Tablero
         public Button attackButton;
         public Button skillButton;
         public Button useKeyButton;
+        public Button breakWallButton;
 
         public TextMeshProUGUI unvalidVictoryText;
         public TextMeshProUGUI trapText;
@@ -101,6 +105,7 @@ namespace Tablero
 
         private int messageShowCount = 0;
         public GameObject OpenDoor;
+        public GameObject Path;
         public GameObject UnactiveTrap;
 
         public GameObject WinnerPlayer;
@@ -150,6 +155,10 @@ namespace Tablero
                 {
                     playersType[i] = new Ninfa();
                 }
+                else if (selectedTypes[i] == 5)
+                {
+                    playersType[i] = new Dragon();
+                }
             }
 
             //Busca la imagen seleccionada que guardamos en los prefab selected skin y los guarda en la instancia de cada player
@@ -187,6 +196,8 @@ namespace Tablero
 
             NewGameButton.gameObject.SetActive(false);
             useKeyButton.gameObject.SetActive(false);
+            breakWallButton.gameObject.SetActive(false);
+
 
             unvalidVictoryText.gameObject.SetActive(false);
             trapText.gameObject.SetActive(false);
@@ -247,13 +258,13 @@ namespace Tablero
             int posNumber = laberinto.Leer(f, c);
             if (posNumber != 2)
             {
-                if (posNumber != 7)
+                if (posNumber != 7 && posNumber != 11)
                 {
                     for (int i = 0; i < FilasColumnas.Length; i++)
                     {
                         if (f == FilasColumnas[i][0] && c == FilasColumnas[i][1] && currentPlayerIndex - 1 != i)
                         {
-                            if (laberinto.Leer(f, c) == 1 || laberinto.Leer(f, c) == 6 || laberinto.Leer(f, c) == 8)
+                            if (laberinto.Leer(f, c) != 3 && laberinto.Leer(f, c) != 4 && laberinto.Leer(f, c) != 5)
                             {
                                 attackButton.gameObject.SetActive(true);
                                 nearF = f;
@@ -266,13 +277,15 @@ namespace Tablero
                     validAttackText.gameObject.SetActive(false);
                     attackButton.gameObject.SetActive(false);
                     useKeyButton.gameObject.SetActive(false);
+                    breakWallButton.gameObject.SetActive(false);
                     onTrap = false;
                     return true;
                 }
-                else
+                else if (posNumber == 7)
                 {
                     validAttackText.gameObject.SetActive(false);
                     attackButton.gameObject.SetActive(false);
+                    breakWallButton.gameObject.SetActive(false);
 
                     if (playersType[currentPlayerIndex - 1].GetCollectedKeys() != 0)
                     {
@@ -280,6 +293,15 @@ namespace Tablero
                         nearDoorC = c;
                         useKeyButton.gameObject.SetActive(true);
                     }
+                }
+                else
+                {
+                    validAttackText.gameObject.SetActive(false);
+                    attackButton.gameObject.SetActive(false);
+
+                    nearBrokenWallF = f;
+                    nearBrokenWallC = c;
+                    breakWallButton.gameObject.SetActive(true);
                 }
             }
             return false;
@@ -290,18 +312,21 @@ namespace Tablero
             diceNumber = dice.Next(40, 41);
             underTrapEffectText.gameObject.SetActive(false);
             trapText.gameObject.SetActive(false);
+            turnInHumanText.gameObject.SetActive(false);
             messageShowCount = 0;
             //esto no se hace en el turnEnds porque entonces si se te acaba el turno al mismo tiempo que caes en una trampa no se mostraria
         }
 
         public void TurnEnds()
         {
+            int tempPlayerIndex;
             int nextPlayerIndex;
+            tempPlayerIndex = currentPlayerIndex;
             while (true)
             {
-                if (currentPlayerIndex != 4)
+                if (tempPlayerIndex != 4)
                 {
-                    nextPlayerIndex = currentPlayerIndex + 1;
+                    nextPlayerIndex = tempPlayerIndex + 1;
                 }
                 else
                 {
@@ -326,17 +351,18 @@ namespace Tablero
                 else
                 {
                     playersType[nextPlayerIndex - 1].SetTurnsPassed(-1);
-                    currentPlayerIndex = nextPlayerIndex;
+                    tempPlayerIndex = nextPlayerIndex;
 
-                    if (playersType[currentPlayerIndex - 1].GetAttackCoolDown() != 0)
+                    if (playersType[tempPlayerIndex - 1].GetAttackCoolDown() != 0)
                     {
-                        playersType[currentPlayerIndex - 1].SetAttackCoolDown(-1);
+                        playersType[tempPlayerIndex - 1].SetAttackCoolDown(-1);
                     }
-                    if (playersType[currentPlayerIndex - 1].GetSkillCoolDown() != 0)
+                    if (playersType[tempPlayerIndex - 1].GetSkillCoolDown() != 0)
                     {
-                        playersType[currentPlayerIndex - 1].SetSkillCoolDown(-1);
+                        playersType[tempPlayerIndex - 1].SetSkillCoolDown(-1);
                     }
                     //los cambios en los cooldown va a ocurrir cuando te toca aunque se te salte en turno}
+                    //introduzco el temp player index para que las otras funciones y clase q tocan el currentPlayerIndex no tengan algun problema en el update
                 }
             }
             TurnBegins();
@@ -390,12 +416,6 @@ namespace Tablero
             }
         }
 
-
-        public void StartNewGame()
-        {
-            SceneManager.LoadScene("MainMenu");
-        }
-
         public void FellInTrap(Laberinto laberinto)
         {
             int number = laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]);
@@ -440,8 +460,8 @@ namespace Tablero
                         else if (number == 5 && !Human[currentPlayerIndex - 1])
                         {
                             ChangeMessage("Has activado una trampa", trapText);// texto temporal
-                            ChangeMessage("+3 turnos antes de usar tu poder", underTrapEffectText);
-                            playersType[currentPlayerIndex - 1].SetSkillCoolDown(3);
+                            ChangeMessage("+3 turnos antes de poder atacar", underTrapEffectText);
+                            playersType[currentPlayerIndex - 1].SetAttackCoolDown(3);
 
                             laberinto.SetPosValue(f, c, 1);
                             SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
@@ -459,17 +479,15 @@ namespace Tablero
             }
             //mas trampas: teletransportarte al inicio del juego, Teletransportarte junto al jugador al que le toca el turno siguiente y pierdes tu turno
             //disminuye tu numero en los dados durate x turnos
-            //el onTrap es para que no te quite el cartel de has caido en una trampa aunque no te hayas movido
-            //ahora hay que revisar que pasa si hay dos trampas seguidas y lo q esta haciendo el effect text
-            //si quiero que se te afecte en dos trampas segudidas debo cambiar el on trap true y false dentro del movimiento valido para que se cambie cuando se mueva(solo en retorno true)
-            else
-            {
-                onTrap = false;
-            }
+            //el onTrap es para que no te siga aplicando el efecto y cambiando el cartel aunque no te hayas movido. el return true del valid movement
+            //es el que lo vuelve a poner en false
+
         }
         public void SkillButton()
         {
             playersType[currentPlayerIndex - 1].Skill();
+            trapText.gameObject.SetActive(false);
+            underTrapEffectText.gameObject.SetActive(false);
         }
         public void TurnInHuman()
         {
@@ -483,8 +501,20 @@ namespace Tablero
             playersType[currentPlayerIndex - 1].SetCollectedKeys(-1);
             Laberinto.ElLaberinto.SetPosValue(nearDoorF, nearDoorC, 1);
             SpawnMaze.SpawnTile(nearDoorC * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - nearDoorF - 1) * SpawnMaze.tileWidth, OpenDoor);
+            useKeyButton.gameObject.SetActive(false);
         }
+
+        public void BreakWallButton()
+        {
+            Laberinto.ElLaberinto.SetPosValue(nearBrokenWallF, nearBrokenWallC, 1);
+            SpawnMaze.SpawnTile(nearBrokenWallC * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - nearBrokenWallF - 1) * SpawnMaze.tileWidth, Path);
+            diceNumber = 0;
+            //romper una pared consume lo que te queda del turno
+            breakWallButton.gameObject.SetActive(false);
+        }
+
         void Update()
+
         {
             var laberinto = Laberinto.ElLaberinto;
             ChangeMessage($"{diceNumber}", RemainingMovesText);
@@ -523,6 +553,14 @@ namespace Tablero
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     TurnEnds();
+                }
+                for (int i = 0; i < playersType.Length; i++)
+                {
+                    if (cameras[i].gameObject.activeSelf && i != currentPlayerIndex - 1)
+                    {
+                        cameras[i].gameObject.SetActive(false);
+                        cameras[currentPlayerIndex - 1].gameObject.SetActive(true);
+                    }
                 }
             }
             else

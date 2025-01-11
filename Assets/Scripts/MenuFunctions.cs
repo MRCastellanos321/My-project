@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using System.Collections.Generic;
+using TMPro;
 public class MenuFunctions : MonoBehaviour
 {
   //el "component"que hace el sprite del objeto visible
@@ -10,7 +11,7 @@ public class MenuFunctions : MonoBehaviour
   public SpriteRenderer sr3;
   public SpriteRenderer sr4;
 
-  //Lista de todos los posibles sprite, temporalmente son cuatro listas pq aun no me decido si los jugadores pueden ser igyaes con cuatro colores distintos o algo asi
+  //Lista de todos los posibles sprite, son 4 diferentes porque cada una tiene un numero indicndo el jugador
   public List<Sprite> skins1 = new List<Sprite>();
   public List<Sprite> skins2 = new List<Sprite>();
 
@@ -33,9 +34,13 @@ public class MenuFunctions : MonoBehaviour
   public static int selectedType4;
 
   public static bool EnteredMenu = false;
+  //para obligar a a que la primera escena sea el menu
+
+  public TextMeshProUGUI CharacterInfoText1;
+  public TextMeshProUGUI CharacterInfoText2;
+  private List<string> InfoTexts;
 
 
-  public GameObject UnvalidSelectionText;
   public void NextButton1()
   {
     selectedType1++;
@@ -45,6 +50,8 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr1.sprite = skins1[selectedType1];
+    CharacterInfoText1.gameObject.SetActive(false);
+    CharacterInfoText2.gameObject.SetActive(false);
 
   }
   public void BackButton1()
@@ -56,6 +63,8 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr1.sprite = skins1[selectedType1];
+    CharacterInfoText1.gameObject.SetActive(false);
+    CharacterInfoText2.gameObject.SetActive(false);
   }
 
   public void NextButton2()
@@ -67,6 +76,8 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr2.sprite = skins2[selectedType2];
+    CharacterInfoText1.gameObject.SetActive(false);
+    CharacterInfoText2.gameObject.SetActive(false);
 
   }
 
@@ -79,6 +90,8 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr2.sprite = skins2[selectedType2];
+    CharacterInfoText1.gameObject.SetActive(false);
+    CharacterInfoText2.gameObject.SetActive(false);
   }
 
   public void NextButton3()
@@ -90,6 +103,8 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr3.sprite = skins3[selectedType3];
+    CharacterInfoText1.gameObject.SetActive(false);
+    CharacterInfoText2.gameObject.SetActive(false);
 
   }
 
@@ -102,6 +117,8 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr3.sprite = skins3[selectedType3];
+    CharacterInfoText1.gameObject.SetActive(false);
+    CharacterInfoText2.gameObject.SetActive(false);
   }
 
   public void NextButton4()
@@ -113,6 +130,8 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr4.sprite = skins4[selectedType4];
+    CharacterInfoText1.gameObject.SetActive(false);
+    CharacterInfoText2.gameObject.SetActive(false);
 
   }
 
@@ -125,17 +144,39 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr4.sprite = skins4[selectedType4];
+    CharacterInfoText1.gameObject.SetActive(false);
+    CharacterInfoText2.gameObject.SetActive(false);
 
   }
 
+  public void InfoButton1()
+  {
+    CharacterInfoText2.gameObject.SetActive(false);
+    CharacterInfoText1.text = InfoTexts[selectedType1];
+    CharacterInfoText1.gameObject.SetActive(true);
+  }
+  public void InfoButton2()
+  {
+    CharacterInfoText1.gameObject.SetActive(false);
+    CharacterInfoText2.text = InfoTexts[selectedType2];
+    CharacterInfoText2.gameObject.SetActive(true);
+  }
+  public void InfoButton3()
+  {
+    CharacterInfoText2.gameObject.SetActive(false);
+    CharacterInfoText1.text = InfoTexts[selectedType3];
+    CharacterInfoText1.gameObject.SetActive(true);
+  }
+  public void InfoButton4()
+  {
+    CharacterInfoText1.gameObject.SetActive(false);
+    CharacterInfoText2.text = InfoTexts[selectedType4];
+    CharacterInfoText2.gameObject.SetActive(true);
+  }
+
+
   public void StartButton()
   {
-    /*if (selectedType1 == selectedType2 || selectedType2 == selectedType3 || selectedType1 == selectedType3 || selectedType1 == selectedType4 || selectedType4 == selectedType2 || selectedType4 == selectedType3)
-    {
-      UnvalidSelectionText.SetActive(true);
-    }*/
-
-    UnvalidSelectionText.SetActive(false);
     PrefabUtility.SaveAsPrefabAsset(player1Type, "Assets/Prefabs/selectedSkin1.prefab");
     PrefabUtility.SaveAsPrefabAsset(player2Type, "Assets/Prefabs/selectedSkin2.prefab");
     PrefabUtility.SaveAsPrefabAsset(player3Type, "Assets/Prefabs/selectedSkin3.prefab");
@@ -157,6 +198,15 @@ public class MenuFunctions : MonoBehaviour
     sr3.sprite = skins3[selectedType3];
     sr4.sprite = skins4[selectedType4];
 
+
+    InfoTexts.Add("Vampiro:Ser casi inmortal tiene sus ventajas: Dos oportunidades de evadir ataques");
+    InfoTexts.Add("Bruja:Con su magia, puede teletransportarse a una casilla al azar");
+    InfoTexts.Add("Fantasma:Es muy dificil de detectar!: Dos oportunidades de evadir trampas");
+    InfoTexts.Add("Hongo viviente:Libera esporas venenosas que le permiten un ataque a distancia");
+    InfoTexts.Add("Ninfa:Esta astuta ladrona puede robar shards a los jugadores cercanos");
+    InfoTexts.Add("Dragon:Es mucho mas facil moverte cuando tiene alas! Puede duplicar su tirada de dados");
+    CharacterInfoText1.gameObject.SetActive(false);
+    CharacterInfoText1.gameObject.SetActive(false);
   }
 
 }

@@ -1,4 +1,8 @@
 
+using System;
+using UnityEngine;
+using UnityEngine.Scripting.APIUpdating;
+
 namespace Tablero
 {
     public class Bruja : characterInterface
@@ -11,6 +15,8 @@ namespace Tablero
         private int attackInmunity = 0;
         private int trapInmunity = 0;
         private int doorKeysCollected = 0;
+
+        public static bool onTeleport;
 
         public int GetTrapInmunity()
         {
@@ -81,7 +87,41 @@ namespace Tablero
         }
         public void Skill()
         {
+            System.Random random = new System.Random();
+            int posRandomF;
+            int posRandomC;
+            bool playerOnPosition = false;
+            bool teleported = false;
+            while (!teleported)
+            {
+                posRandomF = random.Next(4, 48);
+                posRandomC = random.Next(4, 48);
 
+                int value = Laberinto.ElLaberinto.Leer(posRandomF, posRandomC);
+
+                if (value == 1 && (posRandomC > 28 || posRandomC < 22 || posRandomF > 28 || posRandomF < 22))
+                {
+                    for (int i = 0; i < Manager.FilasColumnas.Length; i++)
+                    {
+                        if (Manager.FilasColumnas[i][0] == posRandomF && Manager.FilasColumnas[i][1] == posRandomC && i != Manager.Instancia.currentPlayerIndex - 1)
+                        {
+                            playerOnPosition = true;
+                            break;
+                        }
+                    }
+                    if (!playerOnPosition)
+                    {
+                        //Manager.playersPosition[Manager.Instancia.currentPlayerIndex - 1].position = new Vector3(posRandomC * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - posRandomF - 1) * SpawnMaze.tileWidth, 0);
+                        Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] = posRandomF;
+                        Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] = posRandomC;
+                        //PlayerMovement.TeleportTarget(posRandomF, posRandomC);
+                        //  PlayerMovement.targetPosition = new Vector3(posRandomC * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - posRandomF - 1) * SpawnMaze.tileWidth, 0);
+                        onTeleport = true;
+                        teleported = true;
+                        skillCoolDown += 1;
+                    }
+                }
+            }
         }
     }
 }

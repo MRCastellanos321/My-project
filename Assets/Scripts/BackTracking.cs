@@ -54,7 +54,10 @@ namespace Tablero
             OpenCenter();
             SpawnTraps();
             SpawnShards();
-            SpawnKeys();
+            SpawnObject(8);
+            SpawnObject(9);
+            SpawnObject(10);
+            SpawnHalfBrokenWall();
         }
         //de esta funcion sale una matriz con casillas camino(0) rodeadas de casillas pared(2) sin conexion entre los caminos
         private void IniciarMatriz()
@@ -261,11 +264,12 @@ namespace Tablero
             Random random = new Random();
             int i = 0;
             //2, 4, 4
+            //las trampas se quedan con una revision diferente pq ellas pueden estar en cualquier cuadrante pero no pueden estar en el centro
             while (i <= 10)
             {
-                int trapF = random.Next(0, matriz.GetLength(0));
-                int trapC = random.Next(0, matriz.GetLength(1));
-                if (matriz[trapF, trapC] == 1 && (trapF != 25 || trapC != 25))
+                int trapF = random.Next(3, matriz.GetLength(0) - 3);
+                int trapC = random.Next(3, matriz.GetLength(1) - 3);
+                if (matriz[trapF, trapC] == 1 && (trapF > 27 || trapC > 27 || trapF < 22 || trapC < 22))
                 {
                     matriz[trapF, trapC] = 3;
                     i++;
@@ -278,9 +282,9 @@ namespace Tablero
             i = 0;
             while (i <= 10)
             {
-                int trapF = random.Next(0, matriz.GetLength(0));
-                int trapC = random.Next(0, matriz.GetLength(1));
-                if (matriz[trapF, trapC] == 1 && (trapF != 25 || trapC != 25))
+                int trapF = random.Next(3, matriz.GetLength(0) - 3);
+                int trapC = random.Next(3, matriz.GetLength(1) - 3);
+                if (matriz[trapF, trapC] == 1 && (trapF > 27 || trapC > 27 || trapF < 22 || trapC < 22))
                 {
                     matriz[trapF, trapC] = 4;
                     i++;
@@ -293,9 +297,9 @@ namespace Tablero
             i = 0;
             while (i <= 10)
             {
-                int trapF = random.Next(0, matriz.GetLength(0));
-                int trapC = random.Next(0, matriz.GetLength(1));
-                if (matriz[trapF, trapC] == 1 && (trapF != 25 || trapC != 25))
+                int trapF = random.Next(3, matriz.GetLength(0) - 3);
+                int trapC = random.Next(3, matriz.GetLength(1) - 3);
+                if (matriz[trapF, trapC] == 1 && (trapF > 27 || trapC > 27 || trapF < 22 || trapC < 22))
                 {
                     matriz[trapF, trapC] = 5;
                     i++;
@@ -316,10 +320,10 @@ namespace Tablero
             //con los 4 while los shards recolectables quedan esparcidos mas equitativamente entre cuatro areas grandes
             while (i < 4)
             {   //primer cuadrante
-                int shardF = random.Next(0, (matriz.GetLength(0) - 1) / 2);
-                int shardC = random.Next(0, (matriz.GetLength(1) - 1) / 2);
+                int shardF = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
+                int shardC = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[shardF, shardC] == 1 && shardF > 4 && shardC > 4 && shardF < 22 && shardC < 22)
+                if (matriz[shardF, shardC] == 1)
                 {
                     matriz[shardF, shardC] = 6;
                     i++;
@@ -328,14 +332,15 @@ namespace Tablero
                 {
                     continue;
                 }
+                //&& shardF > 4 && shardC > 4 && shardF < 22 && shardC < 22
             }
             i = 0;
             while (i < 4)
             {
-                int shardF = random.Next(0, (matriz.GetLength(0) - 1) / 2);
-                int shardC = random.Next((matriz.GetLength(1) - 1) / 2, matriz.GetLength(0));
+                int shardF = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
+                int shardC = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[shardF, shardC] == 1 && shardF > 4 && shardC < 46 && shardF < 22 && shardC > 28)
+                if (matriz[shardF, shardC] == 1)
                 {
                     matriz[shardF, shardC] = 6;
                     i++;
@@ -344,14 +349,15 @@ namespace Tablero
                 {
                     continue;
                 }
+                //&& shardF > 4 && shardC < 46 && shardF < 22 && shardC > 28
             }
             i = 0;
             while (i < 4)
             {
-                int shardF = random.Next((matriz.GetLength(0) - 1) / 2, matriz.GetLength(0));
-                int shardC = random.Next(0, (matriz.GetLength(1) - 1) / 2);
+                int shardF = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
+                int shardC = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[shardF, shardC] == 1 && shardF < 46 && shardC > 4 && shardF > 28 && shardC < 22)
+                if (matriz[shardF, shardC] == 1)
                 {
                     matriz[shardF, shardC] = 6;
                     i++;
@@ -360,14 +366,15 @@ namespace Tablero
                 {
                     continue;
                 }
+                // && shardF < 46 && shardC > 4 && shardF > 28 && shardC < 22
             }
             i = 0;
             while (i < 4)
             {
-                int shardF = random.Next((matriz.GetLength(0) - 1) / 2, matriz.GetLength(0) - 1);
-                int shardC = random.Next((matriz.GetLength(1) - 1) / 2, matriz.GetLength(1) - 1);
+                int shardF = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
+                int shardC = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(1) - 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[shardF, shardC] == 1 && shardF < 46 && shardC < 46 && shardF > 28 && shardC > 28)
+                if (matriz[shardF, shardC] == 1)
                 {
                     matriz[shardF, shardC] = 6;
                     i++;
@@ -376,75 +383,153 @@ namespace Tablero
                 {
                     continue;
                 }
+                //&& shardF < 46 && shardC < 46 && shardF > 28 && shardC > 28
             }
         }
 
-        public void SpawnKeys()
+        public void SpawnObject(int objectType)
         {
             Random random = new Random();
             int i = 0;
             while (i != 1)
             {   //primer cuadrante
-                int keyF = random.Next(0, (matriz.GetLength(0) - 1) / 2);
-                int keyC = random.Next(0, (matriz.GetLength(1) - 1) / 2);
+                int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
+                int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[keyF, keyC] == 1 && keyF > 4 && keyC > 4 && keyF < 22 && keyC < 22)
+                if (matriz[f, c] == 1)
                 {
-                    matriz[keyF, keyC] = 8;
+                    matriz[f, c] = objectType;
                     i++;
                 }
                 else
                 {
                     continue;
                 }
+                //f > 4 && c > 4 && f < 22 && c < 22
             }
             i = 0;
             while (i != 1)
             {
-                int keyF = random.Next(0, (matriz.GetLength(0) - 1) / 2);
-                int keyC = random.Next((matriz.GetLength(1) - 1) / 2, matriz.GetLength(0));
+                int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
+                int c = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[keyF, keyC] == 1 && keyF > 4 && keyC < 46 && keyF < 22 && keyC > 28)
+                if (matriz[f, c] == 1)
                 {
-                    matriz[keyF, keyC] = 8;
+                    matriz[f, c] = objectType;
                     i++;
                 }
                 else
                 {
                     continue;
                 }
+                //&& f > 4 && c < 46 && f < 22 && c > 28
             }
             i = 0;
             while (i != 1)
             {
-                int keyF = random.Next((matriz.GetLength(0) - 1) / 2, matriz.GetLength(0));
-                int keyC = random.Next(0, (matriz.GetLength(1) - 1) / 2);
+                int f = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
+                int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[keyF, keyC] == 1 && keyF < 46 && keyC > 4 && keyF > 28 && keyC < 22)
+                if (matriz[f, c] == 1)
                 {
-                    matriz[keyF, keyC] = 8;
+                    matriz[f, c] = objectType;
                     i++;
                 }
                 else
                 {
                     continue;
                 }
+                //if (matriz[f, c] == 1 && f < 46 && c > 4 && f > 28 && c < 22)
+
             }
             i = 0;
             while (i != 1)
             {
-                int keyF = random.Next((matriz.GetLength(0) - 1) / 2, matriz.GetLength(0) - 1);
-                int keyC = random.Next((matriz.GetLength(1) - 1) / 2, matriz.GetLength(1) - 1);
+                int f = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
+                int c = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(1) - 2);
                 // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
-                if (matriz[keyF, keyC] == 1 && keyF < 46 && keyC < 46 && keyF > 28 && keyC > 28)
+                if (matriz[f, c] == 1)
                 {
-                    matriz[keyF, keyC] = 8;
+                    matriz[f, c] = objectType;
                     i++;
                 }
                 else
                 {
                     continue;
                 }
+                //&& f < 46 && c < 46 && f > 28 && c > 28
+            }
+        }
+        public void SpawnHalfBrokenWall()
+        {
+            Random random = new Random();
+            int i = 0;
+            while (i != 3)
+            {   //primer cuadrante
+                int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
+                int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
+                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+                if (matriz[f, c] == 2 && ((f % 2 == 0 && c % 2 != 0) || (f % 2 != 0 && c % 2 == 0)))
+                {
+                    matriz[f, c] = 11;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+                //&& f > 3 && c > 3 && f < 22 && c < 22
+            }
+            i = 0;
+            while (i != 3)
+            {
+                int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
+                int c = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(0) - 2);
+                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+                if (matriz[f, c] == 2 && ((f % 2 == 0 && c % 2 != 0) || (f % 2 != 0 && c % 2 == 0)))
+                {
+                    matriz[f, c] = 11;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+                // && f > 3 && c < 47 && f < 22 && c > 28
+            }
+            i = 0;
+            while (i != 3)
+            {
+                int f = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
+                int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
+                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+                if (matriz[f, c] == 2 && ((f % 2 == 0 && c % 2 != 0) || (f % 2 != 0 && c % 2 == 0)))
+                {
+                    matriz[f, c] = 11;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+                //&& f < 47 && c > 3 && f > 28 && c < 22
+            }
+            i = 0;
+            while (i != 3)
+            {
+                int f = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
+                int c = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(1) - 2);
+                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+                if (matriz[f, c] == 2 && ((f % 2 == 0 && c % 2 != 0) || (f % 2 != 0 && c % 2 == 0)))
+                {
+                    matriz[f, c] = 11;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+                //&& f < 47 && c < 47 && f > 28 && c > 28
             }
         }
 
