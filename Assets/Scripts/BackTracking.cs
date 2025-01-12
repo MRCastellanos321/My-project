@@ -55,8 +55,11 @@ namespace Tablero
             SpawnTraps();
             SpawnShards();
             SpawnObject(8);
+            //las llaves
             SpawnObject(9);
+            //skillBoost
             SpawnObject(10);
+            //attackBoost
             SpawnHalfBrokenWall();
         }
         //de esta funcion sale una matriz con casillas camino(0) rodeadas de casillas pared(2) sin conexion entre los caminos
@@ -265,7 +268,7 @@ namespace Tablero
             int i = 0;
             //2, 4, 4
             //las trampas se quedan con una revision diferente pq ellas pueden estar en cualquier cuadrante pero no pueden estar en el centro
-            while (i <= 10)
+            while (i <= 3)
             {
                 int trapF = random.Next(3, matriz.GetLength(0) - 3);
                 int trapC = random.Next(3, matriz.GetLength(1) - 3);
@@ -280,7 +283,7 @@ namespace Tablero
                 }
             }
             i = 0;
-            while (i <= 10)
+            while (i <= 6)
             {
                 int trapF = random.Next(3, matriz.GetLength(0) - 3);
                 int trapC = random.Next(3, matriz.GetLength(1) - 3);
@@ -295,7 +298,7 @@ namespace Tablero
                 }
             }
             i = 0;
-            while (i <= 10)
+            while (i <= 7)
             {
                 int trapF = random.Next(3, matriz.GetLength(0) - 3);
                 int trapC = random.Next(3, matriz.GetLength(1) - 3);

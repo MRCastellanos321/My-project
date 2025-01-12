@@ -121,6 +121,10 @@ namespace Tablero
             {
                 skillCoolDown += 5;
                 Manager.ChangeMessage("Has robado fragmentos a los jugadores!", Manager.Instancia.skillEffectText);
+                if(collectedShards == 3)
+                {
+                 Manager.Instancia.TurnInHuman();
+                }
             }
             else
             {

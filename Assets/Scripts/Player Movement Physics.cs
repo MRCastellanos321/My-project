@@ -12,12 +12,6 @@ namespace Tablero
         private Vector3 targetPosition;
 
         public static Vector3 lastPosition;
-
-        /*public Transform player1Position;
-        public Transform player2Position;
-        public Transform player3Position;
-        public Transform player4Position;*/
-
         void Start()
         {
             Vector3 temp = transform.position;
@@ -115,7 +109,7 @@ namespace Tablero
 
         public void TeleportTarget(int f, int c)
         {
-            targetPosition = Manager.playersPosition[Manager.Instancia.currentPlayerIndex - 1].position = new Vector3(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, 0);
+            targetPosition = Manager.playersPosition[Manager.Instancia.currentPlayerIndex - 1].position = new Vector3(c * cellSize, (Laberinto.ElLaberinto.GetSize() - f - 1) * cellSize, 0);
         }
     }
 }

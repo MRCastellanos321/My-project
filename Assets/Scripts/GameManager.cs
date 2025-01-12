@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor;
 namespace Tablero
 {
     public class Manager : MonoBehaviour
@@ -79,13 +78,8 @@ namespace Tablero
         public Sprite humanSprite3;
         public Sprite humanSprite4;
         private Sprite[] humanSprites;
-
-
-
         //guarda las coordenadas f y c de la casilla central
-        public int[] MazeCenter;
-
-
+        private int[] MazeCenter;
 
         public Button NewGameButton;
         public Button attackButton;
@@ -119,10 +113,9 @@ namespace Tablero
             {
                 SceneManager.LoadScene("MainMenu");
             }
-            //si cualquier slected type es igual a otro significa que el juego no se esta ejecutando desde el menu
-            //si el juego no se ejecuta desde el menu, todos los selected types van a ser igual a cero pero el sprite sera igual
-            //al mismo que se uso antes. Entonces esto es una medida extra para cuando se ejecute desde la escena del juego
-            //para que se cargue primero el menu
+            //Si el juego no se ejecuta desde el menu, el sprite sera igual al mismo que de la ultima partida, pero no
+            //estara en correspondencia con el selected type int. Entonces esto es una medida extra para cuando se ejecute
+            // desde la escena del juego para que se cargue primero el menu
 
 
             selectedTypes = new int[4];
@@ -227,7 +220,38 @@ namespace Tablero
             playersPosition[2] = player3Position;
             playersPosition[3] = player4Position;
 
+            //Jugador1 fila final  columna del medio
+            //Jugador2 columna 0, fila del medio, 
+            //Jugador3 fila 0, columna del medio
+            //Jugador4 columna final, fila del medio
+            int[] Player1FC = new int[2];
+            Player1FC[0] = Laberinto.ElLaberinto.GetSize() - 2;
+            Player1FC[1] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
+            FilasColumnas[0] = Player1FC;
+
+            int[] Player2FC = new int[2];
+            Player2FC[0] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
+            Player2FC[1] = 1;
+            FilasColumnas[1] = Player2FC;
+
+            int[] Player3FC = new int[2];
+            Player3FC[0] = 1;
+            Player3FC[1] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
+            FilasColumnas[2] = Player3FC;
+
+            int[] Player4FC = new int[2];
+            Player4FC[0] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
+            Player4FC[1] = Laberinto.ElLaberinto.GetSize() - 2;
+            FilasColumnas[3] = Player4FC;
+
+            for (int i = 0; i < playersPosition.Length; i++)
+            {
+                playersPosition[i].position = new Vector3(FilasColumnas[i][1] * PlayerMovement.cellSize, (Laberinto.ElLaberinto.GetSize() - FilasColumnas[i][0] - 1) * PlayerMovement.cellSize, 0);
+            }
+            //escribir las posiciones en funcion de las variables
+
             //esto inicializa las f y las c segun la posicion en coordenadas del player
+            /*
             int[] Player1FC = new int[2];
             Player1FC[0] = 50 - (int)player1Position.position.y / PlayerMovement.cellSize;
             Player1FC[1] = (int)player1Position.position.x / PlayerMovement.cellSize;
@@ -246,7 +270,7 @@ namespace Tablero
             int[] Player4FC = new int[2];
             Player4FC[0] = 50 - ((int)player4Position.position.y / PlayerMovement.cellSize);
             Player4FC[1] = (int)player4Position.position.x / PlayerMovement.cellSize;
-            FilasColumnas[3] = Player4FC;
+            FilasColumnas[3] = Player4FC;*/
             TurnBegins();
 
         }
@@ -308,13 +332,12 @@ namespace Tablero
         }
 
         public void TurnBegins()
-        {
-            diceNumber = dice.Next(40, 41);
+        {//esto no se hace en el turnEnds porque entonces si se te acaba el turno al mismo tiempo que caes en una trampa no se mostraria
+            diceNumber = dice.Next(10, 21);
             underTrapEffectText.gameObject.SetActive(false);
             trapText.gameObject.SetActive(false);
             turnInHumanText.gameObject.SetActive(false);
             messageShowCount = 0;
-            //esto no se hace en el turnEnds porque entonces si se te acaba el turno al mismo tiempo que caes en una trampa no se mostraria
         }
 
         public void TurnEnds()
@@ -435,7 +458,7 @@ namespace Tablero
                             ChangeMessage("Has activado una trampa", trapText);
                             if (playersType[currentPlayerIndex - 1].GetCollectedShards() != 0)
                             {
-                                playersType[currentPlayerIndex - 1].SetCollectedShards(-1); // texto temporal     
+                                playersType[currentPlayerIndex - 1].SetCollectedShards(-1);
                                 laberinto.SetPosValue(f, c, 1);
                                 SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
                                 //desactiva la trampa luego de activarla
@@ -450,8 +473,8 @@ namespace Tablero
                         else if (number == 4)
                         {
                             ChangeMessage("Has activado una trampa", trapText);
-                            ChangeMessage("Te perderas 3 turnos", underTrapEffectText);
-                            playersType[currentPlayerIndex - 1].SetTurnsPassed(3);
+                            ChangeMessage("Te perderas 2 turnos", underTrapEffectText);
+                            playersType[currentPlayerIndex - 1].SetTurnsPassed(2);
                             SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
                             laberinto.SetPosValue(f, c, 1);
                             diceNumber = 0;

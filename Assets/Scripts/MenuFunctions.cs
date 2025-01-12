@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using System.Collections.Generic;
@@ -18,6 +19,12 @@ public class MenuFunctions : MonoBehaviour
   public List<Sprite> skins3 = new List<Sprite>();
 
   public List<Sprite> skins4 = new List<Sprite>();
+
+  public Image canvasImage1;
+  public Image canvasImage2;
+  public Image canvasImage3;
+  public Image canvasImage4;
+
 
 
   //Los GameObject que van a aparecer en pantalla
@@ -50,6 +57,7 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr1.sprite = skins1[selectedType1];
+    canvasImage1.sprite = skins1[selectedType1];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
 
@@ -63,6 +71,7 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr1.sprite = skins1[selectedType1];
+    canvasImage1.sprite = skins1[selectedType1];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
   }
@@ -76,6 +85,7 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr2.sprite = skins2[selectedType2];
+    canvasImage2.sprite = skins2[selectedType2];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
 
@@ -90,6 +100,7 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr2.sprite = skins2[selectedType2];
+    canvasImage2.sprite = skins2[selectedType2];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
   }
@@ -103,6 +114,7 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr3.sprite = skins3[selectedType3];
+    canvasImage3.sprite = skins3[selectedType3];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
 
@@ -117,6 +129,7 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr3.sprite = skins3[selectedType3];
+    canvasImage3.sprite = skins3[selectedType3];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
   }
@@ -130,6 +143,7 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr4.sprite = skins4[selectedType4];
+    canvasImage4.sprite = skins4[selectedType4];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
 
@@ -144,6 +158,7 @@ public class MenuFunctions : MonoBehaviour
     }
 
     sr4.sprite = skins4[selectedType4];
+    canvasImage4.sprite = skins4[selectedType4];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
 
@@ -192,13 +207,17 @@ public class MenuFunctions : MonoBehaviour
     selectedType3 = 0;
     selectedType4 = 0;
 
+    canvasImage1.sprite = skins1[selectedType1];
+    canvasImage2.sprite = skins2[selectedType2];
+    canvasImage3.sprite = skins3[selectedType3];
+    canvasImage4.sprite = skins4[selectedType4];
 
     sr1.sprite = skins1[selectedType1];
     sr2.sprite = skins2[selectedType2];
     sr3.sprite = skins3[selectedType3];
     sr4.sprite = skins4[selectedType4];
 
-
+    InfoTexts = new List<string>();
     InfoTexts.Add("Vampiro:Ser casi inmortal tiene sus ventajas: Dos oportunidades de evadir ataques");
     InfoTexts.Add("Bruja:Con su magia, puede teletransportarse a una casilla al azar");
     InfoTexts.Add("Fantasma:Es muy dificil de detectar!: Dos oportunidades de evadir trampas");
