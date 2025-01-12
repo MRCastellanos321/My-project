@@ -267,7 +267,7 @@ namespace Tablero
             Random random = new Random();
             int i = 0;
             //las trampas se quedan con una revision diferente pq ellas pueden estar en cualquier cuadrante pero no pueden estar en el centro
-            while (i <= 3)
+            while (i <= 8)
             {
                 int trapF = random.Next(3, matriz.GetLength(0) - 3);
                 int trapC = random.Next(3, matriz.GetLength(1) - 3);
@@ -311,6 +311,20 @@ namespace Tablero
                     continue;
                 }
             }
+             while (i <= 8)
+            {
+                int trapF = random.Next(3, matriz.GetLength(0) - 3);
+                int trapC = random.Next(3, matriz.GetLength(1) - 3);
+                if (matriz[trapF, trapC] == 1 && (trapF > 27 || trapC > 27 || trapF < 22 || trapC < 22))
+                {
+                    matriz[trapF, trapC] = 6;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+            }
         }
 
         private void SpawnShards()
@@ -324,7 +338,7 @@ namespace Tablero
                 int shardC = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
                 if (matriz[shardF, shardC] == 1)
                 {
-                    matriz[shardF, shardC] = 6;
+                    matriz[shardF, shardC] = 12;
                     i++;
                 }
                 else
@@ -339,7 +353,7 @@ namespace Tablero
                 int shardC = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 if (matriz[shardF, shardC] == 1)
                 {
-                    matriz[shardF, shardC] = 6;
+                    matriz[shardF, shardC] = 12;
                     i++;
                 }
                 else
@@ -354,7 +368,7 @@ namespace Tablero
                 int shardC = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
                 if (matriz[shardF, shardC] == 1)
                 {
-                    matriz[shardF, shardC] = 6;
+                    matriz[shardF, shardC] = 12;
                     i++;
                 }
                 else
@@ -369,7 +383,7 @@ namespace Tablero
                 int shardC = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(1) - 2);
                 if (matriz[shardF, shardC] == 1)
                 {
-                    matriz[shardF, shardC] = 6;
+                    matriz[shardF, shardC] = 12;
                     i++;
                 }
                 else

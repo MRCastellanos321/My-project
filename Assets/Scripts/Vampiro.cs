@@ -10,6 +10,7 @@ namespace Tablero
         private int attackInmunity = 0;
         private int trapInmunity = 0;
         private int doorKeysCollected = 0;
+        private int mazeVisibility = 0;
         public int GetTrapInmunity()
         {
             return trapInmunity;
@@ -58,9 +59,9 @@ namespace Tablero
         public void SetCollectedShards(int number)
         {
             collectedShards += number;
-            if(collectedShards == 3)
+            if (collectedShards == 3)
             {
-              Manager.Instancia.TurnInHuman();
+                Manager.Instancia.TurnInHuman();
             }
         }
         public int GetSkillCoolDown()
@@ -79,7 +80,14 @@ namespace Tablero
         {
             return doorKeysCollected;
         }
-
+        public int GetMazeVisibility()
+        {
+            return mazeVisibility;
+        }
+        public void SetMazeVisibility(int value)
+        {
+            mazeVisibility += value;
+        }
         public void Skill()
         {
             // attack inmunity funciona segun los ataques que recibe y no los turnos. A los jugadores se les aumenta

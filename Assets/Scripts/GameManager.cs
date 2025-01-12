@@ -231,6 +231,7 @@ namespace Tablero
             Player4FC[1] = Laberinto.ElLaberinto.GetSize() - 2;
             FilasColumnas[3] = Player4FC;
 
+            //inicia las coordenadas de los jugadores segun su fila y columna inicial
             for (int i = 0; i < playersPosition.Length; i++)
             {
                 playersPosition[i].position = new Vector3(FilasColumnas[i][1] * PlayerMovement.cellSize, (Laberinto.ElLaberinto.GetSize() - FilasColumnas[i][0] - 1) * PlayerMovement.cellSize, 0);
@@ -271,17 +272,15 @@ namespace Tablero
             {
                 if (posNumber != 7 && posNumber != 11)
                 {
+                    //7 es una puerta y 11 es una pared rompible, la separacion de las comprobaciones es pq ellas
+                    //no necesitan buscar jugadores en su casilla y porque necesitan activar sus respectivos botones
                     for (int i = 0; i < FilasColumnas.Length; i++)
                     {
                         if (f == FilasColumnas[i][0] && c == FilasColumnas[i][1] && currentPlayerIndex - 1 != i)
                         {
-                            if (laberinto.Leer(f, c) != 3 && laberinto.Leer(f, c) != 4 && laberinto.Leer(f, c) != 5)
-                            {
-                                attackButton.gameObject.SetActive(true);
-                                nearF = f;
-                                nearC = c;
-                                //la comprobacion del 1 es para que no pueda atacar al otro jugador si este esta en una trampa
-                            }
+                            attackButton.gameObject.SetActive(true);
+                            nearF = f;
+                            nearC = c;
                             return false;
                         }
                     }
@@ -319,7 +318,10 @@ namespace Tablero
         }
 
         public void TurnBegins()
-        {//esto no se hace en el turnEnds porque entonces si se te acaba el turno al mismo tiempo que caes en una trampa no se mostraria
+        {
+            //el text del skill no se toca aqui porque ya se cambio al recibir la tecla espacio para cambiar el turno
+            //Tampoco es necesario revisar los botones de ataque, llave y romper pared porque si entraste a la comprobacion
+            //de valid movement es porque aun tiene movimientos, por lo que esos botones nunca van a estar encendido cuando cambies de turno
             diceNumber = dice.Next(10, 21);
             underTrapEffectText.gameObject.SetActive(false);
             trapText.gameObject.SetActive(false);
@@ -356,6 +358,10 @@ namespace Tablero
                     {
                         playersType[currentPlayerIndex - 1].SetSkillCoolDown(-1);
                     }
+                    if (playersType[currentPlayerIndex - 1].GetMazeVisibility() != 0)
+                    {
+                        playersType[currentPlayerIndex - 1].SetMazeVisibility(-1);
+                    }
                     break;
                 }
                 else
@@ -371,6 +377,10 @@ namespace Tablero
                     {
                         playersType[tempPlayerIndex - 1].SetSkillCoolDown(-1);
                     }
+                    if (playersType[currentPlayerIndex - 1].GetMazeVisibility() != 0)
+                    {
+                        playersType[currentPlayerIndex - 1].SetMazeVisibility(-1);
+                    }
                     //los cambios en los cooldown va a ocurrir cuando te toca aunque se te salte en turno}
                     //introduzco el temp player index para que las otras funciones y clase q tocan el currentPlayerIndex no tengan algun problema en el update
                 }
@@ -385,11 +395,8 @@ namespace Tablero
 
         public void Attack()
         {
-
-            //esta funcion va a atacar al que yo inente acercarme con "movimiento valido"(nearF y nearC) asi nos deshacemos de los casos donde 
+            //esta funcion va a atacar al que yo intente acercarme con "movimiento valido"(nearF y nearC) asi nos deshacemos de los casos donde 
             //la casilla del currentPlayerIndex es adyacente a la de mas de un jugador;
-
-            //Puede que tenga que considerar eliminar las clases de tipo y acceder a las variables de otra forma, la funcion es demasiado larga
             for (int i = 0; i < FilasColumnas.Length; i++)
             {
                 if (nearF == FilasColumnas[i][0] && nearC == FilasColumnas[i][1] && currentPlayerIndex - 1 != i)
@@ -430,7 +437,7 @@ namespace Tablero
         {
             int number = laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]);
 
-            if (number == 3 || number == 4 || number == 5)
+            if (number == 3 || number == 4 || number == 5 || number == 6)
             {
                 if (onTrap == false)
                 {
@@ -472,6 +479,15 @@ namespace Tablero
                             ChangeMessage("Has activado una trampa", trapText);// texto temporal
                             ChangeMessage("+3 turnos antes de poder atacar", underTrapEffectText);
                             playersType[currentPlayerIndex - 1].SetAttackCoolDown(3);
+
+                            laberinto.SetPosValue(f, c, 1);
+                            SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
+                        }
+                        else if (number == 6)
+                        {
+                            ChangeMessage("Has activado una trampa", trapText);// texto temporal
+                            ChangeMessage("+3 turnos de no ver el laberinto", underTrapEffectText);
+                            playersType[currentPlayerIndex - 1].SetMazeVisibility(3);
 
                             laberinto.SetPosValue(f, c, 1);
                             SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
@@ -579,7 +595,7 @@ namespace Tablero
             }
 
 
-            if (playersType[currentPlayerIndex - 1].GetSkillCoolDown() == 0)
+            if (playersType[currentPlayerIndex - 1].GetSkillCoolDown() == 0 && diceNumber != 0)
             {
                 skillButton.gameObject.SetActive(true);
             }

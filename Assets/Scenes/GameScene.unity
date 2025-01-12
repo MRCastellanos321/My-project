@@ -1873,6 +1873,7 @@ MonoBehaviour:
   imagePrefab: {fileID: 9076584740841420653, guid: bdd03139372683b3195c57c608e5b06a, type: 3}
   playerImage: {fileID: 9076584740841420653, guid: d43155002ab46032794ec1b5404b510b, type: 3}
   canvas: {fileID: 1192750370}
+  mazeCanvas: {fileID: 1639365112}
 --- !u!1 &1027015603
 GameObject:
   m_ObjectHideFlags: 0

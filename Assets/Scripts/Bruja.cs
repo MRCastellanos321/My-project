@@ -15,6 +15,7 @@ namespace Tablero
         private int attackInmunity = 0;
         private int trapInmunity = 0;
         private int doorKeysCollected = 0;
+        private int mazeVisibility = 0;
 
         public static bool onTeleport;
 
@@ -84,6 +85,14 @@ namespace Tablero
         public int GetCollectedKeys()
         {
             return doorKeysCollected;
+        }
+        public int GetMazeVisibility()
+        {
+            return mazeVisibility;
+        }
+        public void SetMazeVisibility(int value)
+        {
+            mazeVisibility += value;
         }
         public void Skill()
         {

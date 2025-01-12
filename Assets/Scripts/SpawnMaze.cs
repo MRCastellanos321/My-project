@@ -90,7 +90,7 @@ namespace Tablero
                         SpawnTile(x * tileWidth, y * tileWidth, Path);
                     }
 
-                    if (value == 6)
+                    if (value == 12)
                     {
                         SpawnShard(x * tileWidth, y * tileWidth);
                     }

@@ -16,8 +16,9 @@ public interface characterInterface
     public void SetCollectedShards(int number);
     public int GetSkillCoolDown();
     public void SetSkillCoolDown(int number);
+    public int GetMazeVisibility();
+    public void SetMazeVisibility(int value);
     public void Skill();
-    //public string GetSkillEffectText();
 }
 
 

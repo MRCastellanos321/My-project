@@ -12,6 +12,7 @@ namespace Tablero
         private int attackInmunity = 0;
         private int trapInmunity = 0;
         private int doorKeysCollected = 0;
+        private int mazeVisibility = 0;
 
         public int GetTrapInmunity()
         {
@@ -84,6 +85,14 @@ namespace Tablero
             return doorKeysCollected;
         }
 
+        public int GetMazeVisibility()
+        {
+            return mazeVisibility;
+        }
+        public void SetMazeVisibility(int value)
+        {
+            mazeVisibility += value;
+        }
         public void Skill()
         {
             //Revisa las posiciones en un radio de 2 casillas y les roba un shard
@@ -121,9 +130,9 @@ namespace Tablero
             {
                 skillCoolDown += 5;
                 Manager.ChangeMessage("Has robado fragmentos a los jugadores!", Manager.Instancia.skillEffectText);
-                if(collectedShards == 3)
+                if (collectedShards == 3)
                 {
-                 Manager.Instancia.TurnInHuman();
+                    Manager.Instancia.TurnInHuman();
                 }
             }
             else

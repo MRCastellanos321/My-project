@@ -8,6 +8,7 @@ public class MazeCanvas : MonoBehaviour
     public GameObject playerImage;
     public Transform canvas;
     private GameObject playerIcon;
+    public Canvas mazeCanvas;
 
     void Start()
     {
@@ -31,7 +32,7 @@ public class MazeCanvas : MonoBehaviour
                 GameObject newImage = Instantiate(imagePrefab, canvas);
                 RectTransform rt = newImage.GetComponent<RectTransform>();
                 //+ 211 y + 232 funcionan para 2 pixeles
-                // +161 y =231 funcionan para 3 pixeles
+                // +161 y +231 funcionan para 3 pixeles
                 rt.anchoredPosition = new Vector2(j * size + 161, -i * size + 231); // a medida que aumentan las filas de la matriz, la coordenada Y diminuye, por eso el -i
                 rt.sizeDelta = new Vector2(size, size);
                 Image img = newImage.GetComponent<Image>();
@@ -50,11 +51,15 @@ public class MazeCanvas : MonoBehaviour
 
     public void Update()
     {
-        if (playerIcon != null)
+        if (Manager.playersType[Manager.Instancia.currentPlayerIndex - 1].GetMazeVisibility() == 0)
         {
+            mazeCanvas.gameObject.SetActive(true);
             UpdatePlayerIcon();
         }
-
+        else
+        {
+            mazeCanvas.gameObject.SetActive(false);
+        }
     }
 
 }
