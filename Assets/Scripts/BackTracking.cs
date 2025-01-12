@@ -124,7 +124,7 @@ namespace Tablero
 
             //aqui se realiza una iteracion en cada entrada a la recursividad para volver una casilla vacia un camino cada vez que exista una direcciin valida
 
-            List<string> direccionesValidas = EsValido(f, c);
+            List<string> direccionesValidas = IsValid(f, c);
 
             if (direccionesValidas.Count != 0)
             {
@@ -184,7 +184,7 @@ namespace Tablero
                     f = temp[0];
                     c = temp[1];
 
-                    List<string> vecinosVacios = EsValido(f, c);
+                    List<string> vecinosVacios = IsValid(f, c);
                     if (f == 1 && c == 1)
                     {
                         break;
@@ -200,7 +200,7 @@ namespace Tablero
             }
         }
         //esta funcion revisa si se puede o si se sale de los limites del array
-        public List<string> EsValido(int f, int c)
+        public List<string> IsValid(int f, int c)
         {
             int filas = matriz.GetLength(0) - 1;
             int columnas = matriz.GetLength(1) - 1;
@@ -266,7 +266,6 @@ namespace Tablero
         {
             Random random = new Random();
             int i = 0;
-            //2, 4, 4
             //las trampas se quedan con una revision diferente pq ellas pueden estar en cualquier cuadrante pero no pueden estar en el centro
             while (i <= 3)
             {
@@ -283,7 +282,7 @@ namespace Tablero
                 }
             }
             i = 0;
-            while (i <= 6)
+            while (i <= 10)
             {
                 int trapF = random.Next(3, matriz.GetLength(0) - 3);
                 int trapC = random.Next(3, matriz.GetLength(1) - 3);
@@ -298,7 +297,7 @@ namespace Tablero
                 }
             }
             i = 0;
-            while (i <= 7)
+            while (i <= 10)
             {
                 int trapF = random.Next(3, matriz.GetLength(0) - 3);
                 int trapC = random.Next(3, matriz.GetLength(1) - 3);
@@ -314,18 +313,15 @@ namespace Tablero
             }
         }
 
-
-
         private void SpawnShards()
         {
             Random random = new Random();
             int i = 0;
             //con los 4 while los shards recolectables quedan esparcidos mas equitativamente entre cuatro areas grandes
             while (i < 4)
-            {   //primer cuadrante
+            { 
                 int shardF = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
                 int shardC = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
-                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
                 if (matriz[shardF, shardC] == 1)
                 {
                     matriz[shardF, shardC] = 6;
@@ -335,14 +331,12 @@ namespace Tablero
                 {
                     continue;
                 }
-                //&& shardF > 4 && shardC > 4 && shardF < 22 && shardC < 22
             }
             i = 0;
             while (i < 4)
             {
                 int shardF = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
                 int shardC = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(0) - 2);
-                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
                 if (matriz[shardF, shardC] == 1)
                 {
                     matriz[shardF, shardC] = 6;
@@ -351,15 +345,13 @@ namespace Tablero
                 else
                 {
                     continue;
-                }
-                //&& shardF > 4 && shardC < 46 && shardF < 22 && shardC > 28
+                }               
             }
             i = 0;
             while (i < 4)
             {
                 int shardF = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 int shardC = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
-                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
                 if (matriz[shardF, shardC] == 1)
                 {
                     matriz[shardF, shardC] = 6;
@@ -369,14 +361,12 @@ namespace Tablero
                 {
                     continue;
                 }
-                // && shardF < 46 && shardC > 4 && shardF > 28 && shardC < 22
             }
             i = 0;
             while (i < 4)
             {
                 int shardF = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 int shardC = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(1) - 2);
-                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
                 if (matriz[shardF, shardC] == 1)
                 {
                     matriz[shardF, shardC] = 6;
@@ -385,8 +375,7 @@ namespace Tablero
                 else
                 {
                     continue;
-                }
-                //&& shardF < 46 && shardC < 46 && shardF > 28 && shardC > 28
+                }            
             }
         }
 
@@ -398,7 +387,7 @@ namespace Tablero
             {   //primer cuadrante
                 int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
                 int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
-                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+               
                 if (matriz[f, c] == 1)
                 {
                     matriz[f, c] = objectType;
@@ -407,15 +396,13 @@ namespace Tablero
                 else
                 {
                     continue;
-                }
-                //f > 4 && c > 4 && f < 22 && c < 22
+                }            
             }
             i = 0;
             while (i != 1)
             {
                 int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
                 int c = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(0) - 2);
-                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
                 if (matriz[f, c] == 1)
                 {
                     matriz[f, c] = objectType;
@@ -424,15 +411,14 @@ namespace Tablero
                 else
                 {
                     continue;
-                }
-                //&& f > 4 && c < 46 && f < 22 && c > 28
+                }          
             }
             i = 0;
             while (i != 1)
             {
                 int f = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
-                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+               
                 if (matriz[f, c] == 1)
                 {
                     matriz[f, c] = objectType;
@@ -442,15 +428,13 @@ namespace Tablero
                 {
                     continue;
                 }
-                //if (matriz[f, c] == 1 && f < 46 && c > 4 && f > 28 && c < 22)
-
             }
             i = 0;
             while (i != 1)
             {
                 int f = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 int c = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(1) - 2);
-                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+               
                 if (matriz[f, c] == 1)
                 {
                     matriz[f, c] = objectType;
@@ -460,7 +444,6 @@ namespace Tablero
                 {
                     continue;
                 }
-                //&& f < 46 && c < 46 && f > 28 && c > 28
             }
         }
         public void SpawnHalfBrokenWall()
@@ -468,10 +451,10 @@ namespace Tablero
             Random random = new Random();
             int i = 0;
             while (i != 3)
-            {   //primer cuadrante
+            {  
                 int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
                 int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
-                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+               
                 if (matriz[f, c] == 2 && ((f % 2 == 0 && c % 2 != 0) || (f % 2 != 0 && c % 2 == 0)))
                 {
                     matriz[f, c] = 11;
@@ -481,14 +464,13 @@ namespace Tablero
                 {
                     continue;
                 }
-                //&& f > 3 && c > 3 && f < 22 && c < 22
             }
             i = 0;
             while (i != 3)
             {
                 int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
                 int c = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(0) - 2);
-                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+               
                 if (matriz[f, c] == 2 && ((f % 2 == 0 && c % 2 != 0) || (f % 2 != 0 && c % 2 == 0)))
                 {
                     matriz[f, c] = 11;
@@ -497,15 +479,14 @@ namespace Tablero
                 else
                 {
                     continue;
-                }
-                // && f > 3 && c < 47 && f < 22 && c > 28
+                }     
             }
             i = 0;
             while (i != 3)
             {
                 int f = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
-                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+
                 if (matriz[f, c] == 2 && ((f % 2 == 0 && c % 2 != 0) || (f % 2 != 0 && c % 2 == 0)))
                 {
                     matriz[f, c] = 11;
@@ -514,15 +495,14 @@ namespace Tablero
                 else
                 {
                     continue;
-                }
-                //&& f < 47 && c > 3 && f > 28 && c < 22
+                }  
             }
             i = 0;
             while (i != 3)
             {
                 int f = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 int c = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(1) - 2);
-                // comprobaciones para que no queden muy cerca de los bordes ni muy cerca del centro
+
                 if (matriz[f, c] == 2 && ((f % 2 == 0 && c % 2 != 0) || (f % 2 != 0 && c % 2 == 0)))
                 {
                     matriz[f, c] = 11;
@@ -532,7 +512,6 @@ namespace Tablero
                 {
                     continue;
                 }
-                //&& f < 47 && c < 47 && f > 28 && c > 28
             }
         }
 

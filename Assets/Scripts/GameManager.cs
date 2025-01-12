@@ -46,24 +46,15 @@ namespace Tablero
 
 
         // estos son para inicializar los player prefab con la skin seleccionada en el menu
-        public GameObject selectedSkin1;
         public GameObject Player1Sprite;
-        private Sprite player1Sprite;
-
-
-        public GameObject selectedSkin2;
         public GameObject Player2Sprite;
-        private Sprite player2Sprite;
-
 
         public GameObject selectedSkin3;
         public GameObject Player3Sprite;
-        private Sprite player3Sprite;
 
 
         public GameObject selectedSkin4;
         public GameObject Player4Sprite;
-        private Sprite player4Sprite;
 
         private GameObject[] playersSprite;
 
@@ -105,6 +96,11 @@ namespace Tablero
         public GameObject WinnerPlayer;
         public bool[] Human;
         private bool onTrap = false;
+
+        public Sprite[] Player1SpriteList;
+        public Sprite[] Player2SpriteList;
+        public Sprite[] Player3SpriteList;
+        public Sprite[] Player4SpriteList;
 
         void Start()
         {
@@ -154,20 +150,11 @@ namespace Tablero
                 }
             }
 
-            //Busca la imagen seleccionada que guardamos en los prefab selected skin y los guarda en la instancia de cada player
-            player1Sprite = selectedSkin1.GetComponent<SpriteRenderer>().sprite;
-            Player1Sprite.GetComponent<SpriteRenderer>().sprite = player1Sprite;
-
-
-            player2Sprite = selectedSkin2.GetComponent<SpriteRenderer>().sprite;
-            Player2Sprite.GetComponent<SpriteRenderer>().sprite = player2Sprite;
-
-            player3Sprite = selectedSkin3.GetComponent<SpriteRenderer>().sprite;
-            Player3Sprite.GetComponent<SpriteRenderer>().sprite = player3Sprite;
-
-
-            player4Sprite = selectedSkin4.GetComponent<SpriteRenderer>().sprite;
-            Player4Sprite.GetComponent<SpriteRenderer>().sprite = player4Sprite;
+            //Busca la imagen en las listas segun el selected type del menu y los guarda en la instancia de cada player
+            Player1Sprite.GetComponent<SpriteRenderer>().sprite = Player1SpriteList[selectedTypes[0]];
+            Player2Sprite.GetComponent<SpriteRenderer>().sprite = Player2SpriteList[selectedTypes[1]];
+            Player3Sprite.GetComponent<SpriteRenderer>().sprite = Player3SpriteList[selectedTypes[2]];
+            Player4Sprite.GetComponent<SpriteRenderer>().sprite = Player4SpriteList[selectedTypes[3]];
 
             playersSprite = new GameObject[4];
             playersSprite[0] = Player1Sprite;

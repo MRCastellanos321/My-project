@@ -6,7 +6,6 @@ public class CollectibleKey : MonoBehaviour
     {
         if (other.CompareTag("player"))
         {
-            Debug.Log("colisione");
             Manager.playersType[Manager.Instancia.currentPlayerIndex - 1].SetCollectedKeys(1);
             Destroy(gameObject);
         }

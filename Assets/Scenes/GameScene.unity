@@ -1127,13 +1127,13 @@ RectTransform:
   - {fileID: 1163872876}
   - {fileID: 1833875511}
   - {fileID: 531312212}
+  - {fileID: 2058021742}
   - {fileID: 1351353717}
   - {fileID: 1866405611}
   - {fileID: 55595555}
-  - {fileID: 1773317703}
-  - {fileID: 2058021742}
   - {fileID: 1027015604}
   - {fileID: 1756214934}
+  - {fileID: 1773317703}
   - {fileID: 68955008}
   - {fileID: 1951188130}
   m_Father: {fileID: 0}
@@ -1606,9 +1606,9 @@ RectTransform:
   - {fileID: 941852757}
   m_Father: {fileID: 575570919}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -183}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 41.5}
   m_SizeDelta: {x: 87.6409, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &976460868
@@ -1786,9 +1786,7 @@ MonoBehaviour:
   player3Position: {fileID: 1372388339}
   player4: {fileID: 1874413358}
   player4Position: {fileID: 1347486040}
-  selectedSkin1: {fileID: 3177161676800272479, guid: 768970acc00b186f6bbb905febc035a3, type: 3}
   Player1Sprite: {fileID: 2045608566}
-  selectedSkin2: {fileID: 5316863715427208192, guid: 7d42121cfda165e44997520d967460ce, type: 3}
   Player2Sprite: {fileID: 159246115}
   selectedSkin3: {fileID: 421084880854658990, guid: 3a08c985192a1215c9c50bda55b22cc3, type: 3}
   Player3Sprite: {fileID: 1421062908}
@@ -1798,7 +1796,6 @@ MonoBehaviour:
   humanSprite2: {fileID: 21300000, guid: e2b2dc98fe6f0becdb61d725dd070d08, type: 3}
   humanSprite3: {fileID: 21300000, guid: 2bfa4a067ca2ae929bd1c939f01c9c09, type: 3}
   humanSprite4: {fileID: 21300000, guid: b953555d4e1819daab4379eded758800, type: 3}
-  MazeCenter: 
   NewGameButton: {fileID: 1163872877}
   attackButton: {fileID: 962796569}
   skillButton: {fileID: 1833875512}
@@ -1818,6 +1815,34 @@ MonoBehaviour:
   UnactiveTrap: {fileID: 3478276647092961817, guid: dacc8ea9e794e0c6c8c558a548dfa0fd, type: 3}
   WinnerPlayer: {fileID: 9048689209106890162, guid: 9bb17f005f53d32ea81192d1a51a5622, type: 3}
   Human: 
+  Player1SpriteList:
+  - {fileID: 21300000, guid: a0142ef019ce015368c6be2701ded132, type: 3}
+  - {fileID: 21300000, guid: 88e684651b34860e4a399cccdb2e76e5, type: 3}
+  - {fileID: 21300000, guid: f8667b0f4e17d55338bcdeff658e8c8e, type: 3}
+  - {fileID: 21300000, guid: ef78d0b1a555dc125b762e5c572e12e1, type: 3}
+  - {fileID: 21300000, guid: c82b121c52232b6db999e140461c6d78, type: 3}
+  - {fileID: 21300000, guid: ed1246bfdf0190b90ab2f55c015f4224, type: 3}
+  Player2SpriteList:
+  - {fileID: 21300000, guid: 8621aee30450c2c8f95c885a399c1396, type: 3}
+  - {fileID: 21300000, guid: 7dbfe4b44cc4999e0a2b9496ef7ca580, type: 3}
+  - {fileID: 21300000, guid: ed86003ab0ffc0d7ab6982ce1f95d034, type: 3}
+  - {fileID: 21300000, guid: 834a4696bcb484228bf5144ff493265e, type: 3}
+  - {fileID: 21300000, guid: 0c6bfab4a868bcc098419ecf1d7350dc, type: 3}
+  - {fileID: 21300000, guid: b5644989c4329cb4eb703f775a0fa121, type: 3}
+  Player3SpriteList:
+  - {fileID: 21300000, guid: f8fe6270e2ceccbe5be6d8806e3471fe, type: 3}
+  - {fileID: 21300000, guid: 16516f437508a2710aae4d333debf6de, type: 3}
+  - {fileID: 21300000, guid: 6df8be3e700c509fb9206315d1b1dd87, type: 3}
+  - {fileID: 21300000, guid: fb40b69aa441d19ce8c2d573be3c103c, type: 3}
+  - {fileID: 21300000, guid: 7018a2bfe37b58bab91be7f1a56b12bf, type: 3}
+  - {fileID: 21300000, guid: 32ac6882c3f575a2fb76275cc6838200, type: 3}
+  Player4SpriteList:
+  - {fileID: 21300000, guid: c139d7fd149bc53599983c03454fe956, type: 3}
+  - {fileID: 21300000, guid: 203e6b96b5efdda2a869eceb6ae37ce2, type: 3}
+  - {fileID: 21300000, guid: feeb7f7ceeb55201ba5a2e1f9fd47716, type: 3}
+  - {fileID: 21300000, guid: 8c96eb23194902317a7f3cdcf6b60100, type: 3}
+  - {fileID: 21300000, guid: 0823ca45c634612dc90cc0831a2396ec, type: 3}
+  - {fileID: 21300000, guid: 89d31ee17cf2fde8cbee6c8d0164c699, type: 3}
 --- !u!4 &983695910
 Transform:
   m_ObjectHideFlags: 0
@@ -2200,7 +2225,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 54}
+  m_AnchoredPosition: {x: 0, y: 72.6}
   m_SizeDelta: {x: 610, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1351353718
@@ -2989,7 +3014,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 62.1, y: -19}
+  m_AnchoredPosition: {x: 64.5, y: -19}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1866405612
@@ -3130,7 +3155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 115, y: 44}
+  m_AnchoredPosition: {x: 118.5, y: 44}
   m_SizeDelta: {x: 210, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1951188131
@@ -3388,6 +3413,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5813176738979981, guid: 4d67b83847a033b3d9c32382111fc6fe, type: 3}
+      propertyPath: m_Name
+      value: Player4Sprite
+      objectReference: {fileID: 0}
     - target: {fileID: 691108405522011234, guid: 4d67b83847a033b3d9c32382111fc6fe, type: 3}
       propertyPath: m_BodyType
       value: 1
@@ -3492,6 +3521,10 @@ PrefabInstance:
     - target: {fileID: 1988643872948293466, guid: f7d3e4c26e1b6ad2b878417b7b5daa42, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059321778233807273, guid: f7d3e4c26e1b6ad2b878417b7b5daa42, type: 3}
+      propertyPath: m_Name
+      value: Player2Sprite
       objectReference: {fileID: 0}
     - target: {fileID: 4708163448227916224, guid: f7d3e4c26e1b6ad2b878417b7b5daa42, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3723,6 +3756,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 983695909}
+    - target: {fileID: 5322761227648659065, guid: 76c43536654c9f01e94d2c7269d6f0cd, type: 3}
+      propertyPath: m_Name
+      value: Player3Sprite
+      objectReference: {fileID: 0}
     - target: {fileID: 5881219235859042051, guid: 76c43536654c9f01e94d2c7269d6f0cd, type: 3}
       propertyPath: m_Name
       value: Player 3

@@ -1,18 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEditor;
 using System.Collections.Generic;
 using TMPro;
 public class MenuFunctions : MonoBehaviour
 {
-  //el "component"que hace el sprite del objeto visible
-  public SpriteRenderer sr1;
-  public SpriteRenderer sr2;
-  public SpriteRenderer sr3;
-  public SpriteRenderer sr4;
-
-  //Lista de todos los posibles sprite, son 4 diferentes porque cada una tiene un numero indicndo el jugador
+  //Lista de todos los posibles sprite, son 4 diferentes porque cada una tiene un numero indicando el jugador
   public List<Sprite> skins1 = new List<Sprite>();
   public List<Sprite> skins2 = new List<Sprite>();
 
@@ -20,19 +13,11 @@ public class MenuFunctions : MonoBehaviour
 
   public List<Sprite> skins4 = new List<Sprite>();
 
+  //Los preview del jugador que van a aparecer en pantalla
   public Image canvasImage1;
   public Image canvasImage2;
   public Image canvasImage3;
   public Image canvasImage4;
-
-
-
-  //Los GameObject que van a aparecer en pantalla
-  public GameObject player1Type;
-  public GameObject player2Type;
-  public GameObject player3Type;
-  public GameObject player4Type;
-
 
   //El int que va a dar la posicion en la lista donde esta el sprite seleccionado para cada jugador
   public static int selectedType1;
@@ -55,12 +40,9 @@ public class MenuFunctions : MonoBehaviour
     {
       selectedType1 = 0;
     }
-
-    sr1.sprite = skins1[selectedType1];
     canvasImage1.sprite = skins1[selectedType1];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
-
   }
   public void BackButton1()
   {
@@ -69,8 +51,6 @@ public class MenuFunctions : MonoBehaviour
     {
       selectedType1 = skins1.Count - 1;
     }
-
-    sr1.sprite = skins1[selectedType1];
     canvasImage1.sprite = skins1[selectedType1];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
@@ -83,12 +63,9 @@ public class MenuFunctions : MonoBehaviour
     {
       selectedType2 = 0;
     }
-
-    sr2.sprite = skins2[selectedType2];
     canvasImage2.sprite = skins2[selectedType2];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
-
   }
 
   public void BackButton2()
@@ -98,8 +75,6 @@ public class MenuFunctions : MonoBehaviour
     {
       selectedType2 = skins2.Count - 1;
     }
-
-    sr2.sprite = skins2[selectedType2];
     canvasImage2.sprite = skins2[selectedType2];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
@@ -112,12 +87,9 @@ public class MenuFunctions : MonoBehaviour
     {
       selectedType3 = 0;
     }
-
-    sr3.sprite = skins3[selectedType3];
     canvasImage3.sprite = skins3[selectedType3];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
-
   }
 
   public void BackButton3()
@@ -127,8 +99,6 @@ public class MenuFunctions : MonoBehaviour
     {
       selectedType3 = skins3.Count - 1;
     }
-
-    sr3.sprite = skins3[selectedType3];
     canvasImage3.sprite = skins3[selectedType3];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
@@ -141,12 +111,9 @@ public class MenuFunctions : MonoBehaviour
     {
       selectedType4 = 0;
     }
-
-    sr4.sprite = skins4[selectedType4];
     canvasImage4.sprite = skins4[selectedType4];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
-
   }
 
   public void BackButton4()
@@ -156,12 +123,9 @@ public class MenuFunctions : MonoBehaviour
     {
       selectedType4 = skins4.Count - 1;
     }
-
-    sr4.sprite = skins4[selectedType4];
     canvasImage4.sprite = skins4[selectedType4];
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText2.gameObject.SetActive(false);
-
   }
 
   public void InfoButton1()
@@ -192,11 +156,6 @@ public class MenuFunctions : MonoBehaviour
 
   public void StartButton()
   {
-    PrefabUtility.SaveAsPrefabAsset(player1Type, "Assets/Prefabs/selectedSkin1.prefab");
-    PrefabUtility.SaveAsPrefabAsset(player2Type, "Assets/Prefabs/selectedSkin2.prefab");
-    PrefabUtility.SaveAsPrefabAsset(player3Type, "Assets/Prefabs/selectedSkin3.prefab");
-    PrefabUtility.SaveAsPrefabAsset(player4Type, "Assets/Prefabs/selectedSkin4.prefab");
-
     SceneManager.LoadScene("GameScene");
   }
   void Start()
@@ -211,11 +170,6 @@ public class MenuFunctions : MonoBehaviour
     canvasImage2.sprite = skins2[selectedType2];
     canvasImage3.sprite = skins3[selectedType3];
     canvasImage4.sprite = skins4[selectedType4];
-
-    sr1.sprite = skins1[selectedType1];
-    sr2.sprite = skins2[selectedType2];
-    sr3.sprite = skins3[selectedType3];
-    sr4.sprite = skins4[selectedType4];
 
     InfoTexts = new List<string>();
     InfoTexts.Add("Vampiro:Ser casi inmortal tiene sus ventajas: Dos oportunidades de evadir ataques");
