@@ -12,6 +12,7 @@ namespace Tablero
         private int trapInmunity = 0;
         private int doorKeysCollected = 0;
         private int mazeVisibility = 0;
+        private int diceEffect = 0;
 
         public int GetTrapInmunity()
         {
@@ -89,6 +90,14 @@ namespace Tablero
         public void SetMazeVisibility(int value)
         {
             mazeVisibility += value;
+        }
+        public int GetDiceEffect()
+        {
+            return diceEffect;
+        }
+        public void SetDiceEffect(int value)
+        {
+            diceEffect = +value;
         }
         public void Skill()
         {

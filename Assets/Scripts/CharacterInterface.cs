@@ -9,15 +9,18 @@ public interface characterInterface
     public void SetAttackInmunity(int value);
     public int GetAttack();
     public int GetTurnsPassed();
-    public void SetTurnsPassed(int number);
+    public void SetTurnsPassed(int value);
     public int GetAttackCoolDown();
-    public void SetAttackCoolDown(int number);
+    public void SetAttackCoolDown(int value);
     public int GetCollectedShards();
-    public void SetCollectedShards(int number);
+    public void SetCollectedShards(int value);
     public int GetSkillCoolDown();
-    public void SetSkillCoolDown(int number);
+    public void SetSkillCoolDown(int value);
     public int GetMazeVisibility();
     public void SetMazeVisibility(int value);
+    public int GetDiceEffect();
+    public void SetDiceEffect(int value);
+
     public void Skill();
 }
 

@@ -16,6 +16,7 @@ namespace Tablero
         private int trapInmunity = 0;
         private int doorKeysCollected = 0;
         private int mazeVisibility = 0;
+         private int diceEffect = 0;
 
         public static bool onTeleport;
 
@@ -94,6 +95,14 @@ namespace Tablero
         {
             mazeVisibility += value;
         }
+        public int GetDiceEffect()
+        {
+             return diceEffect;
+        }
+         public void SetDiceEffect(int value)
+        {
+            diceEffect =+ value;
+        }
         public void Skill()
         {
             System.Random random = new System.Random();
@@ -127,7 +136,7 @@ namespace Tablero
                         //  PlayerMovement.targetPosition = new Vector3(posRandomC * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - posRandomF - 1) * SpawnMaze.tileWidth, 0);
                         onTeleport = true;
                         teleported = true;
-                        skillCoolDown += 1;
+                        skillCoolDown += 5;
                     }
                 }
             }

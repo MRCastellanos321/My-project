@@ -111,7 +111,7 @@ namespace Tablero
             }
             //Si el juego no se ejecuta desde el menu, el sprite sera igual al mismo que de la ultima partida, pero no
             //estara en correspondencia con el selected type int. Entonces esto es una medida extra para cuando se ejecute
-            // desde la escena del juego para que se cargue primero el menu
+            // desde la escena del juego se cargue primero el menu
 
 
             selectedTypes = new int[4];
@@ -270,9 +270,9 @@ namespace Tablero
             int posNumber = laberinto.Leer(f, c);
             if (posNumber != 2)
             {
-                if (posNumber != 7 && posNumber != 11)
+                if (posNumber != 13 && posNumber != 11)
                 {
-                    //7 es una puerta y 11 es una pared rompible, la separacion de las comprobaciones es pq ellas
+                    //13 es una puerta y 11 es una pared rompible, la separacion de las comprobaciones es pq ellas
                     //no necesitan buscar jugadores en su casilla y porque necesitan activar sus respectivos botones
                     for (int i = 0; i < FilasColumnas.Length; i++)
                     {
@@ -291,7 +291,7 @@ namespace Tablero
                     onTrap = false;
                     return true;
                 }
-                else if (posNumber == 7)
+                else if (posNumber == 13)
                 {
                     validAttackText.gameObject.SetActive(false);
                     attackButton.gameObject.SetActive(false);
@@ -323,6 +323,10 @@ namespace Tablero
             //Tampoco es necesario revisar los botones de ataque, llave y romper pared porque si entraste a la comprobacion
             //de valid movement es porque aun tiene movimientos, por lo que esos botones nunca van a estar encendido cuando cambies de turno
             diceNumber = dice.Next(10, 21);
+            if (playersType[currentPlayerIndex - 1].GetDiceEffect() != 0)
+            {
+                diceNumber /= 2;
+            }
             underTrapEffectText.gameObject.SetActive(false);
             trapText.gameObject.SetActive(false);
             turnInHumanText.gameObject.SetActive(false);
@@ -362,6 +366,10 @@ namespace Tablero
                     {
                         playersType[currentPlayerIndex - 1].SetMazeVisibility(-1);
                     }
+                    if (playersType[currentPlayerIndex - 1].GetDiceEffect() != 0)
+                    {
+                        playersType[currentPlayerIndex - 1].SetDiceEffect(-1);
+                    }
                     break;
                 }
                 else
@@ -380,6 +388,10 @@ namespace Tablero
                     if (playersType[currentPlayerIndex - 1].GetMazeVisibility() != 0)
                     {
                         playersType[currentPlayerIndex - 1].SetMazeVisibility(-1);
+                    }
+                    if (playersType[currentPlayerIndex - 1].GetDiceEffect() != 0)
+                    {
+                        playersType[currentPlayerIndex - 1].SetDiceEffect(-1);
                     }
                     //los cambios en los cooldown va a ocurrir cuando te toca aunque se te salte en turno}
                     //introduzco el temp player index para que las otras funciones y clase q tocan el currentPlayerIndex no tengan algun problema en el update
@@ -437,7 +449,7 @@ namespace Tablero
         {
             int number = laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]);
 
-            if (number == 3 || number == 4 || number == 5 || number == 6)
+            if (number == 3 || number == 4 || number == 5 || number == 6 || number == 7)
             {
                 if (onTrap == false)
                 {
@@ -474,7 +486,7 @@ namespace Tablero
                             diceNumber = 0;
                         }
 
-                        else if (number == 5 && !Human[currentPlayerIndex - 1])
+                        else if (number == 5)
                         {
                             ChangeMessage("Has activado una trampa", trapText);// texto temporal
                             ChangeMessage("+3 turnos antes de poder atacar", underTrapEffectText);
@@ -486,9 +498,18 @@ namespace Tablero
                         else if (number == 6)
                         {
                             ChangeMessage("Has activado una trampa", trapText);// texto temporal
-                            ChangeMessage("+3 turnos de no ver el laberinto", underTrapEffectText);
+                            ChangeMessage("+3 turnos:No podras ver el mapa", underTrapEffectText);
                             playersType[currentPlayerIndex - 1].SetMazeVisibility(3);
 
+                            laberinto.SetPosValue(f, c, 1);
+                            SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
+                        }
+                        else if (number == 7)
+                        {
+                            ChangeMessage("Has activado una trampa", trapText);// texto temporal
+                            ChangeMessage("+4 turnos:Tirada de dado se reduce a la mitad", underTrapEffectText);
+                            playersType[currentPlayerIndex - 1].SetDiceEffect(3);
+                            diceNumber /= 2;
                             laberinto.SetPosValue(f, c, 1);
                             SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
                         }
@@ -501,12 +522,12 @@ namespace Tablero
                         SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
                     }
                 }
-                //puede que haya que hacer mas especificaciones para cuando el jugador se convierta en humano
             }
-            //mas trampas: teletransportarte al inicio del juego, Teletransportarte junto al jugador al que le toca el turno siguiente y pierdes tu turno
-            //disminuye tu numero en los dados durate x turnos
+
             //el onTrap es para que no te siga aplicando el efecto y cambiando el cartel aunque no te hayas movido. el return true del valid movement
             //es el que lo vuelve a poner en false
+            //mas trampas: teletransportarte al inicio del juego, Teletransportarte junto al jugador al que le toca el turno siguiente y pierdes tu turno
+            //disminuye tu numero en los dados durate x turnos
 
         }
         public void SkillButton()
@@ -518,7 +539,8 @@ namespace Tablero
         public void TurnInHuman()
         {
             playersSprite[currentPlayerIndex - 1].GetComponent<SpriteRenderer>().sprite = humanSprites[currentPlayerIndex - 1];
-            playersType[currentPlayerIndex - 1].SetSkillCoolDown(9999);
+            playersType[currentPlayerIndex - 1].SetSkillCoolDown(int.MaxValue - playersType[currentPlayerIndex - 1].GetSkillCoolDown());
+            //asi cuando la funcion lo sume internamente no se desborda de MaxValue
             turnInHumanText.gameObject.SetActive(true);
             Human[currentPlayerIndex - 1] = true;
         }
@@ -593,7 +615,6 @@ namespace Tablero
             {
                 changeTurnText.gameObject.SetActive(false);
             }
-
 
             if (playersType[currentPlayerIndex - 1].GetSkillCoolDown() == 0 && diceNumber != 0)
             {

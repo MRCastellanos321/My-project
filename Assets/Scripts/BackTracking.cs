@@ -53,7 +53,6 @@ namespace Tablero
             GenerandoCaminos(Backtrack);
             OpenCenter();
             SpawnTraps();
-            SpawnShards();
             SpawnObject(8);
             //las llaves
             SpawnObject(9);
@@ -61,6 +60,9 @@ namespace Tablero
             SpawnObject(10);
             //attackBoost
             SpawnHalfBrokenWall();
+            //numero 11
+            SpawnShards();
+            //numero 12
         }
         //de esta funcion sale una matriz con casillas camino(0) rodeadas de casillas pared(2) sin conexion entre los caminos
         private void IniciarMatriz()
@@ -311,13 +313,29 @@ namespace Tablero
                     continue;
                 }
             }
-             while (i <= 8)
+            i = 0;
+            while (i <= 10)
             {
                 int trapF = random.Next(3, matriz.GetLength(0) - 3);
                 int trapC = random.Next(3, matriz.GetLength(1) - 3);
                 if (matriz[trapF, trapC] == 1 && (trapF > 27 || trapC > 27 || trapF < 22 || trapC < 22))
                 {
                     matriz[trapF, trapC] = 6;
+                    i++;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            i = 0;
+            while (i <= 10)
+            {
+                int trapF = random.Next(3, matriz.GetLength(0) - 3);
+                int trapC = random.Next(3, matriz.GetLength(1) - 3);
+                if (matriz[trapF, trapC] == 1 && (trapF > 27 || trapC > 27 || trapF < 22 || trapC < 22))
+                {
+                    matriz[trapF, trapC] = 7;
                     i++;
                 }
                 else
@@ -333,7 +351,7 @@ namespace Tablero
             int i = 0;
             //con los 4 while los shards recolectables quedan esparcidos mas equitativamente entre cuatro areas grandes
             while (i < 4)
-            { 
+            {
                 int shardF = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
                 int shardC = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
                 if (matriz[shardF, shardC] == 1)
@@ -359,7 +377,7 @@ namespace Tablero
                 else
                 {
                     continue;
-                }               
+                }
             }
             i = 0;
             while (i < 4)
@@ -389,7 +407,7 @@ namespace Tablero
                 else
                 {
                     continue;
-                }            
+                }
             }
         }
 
@@ -401,7 +419,7 @@ namespace Tablero
             {   //primer cuadrante
                 int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
                 int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
-               
+
                 if (matriz[f, c] == 1)
                 {
                     matriz[f, c] = objectType;
@@ -410,7 +428,7 @@ namespace Tablero
                 else
                 {
                     continue;
-                }            
+                }
             }
             i = 0;
             while (i != 1)
@@ -425,14 +443,14 @@ namespace Tablero
                 else
                 {
                     continue;
-                }          
+                }
             }
             i = 0;
             while (i != 1)
             {
                 int f = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
-               
+
                 if (matriz[f, c] == 1)
                 {
                     matriz[f, c] = objectType;
@@ -448,7 +466,7 @@ namespace Tablero
             {
                 int f = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 int c = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(1) - 2);
-               
+
                 if (matriz[f, c] == 1)
                 {
                     matriz[f, c] = objectType;
@@ -465,10 +483,10 @@ namespace Tablero
             Random random = new Random();
             int i = 0;
             while (i != 3)
-            {  
+            {
                 int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
                 int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
-               
+
                 if (matriz[f, c] == 2 && ((f % 2 == 0 && c % 2 != 0) || (f % 2 != 0 && c % 2 == 0)))
                 {
                     matriz[f, c] = 11;
@@ -484,7 +502,7 @@ namespace Tablero
             {
                 int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
                 int c = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(0) - 2);
-               
+
                 if (matriz[f, c] == 2 && ((f % 2 == 0 && c % 2 != 0) || (f % 2 != 0 && c % 2 == 0)))
                 {
                     matriz[f, c] = 11;
@@ -493,7 +511,7 @@ namespace Tablero
                 else
                 {
                     continue;
-                }     
+                }
             }
             i = 0;
             while (i != 3)
@@ -509,7 +527,7 @@ namespace Tablero
                 else
                 {
                     continue;
-                }  
+                }
             }
             i = 0;
             while (i != 3)
@@ -569,10 +587,10 @@ namespace Tablero
             }
             //circulo de piedra alrededor de esas casillas del centro
 
-            matriz[matriz.GetLength(0) / 2 + 2, matriz.GetLength(1) / 2] = 7;
-            matriz[matriz.GetLength(0) / 2 - 2, matriz.GetLength(1) / 2] = 7;
-            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 2] = 7;
-            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 2] = 7;
+            matriz[matriz.GetLength(0) / 2 + 2, matriz.GetLength(1) / 2] = 13;
+            matriz[matriz.GetLength(0) / 2 - 2, matriz.GetLength(1) / 2] = 13;
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 + 2] = 13;
+            matriz[matriz.GetLength(0) / 2, matriz.GetLength(1) / 2 - 2] = 13;
             //crea 4 puertas saliendo del centro*
 
             c = (matriz.GetLength(0) - 1) / 2 - 3;
@@ -604,26 +622,6 @@ namespace Tablero
             //crea un circulo de caminos alrededor del circulo de piedra
 
             //todo esto es para poner cuatro puertas alrededor del centro que se tengan que desbloquear con llaves
-        }
-
-        //esto fue de cuando esta probando en consola        
-        public void ImprimirDebug()
-        {
-            int filas = matriz.GetLength(0);
-            int columnas = matriz.GetLength(1);
-            int f = 0;
-            int c = 0;
-            while (f < filas)
-            {
-                while (c < columnas)
-                {
-                    Console.Write(matriz[f, c] == 1 ? "  " : 22);
-                    c++;
-                }
-                c = 0;
-                f++;
-                Console.WriteLine();
-            }
         }
     }
 }

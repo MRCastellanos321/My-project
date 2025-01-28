@@ -81,7 +81,7 @@ namespace Tablero
                     {
                         SpawnTile(x * tileWidth, y * tileWidth, HalfBrokenWall);
                     }
-                    else if (value == 7)
+                    else if (value == 13)
                     {
                         SpawnTile(x * tileWidth, y * tileWidth, Door);
                     }
