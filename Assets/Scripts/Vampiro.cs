@@ -12,6 +12,7 @@ namespace Tablero
         private int doorKeysCollected = 0;
         private int mazeVisibility = 0;
         private int diceEffect = 0;
+        private int positionVisibility = 0;
         public int GetTrapInmunity()
         {
             return trapInmunity;
@@ -97,6 +98,15 @@ namespace Tablero
         {
             diceEffect = +value;
         }
+        public int GetPositionVisibility()
+        {
+            return positionVisibility;
+        }
+        public void SetPositionVisibility(int value)
+        {
+            positionVisibility = +value;
+        }
+
         public void Skill()
         {
             // attack inmunity funciona segun los ataques que recibe y no los turnos. A los jugadores se les aumenta

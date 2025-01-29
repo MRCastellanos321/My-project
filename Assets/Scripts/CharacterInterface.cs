@@ -20,6 +20,8 @@ public interface characterInterface
     public void SetMazeVisibility(int value);
     public int GetDiceEffect();
     public void SetDiceEffect(int value);
+     public int GetPositionVisibility();
+    public void SetPositionVisibility(int value);
 
     public void Skill();
 }

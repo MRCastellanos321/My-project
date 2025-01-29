@@ -1821,28 +1821,32 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f8667b0f4e17d55338bcdeff658e8c8e, type: 3}
   - {fileID: 21300000, guid: ef78d0b1a555dc125b762e5c572e12e1, type: 3}
   - {fileID: 21300000, guid: c82b121c52232b6db999e140461c6d78, type: 3}
-  - {fileID: 21300000, guid: ed1246bfdf0190b90ab2f55c015f4224, type: 3}
+  - {fileID: 21300000, guid: 7c9c5404727216c50a88c99fedd8a256, type: 3}
+  - {fileID: 21300000, guid: 6dfd926772c46f9aeb1fcaf9f94cf6e9, type: 3}
   Player2SpriteList:
   - {fileID: 21300000, guid: 8621aee30450c2c8f95c885a399c1396, type: 3}
   - {fileID: 21300000, guid: 7dbfe4b44cc4999e0a2b9496ef7ca580, type: 3}
   - {fileID: 21300000, guid: ed86003ab0ffc0d7ab6982ce1f95d034, type: 3}
   - {fileID: 21300000, guid: 834a4696bcb484228bf5144ff493265e, type: 3}
   - {fileID: 21300000, guid: 0c6bfab4a868bcc098419ecf1d7350dc, type: 3}
-  - {fileID: 21300000, guid: b5644989c4329cb4eb703f775a0fa121, type: 3}
+  - {fileID: 21300000, guid: d4b7f4b0c1d324e5cb766834f2653f27, type: 3}
+  - {fileID: 21300000, guid: bef6086a8689c0db6bda7d54f22dc75a, type: 3}
   Player3SpriteList:
   - {fileID: 21300000, guid: f8fe6270e2ceccbe5be6d8806e3471fe, type: 3}
   - {fileID: 21300000, guid: 16516f437508a2710aae4d333debf6de, type: 3}
   - {fileID: 21300000, guid: 6df8be3e700c509fb9206315d1b1dd87, type: 3}
   - {fileID: 21300000, guid: fb40b69aa441d19ce8c2d573be3c103c, type: 3}
   - {fileID: 21300000, guid: 7018a2bfe37b58bab91be7f1a56b12bf, type: 3}
-  - {fileID: 21300000, guid: 32ac6882c3f575a2fb76275cc6838200, type: 3}
+  - {fileID: 21300000, guid: f2ed6120ca9a3fd49ae9a3d3fc5f095d, type: 3}
+  - {fileID: 21300000, guid: c5e062008e91039d5a1a6712e42e8d26, type: 3}
   Player4SpriteList:
   - {fileID: 21300000, guid: c139d7fd149bc53599983c03454fe956, type: 3}
   - {fileID: 21300000, guid: 203e6b96b5efdda2a869eceb6ae37ce2, type: 3}
   - {fileID: 21300000, guid: feeb7f7ceeb55201ba5a2e1f9fd47716, type: 3}
   - {fileID: 21300000, guid: 8c96eb23194902317a7f3cdcf6b60100, type: 3}
   - {fileID: 21300000, guid: 0823ca45c634612dc90cc0831a2396ec, type: 3}
-  - {fileID: 21300000, guid: 89d31ee17cf2fde8cbee6c8d0164c699, type: 3}
+  - {fileID: 21300000, guid: 4fea3c169a5dda1b3acdd88507461ea0, type: 3}
+  - {fileID: 21300000, guid: 7a45cb25148fa1b0e8907ff9c62489a3, type: 3}
 --- !u!4 &983695910
 Transform:
   m_ObjectHideFlags: 0
@@ -3654,11 +3658,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6585977942073143813, guid: c5c40651c57f434148098fe67f7e8fa2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 128
+      value: 1600
       objectReference: {fileID: 0}
     - target: {fileID: 6585977942073143813, guid: c5c40651c57f434148098fe67f7e8fa2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1600
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 6585977942073143813, guid: c5c40651c57f434148098fe67f7e8fa2, type: 3}
       propertyPath: m_LocalPosition.z

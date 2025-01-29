@@ -1,6 +1,8 @@
+using UnityEngine;
+
 namespace Tablero
 {
-    public class Fantasma : characterInterface
+    public class Vidente : characterInterface
     {
         private int attack = 2;
         private int turnsPassed = 0;
@@ -105,14 +107,18 @@ namespace Tablero
         {
             positionVisibility = +value;
         }
-
-
         public void Skill()
         {
-            // attack inmunity funciona segun las trampas en las que cae y no en los turnos          
-            trapInmunity += 2;
-            skillCoolDown += 3;
-            Manager.ChangeMessage("Inmunidad a trampas: 2 oportunidades", Manager.Instancia.skillEffectText);
+            if (mazeVisibility != 0)
+            {
+                positionVisibility += 2;
+                skillCoolDown += 5;
+                Manager.ChangeMessage("2 turnos:Es visible tu posicion en el mapa", Manager.Instancia.skillEffectText);
+            }
+            else
+            {
+                Manager.ChangeMessage("El mapa no es visible en este momento", Manager.Instancia.skillEffectText);
+            }
         }
     }
 }

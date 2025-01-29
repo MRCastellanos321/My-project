@@ -44,9 +44,17 @@ public class MazeCanvas : MonoBehaviour
 
     void UpdatePlayerIcon()
     {
-        float size = 3f;
-        RectTransform prt = playerIcon.GetComponent<RectTransform>();
-        prt.anchoredPosition = new Vector2(Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] * size + 161, -Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] * size + 231);
+        if (Manager.playersType[Manager.Instancia.currentPlayerIndex - 1].GetPositionVisibility() != 0)
+        {
+            playerIcon.SetActive(true);
+            float size = 3f;
+            RectTransform prt = playerIcon.GetComponent<RectTransform>();
+            prt.anchoredPosition = new Vector2(Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] * size + 161, -Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] * size + 231);
+        }
+        else
+        {
+            playerIcon.SetActive(false);
+        }
     }
 
     public void Update()

@@ -6,7 +6,6 @@ namespace Tablero
 {
     public class Manager : MonoBehaviour
     {
-
         public static Manager Instancia;
 
         static Camera[] cameras;
@@ -148,6 +147,10 @@ namespace Tablero
                 {
                     playersType[i] = new Dragon();
                 }
+                else
+                {
+                    playersType[i] = new Vidente();
+                }
             }
 
             //Busca la imagen en las listas segun el selected type del menu y los guarda en la instancia de cada player
@@ -209,8 +212,8 @@ namespace Tablero
 
             //Jugador1 fila final  columna del medio
             //Jugador2 columna 0, fila del medio, 
-            //Jugador3 fila 0, columna del medio
-            //Jugador4 columna final, fila del medio
+            //Jugador3 columna final, fila del medio
+            //Jugador4 fila 0, columna del medio
             int[] Player1FC = new int[2];
             Player1FC[0] = Laberinto.ElLaberinto.GetSize() - 2;
             Player1FC[1] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
@@ -222,13 +225,13 @@ namespace Tablero
             FilasColumnas[1] = Player2FC;
 
             int[] Player3FC = new int[2];
-            Player3FC[0] = 1;
-            Player3FC[1] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
+            Player3FC[0] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
+            Player3FC[1] = Laberinto.ElLaberinto.GetSize() - 2;
             FilasColumnas[2] = Player3FC;
 
             int[] Player4FC = new int[2];
-            Player4FC[0] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
-            Player4FC[1] = Laberinto.ElLaberinto.GetSize() - 2;
+            Player4FC[0] = 1;
+            Player4FC[1] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
             FilasColumnas[3] = Player4FC;
 
             //inicia las coordenadas de los jugadores segun su fila y columna inicial
@@ -370,6 +373,10 @@ namespace Tablero
                     {
                         playersType[currentPlayerIndex - 1].SetDiceEffect(-1);
                     }
+                    if (playersType[currentPlayerIndex - 1].GetPositionVisibility() != 0)
+                    {
+                        playersType[currentPlayerIndex - 1].SetPositionVisibility(-1);
+                    }
                     break;
                 }
                 else
@@ -392,6 +399,10 @@ namespace Tablero
                     if (playersType[currentPlayerIndex - 1].GetDiceEffect() != 0)
                     {
                         playersType[currentPlayerIndex - 1].SetDiceEffect(-1);
+                    }
+                    if (playersType[currentPlayerIndex - 1].GetPositionVisibility() != 0)
+                    {
+                        playersType[currentPlayerIndex - 1].SetPositionVisibility(-1);
                     }
                     //los cambios en los cooldown va a ocurrir cuando te toca aunque se te salte en turno}
                     //introduzco el temp player index para que las otras funciones y clase q tocan el currentPlayerIndex no tengan algun problema en el update
@@ -507,7 +518,7 @@ namespace Tablero
                         else if (number == 7)
                         {
                             ChangeMessage("Has activado una trampa", trapText);// texto temporal
-                            ChangeMessage("+4 turnos:Tirada de dado se reduce a la mitad", underTrapEffectText);
+                            ChangeMessage("+3 turnos:Tirada de dado se reduce a la mitad", underTrapEffectText);
                             playersType[currentPlayerIndex - 1].SetDiceEffect(3);
                             diceNumber /= 2;
                             laberinto.SetPosValue(f, c, 1);

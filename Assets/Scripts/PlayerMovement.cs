@@ -35,6 +35,7 @@ namespace Tablero
                     if (Bruja.onTeleport == true)
                     {
                         targetPosition = new Vector3(Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] * cellSize, (Laberinto.ElLaberinto.GetSize() - Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] - 1) * cellSize, 0);
+                        Bruja.onTeleport = false;
                     }
                     else
                     {
@@ -84,7 +85,6 @@ namespace Tablero
                         }
                     }
                     transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);
-                    Bruja.onTeleport = false;
                     Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] = f;
                     Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] = c;
 

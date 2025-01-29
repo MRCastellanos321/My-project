@@ -1,5 +1,6 @@
 
 using System;
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 
@@ -16,9 +17,10 @@ namespace Tablero
         private int trapInmunity = 0;
         private int doorKeysCollected = 0;
         private int mazeVisibility = 0;
-         private int diceEffect = 0;
+        private int diceEffect = 0;
+        private int positionVisibility = 0;
 
-        public static bool onTeleport;
+        public static bool onTeleport = false;
 
         public int GetTrapInmunity()
         {
@@ -97,11 +99,19 @@ namespace Tablero
         }
         public int GetDiceEffect()
         {
-             return diceEffect;
+            return diceEffect;
         }
-         public void SetDiceEffect(int value)
+        public void SetDiceEffect(int value)
         {
-            diceEffect =+ value;
+            diceEffect = +value;
+        }
+        public int GetPositionVisibility()
+        {
+            return positionVisibility;
+        }
+        public void SetPositionVisibility(int value)
+        {
+            positionVisibility = +value;
         }
         public void Skill()
         {
