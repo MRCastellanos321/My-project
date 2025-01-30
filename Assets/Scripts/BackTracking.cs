@@ -2,14 +2,12 @@
 using System;
 using System.Collections.Generic;
 
-
 namespace Tablero
 {
-
     public class Laberinto
     {
         private int[,] matriz;
-        private readonly List<string> direcciones;
+        private readonly List<string> directions;
         private int f;
         private int c;
 
@@ -19,21 +17,19 @@ namespace Tablero
         //constructor
         private Laberinto(int filas, int columnas)
         {
-            direcciones = new List<string> { "izquierda", "derecha", "arriba", "abajo" };
+            directions = new List<string> { "izquierda", "derecha", "arriba", "abajo" };
             matriz = new int[filas, columnas];
         }
         public int GetSize()
         {
             return matriz.GetLength(0);
-
         }
         public void SetPosValue(int f, int c, int value)
         {
             matriz[f, c] = value;
-
         }
 
-        public int Leer(int f, int c)
+        public int Read(int f, int c)
         {
             if (f < matriz.GetLength(0) && f > -1 && c < matriz.GetLength(1) && c > -1)
             {
@@ -50,7 +46,7 @@ namespace Tablero
         {
             IniciarMatriz();
             List<int[]> Backtrack = CrearLista();
-            GenerandoCaminos(Backtrack);
+            PathGeneration(Backtrack);
             OpenCenter();
             SpawnTraps();
             SpawnObject(8);
@@ -66,12 +62,10 @@ namespace Tablero
         }
         //de esta funcion sale una matriz con casillas camino(0) rodeadas de casillas pared(2) sin conexion entre los caminos
         private void IniciarMatriz()
-
         {
             // estos deben ser impares para que pueda haber una casilla centro del tablero y se pueda comenzar por columna piedra y terminar columna piedra
             int filas = matriz.GetLength(0);
             int columnas = matriz.GetLength(1);
-
 
             while (f < filas)
             {
@@ -114,49 +108,46 @@ namespace Tablero
                 new int[] { 1, 1 }
             };
             return Backtrack;
-
         }
 
-        private void GenerandoCaminos(List<int[]> Backtrack)
+        private void PathGeneration(List<int[]> Backtrack)
         {
-
-
             Random random = new Random();
             Random random2 = new Random();
 
             //aqui se realiza una iteracion en cada entrada a la recursividad para volver una casilla vacia un camino cada vez que exista una direcciin valida
 
-            List<string> direccionesValidas = IsValid(f, c);
+            List<string> validDirections = IsValid(f, c);
 
-            if (direccionesValidas.Count != 0)
+            if (validDirections.Count != 0)
             {
                 Backtrack.Add(new int[] { f, c }); //salva esa posicion
                 Console.WriteLine("entre aqui");
-                int posRandom = random.Next(0, direccionesValidas.Count);
-                string direccion = direccionesValidas[posRandom];
+                int posRandom = random.Next(0, validDirections.Count);
+                string direction = validDirections[posRandom];
 
-                if (direccion == "derecha")
+                if (direction == "derecha")
                 {
                     c++;
                     matriz[f, c] = 1;
                     c++;
                     matriz[f, c] = 1;
                 }
-                else if (direccion == "izquierda")
+                else if (direction == "izquierda")
                 {
                     c--;
                     matriz[f, c] = 1;
                     c--;
                     matriz[f, c] = 1;
                 }
-                else if (direccion == "abajo")
+                else if (direction == "abajo")
                 {
                     f++;
                     matriz[f, c] = 1;
                     f++;
                     matriz[f, c] = 1;
                 }
-                else if (direccion == "arriba")
+                else if (direction == "arriba")
                 {
                     f--;
                     matriz[f, c] = 1;
@@ -166,12 +157,9 @@ namespace Tablero
 
                 if (3 == random2.Next(0, 4))
                 {
-                    Ramificar(direccion);
+                    Branch(direction);
                 }
-
-
-                GenerandoCaminos(Backtrack);
-
+                PathGeneration(Backtrack);
             }
             //entra cuando no hubo ningun cambio, es decir, casillas vecinas a la posicion actual ocupadas
             //funcion para cuando todas las casillas vecinas esten ocupadas(backtrack hasta la ultima casilla con vecinas no visitadas)
@@ -186,17 +174,17 @@ namespace Tablero
                     f = temp[0];
                     c = temp[1];
 
-                    List<string> vecinosVacios = IsValid(f, c);
+                    List<string> emptyNeighbors = IsValid(f, c);
                     if (f == 1 && c == 1)
                     {
                         break;
                     }
-                    if (vecinosVacios.Count == 0)
+                    if (emptyNeighbors.Count == 0)
                     {
                         s--;
                         continue;
                     }
-                    GenerandoCaminos(Backtrack);
+                    PathGeneration(Backtrack);
                     break;
                 }
             }
@@ -207,58 +195,58 @@ namespace Tablero
             int filas = matriz.GetLength(0) - 1;
             int columnas = matriz.GetLength(1) - 1;
 
-            List<string> direccionesValidas = new List<string>();
+            List<string> validDirections = new List<string>();
 
 
             if (c != columnas - 1 && matriz[f, c + 2] == 0)
             {
-                direccionesValidas.Add("derecha");
+                validDirections.Add("derecha");
             }
 
 
             if (c != 1 && matriz[f, c - 2] == 0)
             {
-                direccionesValidas.Add("izquierda");
+                validDirections.Add("izquierda");
             }
 
 
             if (f != filas - 1 && matriz[f + 2, c] == 0)
             {
-                direccionesValidas.Add("abajo");
+                validDirections.Add("abajo");
             }
 
 
             if (f != 1 && matriz[f - 2, c] == 0)
             {
-                direccionesValidas.Add("arriba");
+                validDirections.Add("arriba");
             }
 
-            return direccionesValidas;
+            return validDirections;
 
         }
-        //funcion ramificar es para q el laberinto no quede tan recto
-        private void Ramificar(string no)
+        //funcion branch es para q el laberinto no quede tan recto
+        private void Branch(string no)
         {
-            List<string> ramificarValidas = new List<string>();
-            ramificarValidas.AddRange(direcciones);
-            ramificarValidas.Remove(no);
+            List<string> validBranches = new List<string>();
+            validBranches.AddRange(directions);
+            validBranches.Remove(no);
 
             Random random = new Random();
-            int posRandom = random.Next(0, ramificarValidas.Count);
-            string ramificar = ramificarValidas[posRandom];
-            if (ramificar == "izquierda" && c - 1 != 0)
+            int posRandom = random.Next(0, validBranches.Count);
+            string branch = validBranches[posRandom];
+            if (branch == "izquierda" && c - 1 != 0)
             {
                 matriz[f, c - 1] = 1;
             }
-            else if (ramificar == "derecha" && c + 1 != matriz.GetLength(1) - 1)
+            else if (branch == "derecha" && c + 1 != matriz.GetLength(1) - 1)
             {
                 matriz[f, c + 1] = 1;
             }
-            else if (ramificar == "arriba" && f - 1 != 0)
+            else if (branch == "arriba" && f - 1 != 0)
             {
                 matriz[f - 1, c] = 1;
             }
-            else if (ramificar == "abajo" && f + 1 != matriz.GetLength(0) - 1)
+            else if (branch == "abajo" && f + 1 != matriz.GetLength(0) - 1)
             {
                 matriz[f + 1, c] = 1;
             }

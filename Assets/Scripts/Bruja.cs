@@ -125,7 +125,7 @@ namespace Tablero
                 posRandomF = random.Next(4, 48);
                 posRandomC = random.Next(4, 48);
 
-                int value = Laberinto.ElLaberinto.Leer(posRandomF, posRandomC);
+                int value = Laberinto.ElLaberinto.Read(posRandomF, posRandomC);
 
                 if (value == 1 && (posRandomC > 28 || posRandomC < 22 || posRandomF > 28 || posRandomF < 22))
                 {

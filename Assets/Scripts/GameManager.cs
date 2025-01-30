@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 namespace Tablero
 {
     public class Manager : MonoBehaviour
@@ -40,7 +41,7 @@ namespace Tablero
         public static int nearBrokenWallC;
 
         //para acceder e iniciar las filas y columnas que permiten la lectura interna de la matriz
-        public static int[][] FilasColumnas = new int[4][];
+        public static int[][] FilasColumnas;
 
 
 
@@ -76,17 +77,18 @@ namespace Tablero
         public Button skillButton;
         public Button useKeyButton;
         public Button breakWallButton;
+        public Button passTurnButton;
 
         public TextMeshProUGUI unvalidVictoryText;
         public TextMeshProUGUI trapText;
         public TextMeshProUGUI changeTurnText;
         public TextMeshProUGUI validAttackText;
         public TextMeshProUGUI shardCollectionText;
-        public TextMeshProUGUI RemainingMovesText;
+        public TextMeshProUGUI remainingMovesText;
         public TextMeshProUGUI skillEffectText;
         public TextMeshProUGUI underTrapEffectText;
         public TextMeshProUGUI turnInHumanText;
-
+        public TextMeshProUGUI skillCoolDownText;
         private int messageShowCount = 0;
         public GameObject OpenDoor;
         public GameObject Path;
@@ -94,8 +96,6 @@ namespace Tablero
 
         public GameObject WinnerPlayer;
         public bool[] Human;
-        private bool onTrap = false;
-
         public Sprite[] Player1SpriteList;
         public Sprite[] Player2SpriteList;
         public Sprite[] Player3SpriteList;
@@ -112,6 +112,37 @@ namespace Tablero
             //estara en correspondencia con el selected type int. Entonces esto es una medida extra para cuando se ejecute
             // desde la escena del juego se cargue primero el menu
 
+            playersPosition[0] = player1Position;
+            playersPosition[1] = player2Position;
+            playersPosition[2] = player3Position;
+            playersPosition[3] = player4Position;
+
+            //Jugador1 fila final  columna del medio
+            //Jugador2 columna 0, fila del medio, 
+            //Jugador3 columna final, fila del medio
+            //Jugador4 fila 0, columna del medio
+            int[] Player1FC = new int[2];
+            Player1FC[0] = Laberinto.ElLaberinto.GetSize() - 2;
+            Player1FC[1] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
+
+            int[] Player2FC = new int[2];
+            Player2FC[0] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
+            Player2FC[1] = 1;
+
+            int[] Player3FC = new int[2];
+            Player3FC[0] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
+            Player3FC[1] = Laberinto.ElLaberinto.GetSize() - 2;
+
+            int[] Player4FC = new int[2];
+            Player4FC[0] = 1;
+            Player4FC[1] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
+            FilasColumnas = new int[4][] { Player1FC, Player2FC, Player3FC, Player4FC };
+
+            //inicia las coordenadas de los jugadores segun su fila y columna inicial
+            for (int i = 0; i < playersPosition.Length; i++)
+            {
+                playersPosition[i].position = new Vector3(FilasColumnas[i][1] * PlayerMovement.cellSize, (Laberinto.ElLaberinto.GetSize() - FilasColumnas[i][0] - 1) * PlayerMovement.cellSize, 0);
+            }
 
             selectedTypes = new int[4];
             selectedTypes[0] = MenuFunctions.selectedType1;
@@ -189,6 +220,7 @@ namespace Tablero
             validAttackText.gameObject.SetActive(false);
             skillEffectText.gameObject.SetActive(false);
             turnInHumanText.gameObject.SetActive(false);
+            skillCoolDownText.gameObject.SetActive(false);
 
             MazeCenter = new int[2] { 25, 25 };
 
@@ -202,75 +234,14 @@ namespace Tablero
             {
                 cameras[i].gameObject.SetActive(i + 1 == currentPlayerIndex);
             }
-
             attackButton.gameObject.SetActive(false);
-
-            playersPosition[0] = player1Position;
-            playersPosition[1] = player2Position;
-            playersPosition[2] = player3Position;
-            playersPosition[3] = player4Position;
-
-            //Jugador1 fila final  columna del medio
-            //Jugador2 columna 0, fila del medio, 
-            //Jugador3 columna final, fila del medio
-            //Jugador4 fila 0, columna del medio
-            int[] Player1FC = new int[2];
-            Player1FC[0] = Laberinto.ElLaberinto.GetSize() - 2;
-            Player1FC[1] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
-            FilasColumnas[0] = Player1FC;
-
-            int[] Player2FC = new int[2];
-            Player2FC[0] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
-            Player2FC[1] = 1;
-            FilasColumnas[1] = Player2FC;
-
-            int[] Player3FC = new int[2];
-            Player3FC[0] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
-            Player3FC[1] = Laberinto.ElLaberinto.GetSize() - 2;
-            FilasColumnas[2] = Player3FC;
-
-            int[] Player4FC = new int[2];
-            Player4FC[0] = 1;
-            Player4FC[1] = (Laberinto.ElLaberinto.GetSize() - 1) / 2;
-            FilasColumnas[3] = Player4FC;
-
-            //inicia las coordenadas de los jugadores segun su fila y columna inicial
-            for (int i = 0; i < playersPosition.Length; i++)
-            {
-                playersPosition[i].position = new Vector3(FilasColumnas[i][1] * PlayerMovement.cellSize, (Laberinto.ElLaberinto.GetSize() - FilasColumnas[i][0] - 1) * PlayerMovement.cellSize, 0);
-            }
-            //escribir las posiciones en funcion de las variables
-
-            //esto inicializa las f y las c segun la posicion en coordenadas del player
-            /*
-            int[] Player1FC = new int[2];
-            Player1FC[0] = 50 - (int)player1Position.position.y / PlayerMovement.cellSize;
-            Player1FC[1] = (int)player1Position.position.x / PlayerMovement.cellSize;
-            FilasColumnas[0] = Player1FC;
-
-            int[] Player2FC = new int[2];
-            Player2FC[0] = 50 - ((int)player2Position.position.y / PlayerMovement.cellSize);
-            Player2FC[1] = (int)player2Position.position.x / PlayerMovement.cellSize;
-            FilasColumnas[1] = Player2FC;
-
-            int[] Player3FC = new int[2];
-            Player3FC[0] = 50 - ((int)player3Position.position.y / PlayerMovement.cellSize);
-            Player3FC[1] = (int)player3Position.position.x / PlayerMovement.cellSize;
-            FilasColumnas[2] = Player3FC;
-
-            int[] Player4FC = new int[2];
-            Player4FC[0] = 50 - ((int)player4Position.position.y / PlayerMovement.cellSize);
-            Player4FC[1] = (int)player4Position.position.x / PlayerMovement.cellSize;
-            FilasColumnas[3] = Player4FC;*/
             TurnBegins();
-
         }
 
-
         //esta funcion se encarga tanto de revisar que la casilla a la que se dirige es un camino como de revisar que no hay otro jugador ahi
-        public bool MovimientoValido(Laberinto laberinto, int f, int c)
+        public bool ValidMovement(Laberinto laberinto, int f, int c)
         {
-            int posNumber = laberinto.Leer(f, c);
+            int posNumber = laberinto.Read(f, c);
             if (posNumber != 2)
             {
                 if (posNumber != 13 && posNumber != 11)
@@ -291,7 +262,6 @@ namespace Tablero
                     attackButton.gameObject.SetActive(false);
                     useKeyButton.gameObject.SetActive(false);
                     breakWallButton.gameObject.SetActive(false);
-                    onTrap = false;
                     return true;
                 }
                 else if (posNumber == 13)
@@ -382,6 +352,11 @@ namespace Tablero
                 else
                 {
                     playersType[nextPlayerIndex - 1].SetTurnsPassed(-1);
+                    if (playersType[nextPlayerIndex - 1].GetTurnsPassed() == 0)
+                    {
+                        playersSprite[nextPlayerIndex - 1].GetComponent<SpriteRenderer>().color = Color.white;
+                        //si fuiste incapacitado, cuando dejas de estarlo se te quita el color azul
+                    }
                     tempPlayerIndex = nextPlayerIndex;
 
                     if (playersType[tempPlayerIndex - 1].GetAttackCoolDown() != 0)
@@ -433,6 +408,7 @@ namespace Tablero
                             {
                                 playersType[i].SetTurnsPassed(playersType[currentPlayerIndex - 1].GetAttack());
                                 ChangeMessage("Ataque Exitoso!", validAttackText);
+                                playersSprite[i].GetComponent<SpriteRenderer>().color = Color.blue;
                             }
                             else
                             {
@@ -456,96 +432,93 @@ namespace Tablero
             }
         }
 
-        public void FellInTrap(Laberinto laberinto)
+        private void FellInTrap(Laberinto laberinto)
         {
-            int number = laberinto.Leer(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]);
+            int number = laberinto.Read(FilasColumnas[currentPlayerIndex - 1][0], FilasColumnas[currentPlayerIndex - 1][1]);
 
             if (number == 3 || number == 4 || number == 5 || number == 6 || number == 7)
             {
-                if (onTrap == false)
+                int f = FilasColumnas[currentPlayerIndex - 1][0];
+                int c = FilasColumnas[currentPlayerIndex - 1][1];
+
+                messageShowCount = 0;
+                if (playersType[currentPlayerIndex - 1].GetTrapInmunity() == 0)
                 {
-                    int f = FilasColumnas[currentPlayerIndex - 1][0];
-                    int c = FilasColumnas[currentPlayerIndex - 1][1];
-                    onTrap = true;
-                    messageShowCount = 0;
-                    if (playersType[currentPlayerIndex - 1].GetTrapInmunity() == 0)
+                    if (number == 3 && !Human[currentPlayerIndex - 1])
                     {
-                        if (number == 3 && !Human[currentPlayerIndex - 1])
+                        ChangeMessage("Has activado una trampa", trapText);
+                        if (playersType[currentPlayerIndex - 1].GetCollectedShards() != 0)
                         {
-                            ChangeMessage("Has activado una trampa", trapText);
-                            if (playersType[currentPlayerIndex - 1].GetCollectedShards() != 0)
-                            {
-                                playersType[currentPlayerIndex - 1].SetCollectedShards(-1);
-                                laberinto.SetPosValue(f, c, 1);
-                                SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
-                                //desactiva la trampa luego de activarla
-                                ChangeMessage("Perdiste un fragmento", underTrapEffectText);
-                            }
-                            else
-                            {
-                                ChangeMessage("No tienes fragmentos que perder", underTrapEffectText);
-                            }
-                        }
-
-                        else if (number == 4)
-                        {
-                            ChangeMessage("Has activado una trampa", trapText);
-                            ChangeMessage("Te perderas 2 turnos", underTrapEffectText);
-                            playersType[currentPlayerIndex - 1].SetTurnsPassed(2);
-                            SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
-                            laberinto.SetPosValue(f, c, 1);
-                            diceNumber = 0;
-                        }
-
-                        else if (number == 5)
-                        {
-                            ChangeMessage("Has activado una trampa", trapText);// texto temporal
-                            ChangeMessage("+3 turnos antes de poder atacar", underTrapEffectText);
-                            playersType[currentPlayerIndex - 1].SetAttackCoolDown(3);
-
+                            playersType[currentPlayerIndex - 1].SetCollectedShards(-1);
                             laberinto.SetPosValue(f, c, 1);
                             SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
+                            //desactiva la trampa luego de activarla
+                            ChangeMessage("Perdiste un fragmento", underTrapEffectText);
                         }
-                        else if (number == 6)
+                        else
                         {
-                            ChangeMessage("Has activado una trampa", trapText);// texto temporal
-                            ChangeMessage("+3 turnos:No podras ver el mapa", underTrapEffectText);
-                            playersType[currentPlayerIndex - 1].SetMazeVisibility(3);
-
-                            laberinto.SetPosValue(f, c, 1);
-                            SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
-                        }
-                        else if (number == 7)
-                        {
-                            ChangeMessage("Has activado una trampa", trapText);// texto temporal
-                            ChangeMessage("+3 turnos:Tirada de dado se reduce a la mitad", underTrapEffectText);
-                            playersType[currentPlayerIndex - 1].SetDiceEffect(3);
-                            diceNumber /= 2;
-                            laberinto.SetPosValue(f, c, 1);
-                            SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
+                            ChangeMessage("No tienes fragmentos que perder", underTrapEffectText);
                         }
                     }
-                    else
+
+                    else if (number == 4)
                     {
-                        playersType[currentPlayerIndex - 1].SetTrapInmunity(-1);
-                        ChangeMessage("Has evadido una trampa", trapText);
+                        ChangeMessage("Has activado una trampa", trapText);
+                        ChangeMessage("Te perderas 2 turnos", underTrapEffectText);
+                        playersSprite[currentPlayerIndex - 1].GetComponent<SpriteRenderer>().color = Color.blue;
+                        playersType[currentPlayerIndex - 1].SetTurnsPassed(2);
+                        SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
+                        laberinto.SetPosValue(f, c, 1);
+                        diceNumber = 0;
+                    }
+
+                    else if (number == 5)
+                    {
+                        ChangeMessage("Has activado una trampa", trapText);// texto temporal
+                        ChangeMessage("+3 turnos antes de poder atacar", underTrapEffectText);
+                        playersType[currentPlayerIndex - 1].SetAttackCoolDown(3);
+
+                        laberinto.SetPosValue(f, c, 1);
+                        SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
+                    }
+                    else if (number == 6)
+                    {
+                        ChangeMessage("Has activado una trampa", trapText);// texto temporal
+                        ChangeMessage("+3 turnos:No podras ver el mapa", underTrapEffectText);
+                        playersType[currentPlayerIndex - 1].SetMazeVisibility(3);
+
+                        laberinto.SetPosValue(f, c, 1);
+                        SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
+                    }
+                    else if (number == 7)
+                    {
+                        ChangeMessage("Has activado una trampa", trapText);// texto temporal
+                        ChangeMessage("+3 turnos:Tirada de dado se reduce a la mitad", underTrapEffectText);
+                        playersType[currentPlayerIndex - 1].SetDiceEffect(3);
+                        diceNumber /= 2;
                         laberinto.SetPosValue(f, c, 1);
                         SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
                     }
                 }
+                else
+                {
+                    playersType[currentPlayerIndex - 1].SetTrapInmunity(-1);
+                    ChangeMessage("Has evadido una trampa", trapText);
+                    laberinto.SetPosValue(f, c, 1);
+                    SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
+                }
+
             }
 
             //el onTrap es para que no te siga aplicando el efecto y cambiando el cartel aunque no te hayas movido. el return true del valid movement
             //es el que lo vuelve a poner en false
-            //mas trampas: teletransportarte al inicio del juego, Teletransportarte junto al jugador al que le toca el turno siguiente y pierdes tu turno
-            //disminuye tu numero en los dados durate x turnos
-
         }
         public void SkillButton()
         {
             playersType[currentPlayerIndex - 1].Skill();
             trapText.gameObject.SetActive(false);
             underTrapEffectText.gameObject.SetActive(false);
+            messageShowCount = 0;
         }
         public void TurnInHuman()
         {
@@ -554,6 +527,11 @@ namespace Tablero
             //asi cuando la funcion lo sume internamente no se desborda de MaxValue
             turnInHumanText.gameObject.SetActive(true);
             Human[currentPlayerIndex - 1] = true;
+        }
+
+        public void PassTurnButton()
+        {
+            diceNumber = 0;
         }
         public void UseKeyButton()
         {
@@ -576,7 +554,7 @@ namespace Tablero
 
         {
             var laberinto = Laberinto.ElLaberinto;
-            ChangeMessage($"{diceNumber}", RemainingMovesText);
+            ChangeMessage($"{diceNumber}", remainingMovesText);
             if (Human[currentPlayerIndex - 1] == false)
             {
                 ChangeMessage($"{playersType[currentPlayerIndex - 1].GetCollectedShards()} Fragmentos de Alma", shardCollectionText);
@@ -592,8 +570,6 @@ namespace Tablero
                 {
                     WinnerPlayer.GetComponent<SpriteRenderer>().sprite = playersSprite[currentPlayerIndex - 1].GetComponent<SpriteRenderer>().sprite;
                     SceneManager.LoadScene("WinScreen");
-                    //NewGameButton.gameObject.SetActive(true);
-                    // ChangeMessage("Has ganado!", unvalidVictoryText);
                 }
                 else
                 {
@@ -609,6 +585,7 @@ namespace Tablero
             if (diceNumber == 0)
             {
                 ChangeMessage("Presiona espacio para pasar el turno", changeTurnText);
+                passTurnButton.gameObject.SetActive(false);
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     TurnEnds();
@@ -625,15 +602,25 @@ namespace Tablero
             else
             {
                 changeTurnText.gameObject.SetActive(false);
+                passTurnButton.gameObject.SetActive(true);
             }
 
             if (playersType[currentPlayerIndex - 1].GetSkillCoolDown() == 0 && diceNumber != 0)
             {
                 skillButton.gameObject.SetActive(true);
+                skillCoolDownText.gameObject.SetActive(false);
             }
             else
             {
                 skillButton.gameObject.SetActive(false);
+                if (!Human[currentPlayerIndex - 1] && diceNumber != 0)
+                {
+                    ChangeMessage($"Enfriamiento:{playersType[currentPlayerIndex - 1].GetSkillCoolDown()} turnos", skillCoolDownText);
+                }
+                else
+                {
+                    skillCoolDownText.gameObject.SetActive(false);
+                }
             }
 
             Instancia.FellInTrap(laberinto);

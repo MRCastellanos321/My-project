@@ -3,7 +3,6 @@ namespace Tablero
 {
     public class SpawnMaze : MonoBehaviour
     {
-
         public static int width;
         public static int height;
         public static int tileWidth = 64;
@@ -44,7 +43,7 @@ namespace Tablero
                 for (int y = height - 1; y >= 0; y--)
                 {
                     //la funcion lee primero fila y luego columna, es decir, y_filas, x_columnas en coordenadas
-                    int value = laberinto.Leer(height - y - 1, x);
+                    int value = laberinto.Read(height - y - 1, x);
                     if (value == 2)
                     {
                         int randomWall = random.Next(0, 12);

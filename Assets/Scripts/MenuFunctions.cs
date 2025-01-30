@@ -8,9 +8,7 @@ public class MenuFunctions : MonoBehaviour
   //Lista de todos los posibles sprite, son 4 diferentes porque cada una tiene un numero indicando el jugador
   public List<Sprite> skins1 = new List<Sprite>();
   public List<Sprite> skins2 = new List<Sprite>();
-
   public List<Sprite> skins3 = new List<Sprite>();
-
   public List<Sprite> skins4 = new List<Sprite>();
 
   //Los preview del jugador que van a aparecer en pantalla
@@ -178,6 +176,7 @@ public class MenuFunctions : MonoBehaviour
     InfoTexts.Add("Hongo viviente:Libera esporas venenosas que le permiten un ataque a distancia");
     InfoTexts.Add("Ninfa:Esta astuta ladrona puede robar shards a los jugadores cercanos");
     InfoTexts.Add("Dragon:Es mucho más fácil moverte cuando tiene alas! Puede duplicar su tirada de dados");
+    InfoTexts.Add("Vidente:El tercer ojo te mostrará tu posición en el mapa por 2 turnos");
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText1.gameObject.SetActive(false);
   }

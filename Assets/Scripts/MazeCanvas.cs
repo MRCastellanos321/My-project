@@ -36,7 +36,7 @@ public class MazeCanvas : MonoBehaviour
                 rt.anchoredPosition = new Vector2(j * size + 161, -i * size + 231); // a medida que aumentan las filas de la matriz, la coordenada Y diminuye, por eso el -i
                 rt.sizeDelta = new Vector2(size, size);
                 Image img = newImage.GetComponent<Image>();
-                img.color = laberinto.Leer(i, j) == 2 ? Color.black : Color.white;
+                img.color = laberinto.Read(i, j) == 2 ? Color.black : Color.white;
             }
         }
     }

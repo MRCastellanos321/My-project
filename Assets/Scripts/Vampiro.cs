@@ -2,7 +2,6 @@ namespace Tablero
 {
     public class Vampiro : characterInterface
     {
-        private int attack = 2;
         private int turnsPassed = 0;
         private int attackCoolDown = 0;
         private int collectedShards = 0;
@@ -32,7 +31,7 @@ namespace Tablero
 
         public int GetAttack()
         {
-            return attack;
+            return 2;
         }
 
         public int GetTurnsPassed()
@@ -112,7 +111,7 @@ namespace Tablero
             // attack inmunity funciona segun los ataques que recibe y no los turnos. A los jugadores se les aumenta
             //el attack cooldown incluso aunque no lo hayan podido atacar
             attackInmunity += 2;
-            skillCoolDown += 3;
+            skillCoolDown += 5;
             Manager.ChangeMessage("Inmunidad a ataques: 2 oportunidades", Manager.Instancia.skillEffectText);
         }
     }

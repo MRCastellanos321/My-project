@@ -2,7 +2,6 @@ namespace Tablero
 {
     public class Fantasma : characterInterface
     {
-        private int attack = 2;
         private int turnsPassed = 0;
         private int attackCoolDown = 0;
         private int collectedShards = 0;
@@ -32,7 +31,7 @@ namespace Tablero
         }
         public int GetAttack()
         {
-            return attack;
+            return 2;
         }
         public int GetTurnsPassed()
         {
@@ -106,12 +105,11 @@ namespace Tablero
             positionVisibility = +value;
         }
 
-
         public void Skill()
         {
             // attack inmunity funciona segun las trampas en las que cae y no en los turnos          
             trapInmunity += 2;
-            skillCoolDown += 3;
+            skillCoolDown += 5;
             Manager.ChangeMessage("Inmunidad a trampas: 2 oportunidades", Manager.Instancia.skillEffectText);
         }
     }

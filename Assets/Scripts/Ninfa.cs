@@ -3,8 +3,6 @@ namespace Tablero
 {
     public class Ninfa : characterInterface
     {
-
-        private int attack = 2;
         private int turnsPassed = 0;
         private int attackCoolDown = 0;
         private int collectedShards = 0;
@@ -36,7 +34,7 @@ namespace Tablero
 
         public int GetAttack()
         {
-            return attack;
+            return 2;
         }
 
         public int GetTurnsPassed()
