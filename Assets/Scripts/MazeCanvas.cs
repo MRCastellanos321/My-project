@@ -6,8 +6,8 @@ public class MazeCanvas : MonoBehaviour
 {
     public GameObject imagePrefab;
     public GameObject playerImage;
-    public Transform canvas;
     private GameObject playerIcon;
+    public Transform canvas;
     public Canvas mazeCanvas;
 
     void Start()
@@ -16,10 +16,7 @@ public class MazeCanvas : MonoBehaviour
 
         CreateMazeGuideCanvas(laberinto);
         playerIcon = Instantiate(playerImage, canvas);
-        RectTransform prt = playerIcon.GetComponent<RectTransform>();
-        prt.sizeDelta = new Vector2(3f, 3f);
         UpdatePlayerIcon();
-
     }
     void CreateMazeGuideCanvas(Laberinto laberinto)
     {

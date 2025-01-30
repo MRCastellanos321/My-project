@@ -169,14 +169,21 @@ public class MenuFunctions : MonoBehaviour
     canvasImage3.sprite = skins3[selectedType3];
     canvasImage4.sprite = skins4[selectedType4];
 
-    InfoTexts = new List<string>();
-    InfoTexts.Add("Vampiro:Ser casi inmortal tiene sus ventajas: Dos oportunidades de evadir ataques");
-    InfoTexts.Add("Bruja:Con su magia, puede teletransportarse a una casilla al azar");
-    InfoTexts.Add("Fantasma:Es muy difícil de detectar!: Dos oportunidades de evadir trampas");
-    InfoTexts.Add("Hongo viviente:Libera esporas venenosas que le permiten un ataque a distancia");
-    InfoTexts.Add("Ninfa:Esta astuta ladrona puede robar shards a los jugadores cercanos");
-    InfoTexts.Add("Dragon:Es mucho más fácil moverte cuando tiene alas! Puede duplicar su tirada de dados");
-    InfoTexts.Add("Vidente:El tercer ojo te mostrará tu posición en el mapa por 2 turnos");
+    InfoTexts = new List<string>()
+    {"Vampiro:Ser casi inmortal tiene sus ventajas: Dos oportunidades de evadir ataques",
+    "Bruja:Con su magia, puede teletransportarse a una casilla al azar",
+    "Fantasma:Es muy difícil de detectar!: Dos oportunidades de evadir trampas",
+    "Hongo viviente:Libera esporas venenosas que le permiten un ataque a distancia",
+    "Ninfa:Esta astuta ladrona puede robar shards a los jugadores cercanos",
+    "Dragon:Es mucho más fácil moverte cuando tiene alas! Puede duplicar su tirada de dados",
+    "Vidente:El tercer ojo te mostrará tu posición en el mapa por 2 turnos"};
+    /**InfoTexts.Add("Vampiro:Ser casi inmortal tiene sus ventajas: Dos oportunidades de evadir ataques");
+      InfoTexts.Add("Bruja:Con su magia, puede teletransportarse a una casilla al azar");
+      InfoTexts.Add("Fantasma:Es muy difícil de detectar!: Dos oportunidades de evadir trampas");
+      InfoTexts.Add("Hongo viviente:Libera esporas venenosas que le permiten un ataque a distancia");
+      InfoTexts.Add("Ninfa:Esta astuta ladrona puede robar shards a los jugadores cercanos");
+      InfoTexts.Add("Dragon:Es mucho más fácil moverte cuando tiene alas! Puede duplicar su tirada de dados");
+      InfoTexts.Add("Vidente:El tercer ojo te mostrará tu posición en el mapa por 2 turnos");*/
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText1.gameObject.SetActive(false);
   }

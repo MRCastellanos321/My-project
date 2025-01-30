@@ -79,6 +79,8 @@ namespace Tablero
         public Button breakWallButton;
         public Button passTurnButton;
 
+        public Image keyOwnershipImage;
+
         public TextMeshProUGUI unvalidVictoryText;
         public TextMeshProUGUI trapText;
         public TextMeshProUGUI changeTurnText;
@@ -221,8 +223,9 @@ namespace Tablero
             skillEffectText.gameObject.SetActive(false);
             turnInHumanText.gameObject.SetActive(false);
             skillCoolDownText.gameObject.SetActive(false);
+            attackButton.gameObject.SetActive(false);
 
-            MazeCenter = new int[2] { 25, 25 };
+            MazeCenter = new int[2] { (Laberinto.ElLaberinto.GetSize() - 1) / 2, (Laberinto.ElLaberinto.GetSize() - 1) / 2 };
 
             cameras = new Camera[4];
 
@@ -234,7 +237,7 @@ namespace Tablero
             {
                 cameras[i].gameObject.SetActive(i + 1 == currentPlayerIndex);
             }
-            attackButton.gameObject.SetActive(false);
+            keyOwnershipImage.color = Color.gray;
             TurnBegins();
         }
 
@@ -638,7 +641,14 @@ namespace Tablero
                 }
 
             }
-
+            if (Manager.playersType[Manager.Instancia.currentPlayerIndex - 1].GetCollectedKeys() != 0)
+            {
+                keyOwnershipImage.color = Color.white;
+            }
+            else
+            {
+                keyOwnershipImage.color = Color.gray;
+            }
         }
 
     }
