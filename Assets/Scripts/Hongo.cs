@@ -101,7 +101,7 @@ namespace Tablero
         }
         public void SetDiceEffect(int value)
         {
-            diceEffect = +value;
+            diceEffect += value;
         }
         public int GetPositionVisibility()
         {
@@ -109,7 +109,7 @@ namespace Tablero
         }
         public void SetPositionVisibility(int value)
         {
-            positionVisibility = +value;
+            positionVisibility += value;
         }
 
         public void Skill()
@@ -143,7 +143,7 @@ namespace Tablero
             //no debe importar si f y c se salen del tablero porque no las estoy usando para acceder a nada, simplemente la comprobacion no va a dar igual
             if (canAttack)
             {
-                skillCoolDown += 5;
+                skillCoolDown += 7;
                 Manager.ChangeMessage("Atacaste los jugadores!", Manager.Instancia.skillEffectText);
             }
             else

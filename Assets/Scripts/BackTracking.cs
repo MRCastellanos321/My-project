@@ -59,6 +59,7 @@ namespace Tablero
             //numero 11
             SpawnShards();
             //numero 12
+            matriz[(matriz.GetLength(0) - 1) / 2, (matriz.GetLength(1) - 1) / 2] = 14;
         }
         //de esta funcion sale una matriz con casillas camino(0) rodeadas de casillas pared(2) sin conexion entre los caminos
         private void IniciarMatriz()

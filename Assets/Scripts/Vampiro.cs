@@ -95,7 +95,7 @@ namespace Tablero
         }
         public void SetDiceEffect(int value)
         {
-            diceEffect = +value;
+            diceEffect += value;
         }
         public int GetPositionVisibility()
         {
@@ -103,7 +103,7 @@ namespace Tablero
         }
         public void SetPositionVisibility(int value)
         {
-            positionVisibility = +value;
+            positionVisibility += value;
         }
 
         public void Skill()

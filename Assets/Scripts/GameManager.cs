@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting;
 namespace Tablero
 {
     public class Manager : MonoBehaviour
@@ -56,7 +55,7 @@ namespace Tablero
         public GameObject selectedSkin4;
         public GameObject Player4Sprite;
 
-        private GameObject[] playersSprite;
+        public GameObject[] playersSprite;
 
         //tipo de jugador por int(la forma en que lo devuelve el menu)
         public static int[] selectedTypes;
@@ -80,8 +79,11 @@ namespace Tablero
         public Button passTurnButton;
 
         public Image keyOwnershipImage;
+        public Image diceEffectImage;
+        public Image attackCoolDownImage;
+        public Image MapTrapEffectImage;
 
-        public TextMeshProUGUI unvalidVictoryText;
+        //public TextMeshProUGUI unvalidVictoryText;
         public TextMeshProUGUI trapText;
         public TextMeshProUGUI changeTurnText;
         public TextMeshProUGUI validAttackText;
@@ -91,6 +93,7 @@ namespace Tablero
         public TextMeshProUGUI underTrapEffectText;
         public TextMeshProUGUI turnInHumanText;
         public TextMeshProUGUI skillCoolDownText;
+        public TextMeshProUGUI unvalidVictoryText;
         private int messageShowCount = 0;
         public GameObject OpenDoor;
         public GameObject Path;
@@ -251,20 +254,34 @@ namespace Tablero
                 {
                     //13 es una puerta y 11 es una pared rompible, la separacion de las comprobaciones es pq ellas
                     //no necesitan buscar jugadores en su casilla y porque necesitan activar sus respectivos botones
+                    validAttackText.gameObject.SetActive(false);
+                    useKeyButton.gameObject.SetActive(false);
+                    breakWallButton.gameObject.SetActive(false);
+                    unvalidVictoryText.gameObject.SetActive(false);
                     for (int i = 0; i < FilasColumnas.Length; i++)
                     {
                         if (f == FilasColumnas[i][0] && c == FilasColumnas[i][1] && currentPlayerIndex - 1 != i)
                         {
+
                             attackButton.gameObject.SetActive(true);
                             nearF = f;
                             nearC = c;
                             return false;
                         }
                     }
-                    validAttackText.gameObject.SetActive(false);
+                    if (posNumber == 14)
+                    {
+                        if (Instancia.Human[Instancia.currentPlayerIndex - 1])
+                        {
+                            WinnerPlayer.GetComponent<SpriteRenderer>().sprite = Instancia.playersSprite[Instancia.currentPlayerIndex - 1].GetComponent<SpriteRenderer>().sprite;
+                            SceneManager.LoadScene("WinScreen");
+                        }
+                        else
+                        {
+                            unvalidVictoryText.gameObject.SetActive(true);
+                        }
+                    }
                     attackButton.gameObject.SetActive(false);
-                    useKeyButton.gameObject.SetActive(false);
-                    breakWallButton.gameObject.SetActive(false);
                     return true;
                 }
                 else if (posNumber == 13)
@@ -280,7 +297,8 @@ namespace Tablero
                         useKeyButton.gameObject.SetActive(true);
                     }
                 }
-                else
+
+                else if (posNumber == 11)
                 {
                     validAttackText.gameObject.SetActive(false);
                     attackButton.gameObject.SetActive(false);
@@ -386,6 +404,23 @@ namespace Tablero
                     //introduzco el temp player index para que las otras funciones y clase q tocan el currentPlayerIndex no tengan algun problema en el update
                 }
             }
+            if (playersType[Instancia.currentPlayerIndex - 1].GetMazeVisibility() == 0)
+            {
+                MapTrapEffectImage.color = Color.white;
+            }
+            else
+            {
+                MapTrapEffectImage.color = Color.gray;
+            }
+            if (playersType[Instancia.currentPlayerIndex - 1].GetDiceEffect() == 0)
+            {
+                diceEffectImage.color = Color.white;
+            }
+            else
+            {
+                diceEffectImage.color = Color.gray;
+            }
+
             TurnBegins();
         }
         public static void ChangeMessage(string message, TextMeshProUGUI textObject)
@@ -480,7 +515,6 @@ namespace Tablero
                         ChangeMessage("Has activado una trampa", trapText);// texto temporal
                         ChangeMessage("+3 turnos antes de poder atacar", underTrapEffectText);
                         playersType[currentPlayerIndex - 1].SetAttackCoolDown(3);
-
                         laberinto.SetPosValue(f, c, 1);
                         SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
                     }
@@ -488,8 +522,8 @@ namespace Tablero
                     {
                         ChangeMessage("Has activado una trampa", trapText);// texto temporal
                         ChangeMessage("+3 turnos:No podras ver el mapa", underTrapEffectText);
+                        MapTrapEffectImage.color = Color.gray;
                         playersType[currentPlayerIndex - 1].SetMazeVisibility(3);
-
                         laberinto.SetPosValue(f, c, 1);
                         SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
                     }
@@ -497,6 +531,7 @@ namespace Tablero
                     {
                         ChangeMessage("Has activado una trampa", trapText);// texto temporal
                         ChangeMessage("+3 turnos:Tirada de dado se reduce a la mitad", underTrapEffectText);
+                        diceEffectImage.color = Color.gray;
                         playersType[currentPlayerIndex - 1].SetDiceEffect(3);
                         diceNumber /= 2;
                         laberinto.SetPosValue(f, c, 1);
@@ -512,9 +547,6 @@ namespace Tablero
                 }
 
             }
-
-            //el onTrap es para que no te siga aplicando el efecto y cambiando el cartel aunque no te hayas movido. el return true del valid movement
-            //es el que lo vuelve a poner en false
         }
         public void SkillButton()
         {
@@ -554,7 +586,6 @@ namespace Tablero
         }
 
         void Update()
-
         {
             var laberinto = Laberinto.ElLaberinto;
             ChangeMessage($"{diceNumber}", remainingMovesText);
@@ -566,24 +597,6 @@ namespace Tablero
             {
                 shardCollectionText.gameObject.SetActive(false);
             }
-
-            if (FilasColumnas[currentPlayerIndex - 1][0] == MazeCenter[0] && FilasColumnas[currentPlayerIndex - 1][1] == MazeCenter[1])
-            {
-                if (Human[currentPlayerIndex - 1] == true)
-                {
-                    WinnerPlayer.GetComponent<SpriteRenderer>().sprite = playersSprite[currentPlayerIndex - 1].GetComponent<SpriteRenderer>().sprite;
-                    SceneManager.LoadScene("WinScreen");
-                }
-                else
-                {
-                    unvalidVictoryText.gameObject.SetActive(true);
-                }
-            }
-            else
-            {
-                unvalidVictoryText.gameObject.SetActive(false);
-            }
-
 
             if (diceNumber == 0)
             {
@@ -631,6 +644,7 @@ namespace Tablero
             if (Input.anyKeyDown)
             {
                 skillEffectText.gameObject.SetActive(false);
+
                 messageShowCount++;
                 if (messageShowCount == 4)
                 {
@@ -641,7 +655,7 @@ namespace Tablero
                 }
 
             }
-            if (Manager.playersType[Manager.Instancia.currentPlayerIndex - 1].GetCollectedKeys() != 0)
+            if (playersType[Instancia.currentPlayerIndex - 1].GetCollectedKeys() != 0)
             {
                 keyOwnershipImage.color = Color.white;
             }
@@ -649,7 +663,14 @@ namespace Tablero
             {
                 keyOwnershipImage.color = Color.gray;
             }
+            if (playersType[Instancia.currentPlayerIndex - 1].GetAttackCoolDown() == 0)
+            {
+                attackCoolDownImage.color = Color.white;
+            }
+            else
+            {
+                attackCoolDownImage.color = Color.gray;
+            }
         }
-
     }
 }

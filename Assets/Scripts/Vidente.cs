@@ -96,7 +96,7 @@ namespace Tablero
         }
         public void SetDiceEffect(int value)
         {
-            diceEffect = +value;
+            diceEffect += value;
         }
         public int GetPositionVisibility()
         {
@@ -104,14 +104,14 @@ namespace Tablero
         }
         public void SetPositionVisibility(int value)
         {
-            positionVisibility = +value;
+            positionVisibility += value;
         }
         public void Skill()
         {
             if (mazeVisibility == 0)
             {
                 positionVisibility += 2;
-                skillCoolDown += 5;
+                skillCoolDown += 7;
                 Manager.ChangeMessage("2 turnos:Es visible tu posicion en el mapa", Manager.Instancia.skillEffectText);
             }
             else

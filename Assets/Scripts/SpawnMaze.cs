@@ -22,15 +22,15 @@ namespace Tablero
         public GameObject Key;
         public GameObject SkillBoost;
         public GameObject AttackBoost;
+        public GameObject Portal;
 
         void Start()
         {
             var laberinto = new Laberinto(51);
             Laberinto.ElLaberinto = laberinto;
-
+            laberinto.Iniciar();
             width = laberinto.GetSize();
             height = laberinto.GetSize();
-            laberinto.Iniciar();
             random = new System.Random();
             GenerateBoard(laberinto);
         }
@@ -71,6 +71,7 @@ namespace Tablero
                         {
                             SpawnTile(x * tileWidth, y * tileWidth, Wall6);
                         }
+
                         else
                         {
                             SpawnTile(x * tileWidth, y * tileWidth, Wall7);
@@ -83,6 +84,10 @@ namespace Tablero
                     else if (value == 13)
                     {
                         SpawnTile(x * tileWidth, y * tileWidth, Door);
+                    }
+                    else if (value == 14)
+                    {
+                        SpawnTile(x * tileWidth, y * tileWidth, Portal);
                     }
                     else
                     {
@@ -106,6 +111,7 @@ namespace Tablero
                     {
                         SpawnAttackBoost(x * tileWidth, y * tileWidth);
                     }
+
                 }
             }
         }
@@ -146,5 +152,6 @@ namespace Tablero
             attackBoost.transform.position = new Vector3(x, y, 0);
             attackBoost.name = "attackBoost " + x / tileWidth + "," + y / tileWidth;
         }
+
     }
 }
