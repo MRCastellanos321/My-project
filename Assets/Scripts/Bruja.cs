@@ -1,9 +1,4 @@
 
-using System;
-using UnityEditor.Overlays;
-using UnityEngine;
-using UnityEngine.Scripting.APIUpdating;
-
 namespace Tablero
 {
     public class Bruja : characterInterface
