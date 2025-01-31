@@ -1,8 +1,8 @@
 # SoulFinders
 # Informe
 
-Desarrollado en Unity version 6000.0.25f1
-Ejecutable en carpeta ExportOfficialUnity, el que se llama UnityOfficial
+Desarrollado en Unity version 6000.0.25f1, Linux,Visual Studio Code
+El export Ejecutable del proyecto está en la carpeta ExportOfficialUnity, es el que se llama UnityOfficial. Si en su lugar, se desea ejecutarlo desde el editor de Unity, se necesita la versión antes mencionada, clonar el repositorio localmente y entonces en Unity Hub, agregar el repositorio
 
 # Tutorial de Juego:
 
