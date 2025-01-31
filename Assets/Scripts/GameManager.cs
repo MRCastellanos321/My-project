@@ -314,16 +314,18 @@ namespace Tablero
         public void TurnBegins()
         {
             //el text del skill no se toca aqui porque ya se cambio al recibir la tecla espacio para cambiar el turno
-            //Tampoco es necesario revisar los botones de ataque, llave y romper pared porque si entraste a la comprobacion
-            //de valid movement es porque aun tiene movimientos, por lo que esos botones nunca van a estar encendido cuando cambies de turno
             diceNumber = dice.Next(10, 21);
             if (playersType[currentPlayerIndex - 1].GetDiceEffect() != 0)
             {
                 diceNumber /= 2;
             }
+            useKeyButton.gameObject.SetActive(false);
+            attackButton.gameObject.SetActive(false);
+            breakWallButton.gameObject.SetActive(false);
             underTrapEffectText.gameObject.SetActive(false);
             trapText.gameObject.SetActive(false);
             turnInHumanText.gameObject.SetActive(false);
+            
             messageShowCount = 0;
         }
 

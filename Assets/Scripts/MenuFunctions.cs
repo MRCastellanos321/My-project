@@ -6,10 +6,10 @@ using TMPro;
 public class MenuFunctions : MonoBehaviour
 {
   //Lista de todos los posibles sprite, son 4 diferentes porque cada una tiene un numero indicando el jugador
-  public List<Sprite> skins1 = new List<Sprite>();
-  public List<Sprite> skins2 = new List<Sprite>();
-  public List<Sprite> skins3 = new List<Sprite>();
-  public List<Sprite> skins4 = new List<Sprite>();
+  public List<Sprite> skins1;
+  public List<Sprite> skins2;
+  public List<Sprite> skins3;
+  public List<Sprite> skins4;
 
   //Los preview del jugador que van a aparecer en pantalla
   public Image canvasImage1;
@@ -150,7 +150,6 @@ public class MenuFunctions : MonoBehaviour
     CharacterInfoText2.text = InfoTexts[selectedType4];
     CharacterInfoText2.gameObject.SetActive(true);
   }
-
 
   public void StartButton()
   {

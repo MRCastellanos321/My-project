@@ -6,9 +6,7 @@ namespace Tablero
     public class PlayerMovement : MonoBehaviour
     {
         public int playerIndex;
-
         public static int cellSize = 64;
-
         private Vector3 targetPosition;
 
         void Start()
@@ -68,7 +66,6 @@ namespace Tablero
                             if (Manager.Instancia.ValidMovement(laberinto, f, c + 1))
                             {
                                 FindTarget(Vector3.right);
-
                                 c++;
                                 Manager.diceNumber--;
                             }

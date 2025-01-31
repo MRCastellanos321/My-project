@@ -111,14 +111,14 @@ namespace Tablero
 
         public void Skill()
         {
-            //Revisa las posiciones en un radio de 2 casillas y les roba un shard
+            //Revisa las posiciones en un radio de 3 casillas y les roba un shard
             bool canSteal = false;
-            int f = Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] - 2;
-            int c = Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] - 2;
+            int f = Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] - 3;
+            int c = Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] - 3;
 
-            while (f <= Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] + 2)
+            while (f <= Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][0] + 3)
             {
-                while (c <= Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] + 2)
+                while (c <= Manager.FilasColumnas[Manager.Instancia.currentPlayerIndex - 1][1] + 3)
                 {
                     for (int i = 0; i < Manager.FilasColumnas.Length; i++)
                     {
