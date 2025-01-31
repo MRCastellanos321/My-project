@@ -1,4 +1,4 @@
-using Microsoft.Unity.VisualStudio.Editor;
+
 using Tablero;
 using UnityEngine;
 public class CollectibleAttackBoost : MonoBehaviour
