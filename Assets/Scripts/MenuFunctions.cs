@@ -172,10 +172,10 @@ public class MenuFunctions : MonoBehaviour
     {"Vampiro:Ser casi inmortal tiene sus ventajas: Dos oportunidades de evadir ataques",
     "Bruja:Con su magia, puede teletransportarse a una casilla al azar",
     "Fantasma:Es muy difícil de detectar!: Dos oportunidades de evadir trampas",
-    "Hongo viviente:Libera esporas venenosas que le permiten un ataque a distancia",
-    "Ninfa:Esta astuta ladrona puede robar shards a los jugadores cercanos",
+    "Hongo viviente:Libera esporas venenosas que le permiten un ataque a distancia(5)",
+    "Ninfa:Esta astuta ladrona puede robar fragmentos de alma a los jugadores cercanos(3)",
     "Dragon:Es mucho más fácil moverte cuando tiene alas! Puede duplicar su tirada de dados",
-    "Vidente:El tercer ojo te mostrará tu posición en el mapa por 2 turnos"};
+    "Vidente:El tercer ojo le mostrará su posición en el mapa por 2 turnos"};
     CharacterInfoText1.gameObject.SetActive(false);
     CharacterInfoText1.gameObject.SetActive(false);
   }

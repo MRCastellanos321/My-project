@@ -116,13 +116,13 @@ namespace Tablero
             Random random = new Random();
             Random random2 = new Random();
 
-            //aqui se realiza una iteracion en cada entrada a la recursividad para volver una casilla vacia un camino cada vez que exista una direcciin valida
+            //aquí se realiza una iteración en cada entrada a la recursividad para volver una casilla vacía un camino cada vez que exista una dirección válida
 
             List<string> validDirections = IsValid(f, c);
 
             if (validDirections.Count != 0)
             {
-                Backtrack.Add(new int[] { f, c }); //salva esa posicion
+                Backtrack.Add(new int[] { f, c }); //salva esa posición
                 Console.WriteLine("entre aqui");
                 int posRandom = random.Next(0, validDirections.Count);
                 string direction = validDirections[posRandom];
@@ -258,7 +258,7 @@ namespace Tablero
             Random random = new Random();
             int i = 0;
             //las trampas se quedan con una revision diferente pq ellas pueden estar en cualquier cuadrante pero no pueden estar en el centro
-            while (i <= 8)
+            while (i <= 7)
             {
                 int trapF = random.Next(3, matriz.GetLength(0) - 3);
                 int trapC = random.Next(3, matriz.GetLength(1) - 3);
@@ -267,9 +267,19 @@ namespace Tablero
                     matriz[trapF, trapC] = 3;
                     i++;
                 }
-                else
+                //Esta es la trampa que disminuye tus shards. En el juego hay 16 shards. En caso de que todas fueran activadas e hicieran efecto, 
+                //quedarían 9 shards en juego. Son 4 jugadores, si los shards fueran distribuidos de 2 en 2, sobraría 1 que iría a uno de los jugadores
+                //Entonces no puede ocurrir el caso de que nadie se convierta en humano porque siempre hay suficientes shards para al menos 1.
+            }
+            i = 0;
+            while (i <= 10)
+            {
+                int trapF = random.Next(3, matriz.GetLength(0) - 3);
+                int trapC = random.Next(3, matriz.GetLength(1) - 3);
+                if (matriz[trapF, trapC] == 1 && (trapF > 27 || trapC > 27 || trapF < 22 || trapC < 22))
                 {
-                    continue;
+                    matriz[trapF, trapC] = 4;//perder turnos
+                    i++;
                 }
             }
             i = 0;
@@ -279,12 +289,8 @@ namespace Tablero
                 int trapC = random.Next(3, matriz.GetLength(1) - 3);
                 if (matriz[trapF, trapC] == 1 && (trapF > 27 || trapC > 27 || trapF < 22 || trapC < 22))
                 {
-                    matriz[trapF, trapC] = 4;
+                    matriz[trapF, trapC] = 5;//enfría el ataque
                     i++;
-                }
-                else
-                {
-                    continue;
                 }
             }
             i = 0;
@@ -294,12 +300,8 @@ namespace Tablero
                 int trapC = random.Next(3, matriz.GetLength(1) - 3);
                 if (matriz[trapF, trapC] == 1 && (trapF > 27 || trapC > 27 || trapF < 22 || trapC < 22))
                 {
-                    matriz[trapF, trapC] = 5;
+                    matriz[trapF, trapC] = 6;//no poder ver el mapa
                     i++;
-                }
-                else
-                {
-                    continue;
                 }
             }
             i = 0;
@@ -309,27 +311,8 @@ namespace Tablero
                 int trapC = random.Next(3, matriz.GetLength(1) - 3);
                 if (matriz[trapF, trapC] == 1 && (trapF > 27 || trapC > 27 || trapF < 22 || trapC < 22))
                 {
-                    matriz[trapF, trapC] = 6;
+                    matriz[trapF, trapC] = 7;//reduce tirada de dados
                     i++;
-                }
-                else
-                {
-                    continue;
-                }
-            }
-            i = 0;
-            while (i <= 10)
-            {
-                int trapF = random.Next(3, matriz.GetLength(0) - 3);
-                int trapC = random.Next(3, matriz.GetLength(1) - 3);
-                if (matriz[trapF, trapC] == 1 && (trapF > 27 || trapC > 27 || trapF < 22 || trapC < 22))
-                {
-                    matriz[trapF, trapC] = 7;
-                    i++;
-                }
-                else
-                {
-                    continue;
                 }
             }
         }
@@ -348,10 +331,6 @@ namespace Tablero
                     matriz[shardF, shardC] = 12;
                     i++;
                 }
-                else
-                {
-                    continue;
-                }
             }
             i = 0;
             while (i < 4)
@@ -362,10 +341,6 @@ namespace Tablero
                 {
                     matriz[shardF, shardC] = 12;
                     i++;
-                }
-                else
-                {
-                    continue;
                 }
             }
             i = 0;
@@ -378,10 +353,6 @@ namespace Tablero
                     matriz[shardF, shardC] = 12;
                     i++;
                 }
-                else
-                {
-                    continue;
-                }
             }
             i = 0;
             while (i < 4)
@@ -392,10 +363,6 @@ namespace Tablero
                 {
                     matriz[shardF, shardC] = 12;
                     i++;
-                }
-                else
-                {
-                    continue;
                 }
             }
         }
@@ -414,10 +381,6 @@ namespace Tablero
                     matriz[f, c] = objectType;
                     i++;
                 }
-                else
-                {
-                    continue;
-                }
             }
             i = 0;
             while (i != 1)
@@ -428,10 +391,6 @@ namespace Tablero
                 {
                     matriz[f, c] = objectType;
                     i++;
-                }
-                else
-                {
-                    continue;
                 }
             }
             i = 0;
@@ -445,10 +404,6 @@ namespace Tablero
                     matriz[f, c] = objectType;
                     i++;
                 }
-                else
-                {
-                    continue;
-                }
             }
             i = 0;
             while (i != 1)
@@ -460,10 +415,6 @@ namespace Tablero
                 {
                     matriz[f, c] = objectType;
                     i++;
-                }
-                else
-                {
-                    continue;
                 }
             }
         }
@@ -471,7 +422,7 @@ namespace Tablero
         {
             Random random = new Random();
             int i = 0;
-            while (i != 3)
+            while (i != 2)
             {
                 int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
                 int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
@@ -481,29 +432,21 @@ namespace Tablero
                     matriz[f, c] = 11;
                     i++;
                 }
-                else
-                {
-                    continue;
-                }
             }
             i = 0;
-            while (i != 3)
+            while (i != 2)
             {
                 int f = random.Next(2, (matriz.GetLength(0) - 1) / 2 - 2);
                 int c = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(0) - 2);
-
+                // la comprobación de la paridad esta relacionada a la forma de iniciar la matriz, así se optimiza la utiidad de la ubicación de la pared rompibk=le
                 if (matriz[f, c] == 2 && ((f % 2 == 0 && c % 2 != 0) || (f % 2 != 0 && c % 2 == 0)))
                 {
                     matriz[f, c] = 11;
                     i++;
                 }
-                else
-                {
-                    continue;
-                }
             }
             i = 0;
-            while (i != 3)
+            while (i != 2)
             {
                 int f = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 int c = random.Next(2, (matriz.GetLength(1) - 1) / 2 - 2);
@@ -513,13 +456,9 @@ namespace Tablero
                     matriz[f, c] = 11;
                     i++;
                 }
-                else
-                {
-                    continue;
-                }
             }
             i = 0;
-            while (i != 3)
+            while (i != 2)
             {
                 int f = random.Next((matriz.GetLength(0) - 1) / 2 + 2, matriz.GetLength(0) - 2);
                 int c = random.Next((matriz.GetLength(1) - 1) / 2 + 2, matriz.GetLength(1) - 2);
@@ -529,10 +468,59 @@ namespace Tablero
                     matriz[f, c] = 11;
                     i++;
                 }
-                else
+            }
+            //lo siguiente es para crear paredes rompibles una vez aparezcan demasiadas paredes seguidas
+            int n = 1;
+            int m = 1;
+            int count = 0;
+            while (m < matriz.GetLength(1) - 1)
+            {
+                while (n < matriz.GetLength(0) - 1)
                 {
-                    continue;
+                    if (matriz[n, m] == 2)
+                    {
+                        count++;
+                    }
+                    else
+                    {
+                        count = 0;
+                    }
+                    if (count == 11)
+                    {
+                        matriz[n - 3, m] = 11;
+                        count = 0;
+
+                    }
+                    n++;
                 }
+                n = 1;
+                m++;
+            }
+            n = 1;
+            m = 1;
+            count = 0;
+            while (n < matriz.GetLength(0) - 1)
+            {
+                while (m < matriz.GetLength(1) - 1)
+                {
+                    if (matriz[n, m] == 2)
+                    {
+                        count++;
+                    }
+                    else
+                    {
+                        count = 0;
+                    }
+                    if (count == 11)
+                    {
+                        matriz[n, m - 3] = 11;
+                        count = 0;
+
+                    }
+                    m++;
+                }
+                m = 1;
+                n++;
             }
         }
 

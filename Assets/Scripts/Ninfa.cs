@@ -128,6 +128,7 @@ namespace Tablero
                             {
                                 canSteal = true;
                                 Manager.playersType[i].SetCollectedShards(-1);
+                                //esto puede hacer que desaparezcan shards del juego si la ninfa ya es humano. Pero no ocurre el caso donde nadie puede ganar, porque la ninfa ya es humano
                                 if (collectedShards < 3)
                                 {
                                     collectedShards++;

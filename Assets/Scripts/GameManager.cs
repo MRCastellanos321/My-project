@@ -504,7 +504,7 @@ namespace Tablero
                     else if (number == 4)
                     {
                         ChangeMessage("Has activado una trampa", trapText);
-                        ChangeMessage("Te perderas 2 turnos", underTrapEffectText);
+                        ChangeMessage("Te perderás 2 turnos", underTrapEffectText);
                         playersSprite[currentPlayerIndex - 1].GetComponent<SpriteRenderer>().color = Color.blue;
                         playersType[currentPlayerIndex - 1].SetTurnsPassed(2);
                         SpawnMaze.SpawnTile(c * SpawnMaze.tileWidth, (Laberinto.ElLaberinto.GetSize() - f - 1) * SpawnMaze.tileWidth, UnactiveTrap);
@@ -514,7 +514,7 @@ namespace Tablero
 
                     else if (number == 5)
                     {
-                        ChangeMessage("Has activado una trampa", trapText);// texto temporal
+                        ChangeMessage("Has activado una trampa", trapText);
                         ChangeMessage("+3 turnos antes de poder atacar", underTrapEffectText);
                         playersType[currentPlayerIndex - 1].SetAttackCoolDown(3);
                         laberinto.SetPosValue(f, c, 1);
@@ -522,8 +522,8 @@ namespace Tablero
                     }
                     else if (number == 6)
                     {
-                        ChangeMessage("Has activado una trampa", trapText);// texto temporal
-                        ChangeMessage("+3 turnos:No podras ver el mapa", underTrapEffectText);
+                        ChangeMessage("Has activado una trampa", trapText);
+                        ChangeMessage("+3 turnos:No podrás ver el mapa", underTrapEffectText);
                         MapTrapEffectImage.color = Color.gray;
                         playersType[currentPlayerIndex - 1].SetMazeVisibility(3);
                         laberinto.SetPosValue(f, c, 1);
@@ -531,7 +531,7 @@ namespace Tablero
                     }
                     else if (number == 7)
                     {
-                        ChangeMessage("Has activado una trampa", trapText);// texto temporal
+                        ChangeMessage("Has activado una trampa", trapText);
                         ChangeMessage("+3 turnos:Tirada de dado se reduce a la mitad", underTrapEffectText);
                         diceEffectImage.color = Color.gray;
                         playersType[currentPlayerIndex - 1].SetDiceEffect(3);
